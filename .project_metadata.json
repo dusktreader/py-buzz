@@ -1,0 +1,10 @@
+{
+    "name": "buzz-lightyear",
+    "description": "That's not flying, it's falling with style: Exceptions with extras",
+    "version": "0.1",
+    "release": "0.1.0",
+    "author": "Tucker Beck",
+    "author_email": "tucker.beck@gmail.com",
+    "copyright": "2016, Tucker Beck",
+    "license": "MIT"
+}
