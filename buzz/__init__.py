@@ -1,10 +1,5 @@
 from contextlib import contextmanager
-
-import textwrap
-
-
-def dedent(text):
-    return textwrap.dedent(text).strip()
+from textwrap import dedent
 
 
 class Buzz(Exception):
@@ -73,7 +68,9 @@ class Buzz(Exception):
         :param format_args: Format arguments. Follows str.format convention
         :param format_kwds: Format keyword args. Follows str.format convetion
         """
-        self.message = dedent(message.format(*format_args, **format_kwds))
+        self.message = dedent(
+            message.format(*format_args, **format_kwds)
+        ).strip()
 
     def __str__(self):
         return self.message
