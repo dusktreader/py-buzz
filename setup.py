@@ -3,16 +3,19 @@ import json
 
 from setuptools import setup, find_packages
 
-with open('.project_metadata.json') as meta_file:
+with open('buzz/.project_metadata.json') as meta_file:
     project_metadata = json.loads(meta_file.read())
 
 setup(
     name=project_metadata['name'],
-    version=project_metadata['version'],
+    version=project_metadata['release'],
     author=project_metadata['author'],
     author_email=project_metadata['author_email'],
     description=project_metadata['description'],
     license=project_metadata['license'],
+    package_data={
+        '': ['.project_metadata.json'],
+    },
     install_requires=[
     ],
     extras_require={
