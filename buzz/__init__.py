@@ -74,3 +74,6 @@ class Buzz(Exception):
 
     def __str__(self):
         return self.message
+
+    def __repr__(self):
+        return self.__class__.__name__
