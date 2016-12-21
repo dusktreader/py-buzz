@@ -1,5 +1,7 @@
-from contextlib import contextmanager
-from textwrap import dedent
+import contextlib
+import inspect
+import os
+import textwrap
 
 
 class Buzz(Exception):
@@ -12,7 +14,41 @@ class Buzz(Exception):
     """
 
     @classmethod
-    @contextmanager
+    @contextlib.contextmanager
+    def accumulate_errors(cls, message, *format_args, **format_kwargs):
+
+        class Accumulator:
+
+            def __init__(self):
+                self.problems = []
+                self.msg = (
+                    '{file}[{line}]->{func}(): '
+                    '`{code}` resolved as false'
+                )
+
+            def __iadd__(self, evaluated_expression):
+                if not evaluated_expression:
+                    calling_frame = inspect.currentframe().f_back
+                    traceback = inspect.getframeinfo(calling_frame)
+                    self.problems.append(self.msg.format(
+                        file=os.path.basename(traceback.filename),
+                        func=traceback.function,
+                        line=traceback.lineno,
+                        code=traceback.code_context[0].strip(),
+                    ))
+                return self
+
+        accumulator = Accumulator()
+        yield accumulator
+        cls.require_condition(
+            len(accumulator.problems) == 0,
+            "Checked condition(s) failed: {}\n{}",
+            message.format(*format_args, **format_kwargs),
+            '\n'.join(accumulator.problems),
+            )
+
+    @classmethod
+    @contextlib.contextmanager
     def handle_errors(cls, message, *format_args, **format_kwds):
         """
         provides a context manager that will intercept exceptions and repackage
@@ -68,7 +104,7 @@ class Buzz(Exception):
         :param format_args: Format arguments. Follows str.format convention
         :param format_kwds: Format keyword args. Follows str.format convetion
         """
-        self.message = dedent(
+        self.message = textwrap.dedent(
             message.format(*format_args, **format_kwds)
         ).strip()
 
