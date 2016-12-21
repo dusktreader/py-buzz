@@ -13,7 +13,9 @@ setup(
     author_email=project_metadata['author_email'],
     description=project_metadata['description'],
     license=project_metadata['license'],
-    data_files=[('.', ['.project_metadata.json'])],
+    package_data={
+        project_metadata['name']: ['.project_metadata.json'],
+    },
     install_requires=[
     ],
     extras_require={
