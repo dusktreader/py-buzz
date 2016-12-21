@@ -32,3 +32,19 @@ class TestBuzz:
                 raise Exception("there was a problem")
         assert 'there was a problem' in str(err_info.value)
         assert 'intercepted exception' in str(err_info.value)
+
+    def test_accumulate_errors(self):
+        with pytest.raises(Buzz) as err_info:
+            with Buzz.accumulate_errors('there will be errors') as checker:
+                checker += True
+                checker += False
+                checker += 1 == 2
+                checker += 'cooooooool'
+                checker += 0
+        err_msg = err_info.value.message
+        assert 'there will be errors' in err_msg
+        assert '`checker += True` resolved as false' not in err_msg
+        assert '`checker += False` resolved as false' in err_msg
+        assert '`checker += 1 == 2` resolved as false' in err_msg
+        assert '`checker += \'cooooooool\' resolved as false' not in err_msg
+        assert '`checker += 0` resolved as false' in err_msg
