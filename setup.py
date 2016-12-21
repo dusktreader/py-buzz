@@ -8,7 +8,7 @@ with open('.project_metadata.json') as meta_file:
 
 setup(
     name=project_metadata['name'],
-    version=project_metadata['version'],
+    version=project_metadata['release'],
     author=project_metadata['author'],
     author_email=project_metadata['author_email'],
     description=project_metadata['description'],
