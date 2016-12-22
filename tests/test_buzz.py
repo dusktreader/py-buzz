@@ -56,7 +56,7 @@ class TestBuzz:
         check_list = []
         with Buzz.handle_errors(
             'no errors should happen here, so on_error should not be called',
-            on_error=lambda e: check_list.append(str(e))
+            on_error=lambda e, m: check_list.append(m),
         ):
             pass
         assert check_list == []
@@ -65,13 +65,13 @@ class TestBuzz:
         with pytest.raises(Buzz) as err_info:
             with Buzz.handle_errors(
                 'intercepted exception',
-                on_error=lambda e: check_list.append(str(e))
+                on_error=lambda e, m: check_list.append(m),
             ):
                 raise Exception("there was a problem")
         assert 'there was a problem' in str(err_info.value)
         assert 'intercepted exception' in str(err_info.value)
         assert len(check_list) == 1
-        assert 'there was a problem' in str(check_list[0])
+        assert 'there was a problem' in check_list[0]
 
     def test_accumulate_errors(self):
         with pytest.raises(Buzz) as err_info:
