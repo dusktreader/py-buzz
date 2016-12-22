@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ----------
 
+v0.1.7 - 2016-12-22
+-------------------
+- Fixed issues with packaging (took a lot of intermediary releases)
+- Added accumulating context manager for checking expressions
+- Added do_finally and on_error parameters to handle_errors
+- Added repr function
+- Added testing
+
 v0.1.0 - 2016-12-15
 -------------------
 
