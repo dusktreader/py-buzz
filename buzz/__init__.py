@@ -49,7 +49,10 @@ class Buzz(Exception):
 
     @classmethod
     @contextlib.contextmanager
-    def handle_errors(cls, message, *format_args, **format_kwds):
+    def handle_errors(
+            cls, message, *format_args,
+            do_finally=None, on_error=None, **format_kwds
+    ):
         """
         provides a context manager that will intercept exceptions and repackage
         them as Buzz instances with a message attached:
@@ -61,14 +64,24 @@ class Buzz(Exception):
         :param: message:    The failure message to attach to the raised Buzz
         :param format_args: Format arguments. Follows str.format convention
         :param format_kwds: Format keyword args. Follows str.format convetion
+        :param do_finally:  A function that should always be called at the
+                            end of the block. Should take no parameters
+        :param on_error:    A function that should be called only if there was
+                            an exception. Should take the raised exception as
+                            its only parameter
         """
         try:
             yield
         except Exception as err:
+            if on_error is not None:
+                on_error(err)
             raise cls(
                 message + " -- Error: " + cls.sanitize_errstr(err),
                 *format_args, **format_kwds
             )
+        finally:
+            if do_finally is not None:
+                do_finally()
 
     @classmethod
     def require_condition(cls, expr, message, *format_args, **format_kwds):
