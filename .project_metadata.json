@@ -4,7 +4,7 @@
     "copyright": "2016, Tucker Beck",
     "description": "That's not flying, it's falling with style: Exceptions with extras",
     "license": "MIT",
-    "name": "buzz-lightyear",
+    "name": "py-buzz",
     "release": "0.1.8-rc1",
     "version": "0.1"
 }

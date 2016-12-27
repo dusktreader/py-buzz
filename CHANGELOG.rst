@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ----------
 - Added formatted message string to on_error parameters
+- Renamed project to 'py-buzz'
 
 v0.1.7 - 2016-12-22
 -------------------
