@@ -88,3 +88,16 @@ class TestBuzz:
         assert '`checker += 1 == 2` resolved as false' in err_msg
         assert '`checker += \'cooooooool\' resolved as false' not in err_msg
         assert '`checker += 0` resolved as false' in err_msg
+
+    def test_nested_handler(self):
+        """
+        This test verifies that a handler that is nested inside another buzz
+        catching mechanism properly sanitizes the final error string so that
+        format arguments in the outside mechanism don't get caught up in
+        curly braces in the final error string
+        """
+        with pytest.raises(Buzz) as err_info:
+            with Buzz.handle_errors("outside handler"):
+                with Buzz.handle_errors("inside handler"):
+                    raise Exception("this has {curlies}")
+        assert 'this has {curlies}' in err_info.value.message
