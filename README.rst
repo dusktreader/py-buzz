@@ -1,6 +1,6 @@
-******************
- buzz-lightyear
-******************
+*********
+ py-buzz
+*********
 
 ------------------------------------------------------------------
 That's not flying, it's falling with style: Exceptions with extras
@@ -18,7 +18,7 @@ Installing
 ==========
 Install using pip::
 
-$ pip install buzz-lightyear
+$ pip install py-buzz
 
 Using
 =====
@@ -47,7 +47,7 @@ exception code a little easier to read:
    raise Exception("a {} message".format('formatted'))
    raise Exception("a {fmt} message".format(fmt='formatted'))
 
-   # With buzz-lightyear
+   # With py-buzz
    raise Buzz("a {} message", 'formatted')
    raise Buzz("a {fmt} message", fmt='formatted')
 
@@ -68,7 +68,7 @@ makes it just a little easier to write and read that kind of code:
    if not some_condition():
        raise Exception("some_condition failed")
 
-   # With buzz-lightyear
+   # With py-buzz
    Buzz.require_condition(some_condition(), "some_condition failed")
 
 This is again justa bit of syntactic sugar but can make code a bit more
@@ -91,7 +91,7 @@ message:
    except Exception as err:
        raise Exception("Something didn't work -- Error: {}".format(str(err)))
 
-   # With buzz-lightyear
+   # With py-buzz
    with Buzz.handle_errors("Something didn't work"):
       this_could_fail()
       this_could_also_fail()

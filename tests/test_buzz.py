@@ -56,7 +56,7 @@ class TestBuzz:
         check_list = []
         with Buzz.handle_errors(
             'no errors should happen here, so on_error should not be called',
-            on_error=lambda e: check_list.append(str(e))
+            on_error=lambda e, m: check_list.append(m),
         ):
             pass
         assert check_list == []
@@ -65,13 +65,13 @@ class TestBuzz:
         with pytest.raises(Buzz) as err_info:
             with Buzz.handle_errors(
                 'intercepted exception',
-                on_error=lambda e: check_list.append(str(e))
+                on_error=lambda e, m: check_list.append(m),
             ):
                 raise Exception("there was a problem")
         assert 'there was a problem' in str(err_info.value)
         assert 'intercepted exception' in str(err_info.value)
         assert len(check_list) == 1
-        assert 'there was a problem' in str(check_list[0])
+        assert 'there was a problem' in check_list[0]
 
     def test_accumulate_errors(self):
         with pytest.raises(Buzz) as err_info:
@@ -88,3 +88,16 @@ class TestBuzz:
         assert '`checker += 1 == 2` resolved as false' in err_msg
         assert '`checker += \'cooooooool\' resolved as false' not in err_msg
         assert '`checker += 0` resolved as false' in err_msg
+
+    def test_nested_handler(self):
+        """
+        This test verifies that a handler that is nested inside another buzz
+        catching mechanism properly sanitizes the final error string so that
+        format arguments in the outside mechanism don't get caught up in
+        curly braces in the final error string
+        """
+        with pytest.raises(Buzz) as err_info:
+            with Buzz.handle_errors("outside handler"):
+                with Buzz.handle_errors("inside handler"):
+                    raise Exception("this has {curlies}")
+        assert 'this has {curlies}' in err_info.value.message

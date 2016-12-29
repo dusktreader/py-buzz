@@ -68,17 +68,18 @@ class Buzz(Exception):
                             end of the block. Should take no parameters
         :param on_error:    A function that should be called only if there was
                             an exception. Should take the raised exception as
-                            its only parameter
+                            its first parameter and the final message for the
+                            exception that will be raised as its second
         """
         try:
             yield
         except Exception as err:
+            final_message = message.format(*format_args, **format_kwds)
+            final_message = "{} -- Error: {}".format(final_message, str(err))
+            final_message = cls.sanitize_errstr(final_message)
             if on_error is not None:
-                on_error(err)
-            raise cls(
-                message + " -- Error: " + cls.sanitize_errstr(err),
-                *format_args, **format_kwds
-            )
+                on_error(err, final_message)
+            raise cls(final_message)
         finally:
             if do_finally is not None:
                 do_finally()

@@ -18,4 +18,4 @@ deploy:
   on:
     tags: true
     distributions: sdist bdist_wheel
-    repo: dusktreader/buzz-lightyear
+    repo: dusktreader/py-buzz
