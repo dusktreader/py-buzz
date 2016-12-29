@@ -1,3 +1,11 @@
+.. image::  https://badge.fury.io/py/py-buzz.svg
+   :target: https://badge.fury.io/py/py-buzz
+   :alt:    Latest Version
+
+.. image::  https://travis-ci.org/dusktreader/py-buzz.svg?branch=integration
+   :target: https://travis-ci.org/dusktreader/py-buzz
+   :alt:    Build Status
+
 *********
  py-buzz
 *********
