@@ -61,15 +61,15 @@ class Buzz(Exception):
         with Buzz.handle_errors("It didn't work"):
             some_code_that_might_raise_an_exception()
 
-        :param: message:    The failure message to attach to the raised Buzz
-        :param format_args: Format arguments. Follows str.format convention
-        :param format_kwds: Format keyword args. Follows str.format convetion
-        :param do_finally:  A function that should always be called at the
-                            end of the block. Should take no parameters
-        :param on_error:    A function that should be called only if there was
-                            an exception. Should take the raised exception as
-                            its first parameter and the final message for the
-                            exception that will be raised as its second
+        :param: message:     The failure message to attach to the raised Buzz
+        :param: format_args: Format arguments. Follows str.format convention
+        :param: format_kwds: Format keyword args. Follows str.format convetion
+        :param: do_finally:  A function that should always be called at the
+                             end of the block. Should take no parameters
+        :param: on_error:    A function that should be called only if there was
+                             an exception. Should take the raised exception as
+                             its first parameter and the final message for the
+                             exception that will be raised as its second
         """
         try:
             yield
