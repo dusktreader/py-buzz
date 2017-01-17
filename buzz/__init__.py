@@ -1,6 +1,7 @@
 import contextlib
 import inspect
 import os
+import sys
 import textwrap
 
 
@@ -79,7 +80,7 @@ class Buzz(Exception):
             final_message = cls.sanitize_errstr(final_message)
             if on_error is not None:
                 on_error(err, final_message)
-            raise cls(final_message)
+            raise cls(final_message).with_traceback(sys.exc_info()[2])
         finally:
             if do_finally is not None:
                 do_finally()
