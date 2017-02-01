@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ----------
 
+v0.1.9 - 2017-02-01
+-------------------
+- Added traceback print out to handle_errors message
+- Added exception class name to handle_errors output
+
 v0.1.8 - 2016-12-30
 -------------------
 - Added formatted message string to on_error parameters
