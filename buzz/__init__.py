@@ -76,7 +76,11 @@ class Buzz(Exception):
             yield
         except Exception as err:
             final_message = message.format(*format_args, **format_kwds)
-            final_message = "{} -- Error: {}".format(final_message, str(err))
+            final_message = "{} -- {}: {}".format(
+                final_message,
+                type(err).__name__,
+                str(err),
+            )
             final_message = cls.sanitize_errstr(final_message)
             if on_error is not None:
                 on_error(err, final_message)
