@@ -30,9 +30,10 @@ class TestBuzz:
 
         with pytest.raises(Buzz) as err_info:
             with Buzz.handle_errors('intercepted exception'):
-                raise Exception("there was a problem")
+                raise ValueError("there was a problem")
         assert 'there was a problem' in str(err_info.value)
         assert 'intercepted exception' in str(err_info.value)
+        assert 'ValueError' in str(err_info.value)
 
         check_list = []
         with Buzz.handle_errors(
