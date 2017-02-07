@@ -52,7 +52,8 @@ class Buzz(Exception):
     @contextlib.contextmanager
     def handle_errors(
             cls, message, *format_args,
-            do_finally=None, on_error=None, **format_kwds
+            do_finally=None, do_except=None, do_else=None,
+            **format_kwds
     ):
         """
         provides a context manager that will intercept exceptions and repackage
@@ -67,10 +68,12 @@ class Buzz(Exception):
         :param: format_kwds: Format keyword args. Follows str.format convetion
         :param: do_finally:  A function that should always be called at the
                              end of the block. Should take no parameters
-        :param: on_error:    A function that should be called only if there was
+        :param: do_except:   A function that should be called only if there was
                              an exception. Should take the raised exception as
                              its first parameter and the final message for the
                              exception that will be raised as its second
+        :param: do_else:     A function taht should be called only if there
+                             were no exceptions encountered
         """
         try:
             yield
@@ -82,9 +85,12 @@ class Buzz(Exception):
                 str(err),
             )
             final_message = cls.sanitize_errstr(final_message)
-            if on_error is not None:
-                on_error(err, final_message)
+            if do_except is not None:
+                do_except(err, final_message)
             raise cls(final_message).with_traceback(sys.exc_info()[2])
+        else:
+            if do_else is not None:
+                do_else()
         finally:
             if do_finally is not None:
                 do_finally()

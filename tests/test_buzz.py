@@ -37,7 +37,15 @@ class TestBuzz:
 
         check_list = []
         with Buzz.handle_errors(
-            'no errors should happen here, but finally should be called',
+            'no errors should happen here, but do_else should be called',
+            do_else=lambda: check_list.append(1)
+        ):
+            pass
+        assert check_list == [1]
+
+        check_list = []
+        with Buzz.handle_errors(
+            'no errors should happen here, but do_finally should be called',
             do_finally=lambda: check_list.append(1)
         ):
             pass
@@ -56,8 +64,8 @@ class TestBuzz:
 
         check_list = []
         with Buzz.handle_errors(
-            'no errors should happen here, so on_error should not be called',
-            on_error=lambda e, m: check_list.append(m),
+            'no errors should happen here, so do_except should not be called',
+            do_except=lambda e, m: check_list.append(m),
         ):
             pass
         assert check_list == []
@@ -66,7 +74,7 @@ class TestBuzz:
         with pytest.raises(Buzz) as err_info:
             with Buzz.handle_errors(
                 'intercepted exception',
-                on_error=lambda e, m: check_list.append(m),
+                do_except=lambda e, m: check_list.append(m),
             ):
                 raise Exception("there was a problem")
         assert 'there was a problem' in str(err_info.value)
