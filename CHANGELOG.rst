@@ -12,6 +12,10 @@ Unreleased
 
 v0.1.9 - 2017-02-01
 -------------------
+- Added do_else and renamed on_error to do_except
+
+v0.1.9 - 2017-02-01
+-------------------
 - Added traceback print out to handle_errors message
 - Added exception class name to handle_errors output
 
