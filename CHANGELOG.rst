@@ -12,6 +12,10 @@ Unreleased
 
 v0.1.11 - 2017-04-19
 --------------------
+- Added traceback to do_except
+
+v0.1.11 - 2017-04-19
+--------------------
 - Added ability for handle_errors to absorb exception
 
 v0.1.9 - 2017-02-01
