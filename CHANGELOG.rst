@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ----------
 
+v0.1.10 - 2017-04-19
+--------------------
+- Added ability for handle_errors to absorb exception
+
 v0.1.9 - 2017-02-01
 -------------------
 - Added traceback print out to handle_errors message
