@@ -71,8 +71,9 @@ class Buzz(Exception):
                              end of the block. Should take no parameters
         :param: do_except:   A function that should be called only if there was
                              an exception. Should take the raised exception as
-                             its first parameter and the final message for the
-                             exception that will be raised as its second
+                             its first parameter, the final message for the
+                             exception that will be raised as its second, and
+                             the traceback as its third
         :param: do_else:     A function taht should be called only if there
                              were no exceptions encountered
         """
@@ -86,10 +87,11 @@ class Buzz(Exception):
                 str(err),
             )
             final_message = cls.sanitize_errstr(final_message)
+            trace = sys.exc_info()[2]
             if do_except is not None:
-                do_except(err, final_message)
+                do_except(err, final_message, trace)
             if re_raise:
-                raise cls(final_message).with_traceback(sys.exc_info()[2])
+                raise cls(final_message).with_traceback(trace)
         else:
             if do_else is not None:
                 do_else()

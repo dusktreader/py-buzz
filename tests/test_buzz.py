@@ -65,7 +65,7 @@ class TestBuzz:
         check_list = []
         with Buzz.handle_errors(
             'no errors should happen here, so do_except should not be called',
-            do_except=lambda e, m: check_list.append(m),
+            do_except=lambda e, m, t: check_list.append(m),
         ):
             pass
         assert check_list == []
@@ -74,7 +74,7 @@ class TestBuzz:
         with pytest.raises(Buzz) as err_info:
             with Buzz.handle_errors(
                 'intercepted exception',
-                do_except=lambda e, m: check_list.append(m),
+                do_except=lambda e, m, t: check_list.append(m),
             ):
                 raise Exception("there was a problem")
         assert 'there was a problem' in str(err_info.value)
@@ -86,7 +86,7 @@ class TestBuzz:
         with Buzz.handle_errors(
             'intercepted exception',
             re_raise=False,
-            do_except=lambda e, m: check_list.append(m),
+            do_except=lambda e, m, t: check_list.append(m),
         ):
             raise Exception("there was a problem")
         assert len(check_list) == 1
