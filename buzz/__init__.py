@@ -52,7 +52,7 @@ class Buzz(Exception):
     @contextlib.contextmanager
     def handle_errors(
             cls, message, *format_args,
-            do_finally=None, do_except=None, do_else=None,
+            re_raise=True, do_finally=None, do_except=None, do_else=None,
             **format_kwds
     ):
         """
@@ -66,6 +66,7 @@ class Buzz(Exception):
         :param: message:     The failure message to attach to the raised Buzz
         :param: format_args: Format arguments. Follows str.format convention
         :param: format_kwds: Format keyword args. Follows str.format convetion
+        :param: re_raise:    If true, the exception will be re-raised
         :param: do_finally:  A function that should always be called at the
                              end of the block. Should take no parameters
         :param: do_except:   A function that should be called only if there was
@@ -87,7 +88,8 @@ class Buzz(Exception):
             final_message = cls.sanitize_errstr(final_message)
             if do_except is not None:
                 do_except(err, final_message)
-            raise cls(final_message).with_traceback(sys.exc_info()[2])
+            if re_raise:
+                raise cls(final_message).with_traceback(sys.exc_info()[2])
         else:
             if do_else is not None:
                 do_else()
