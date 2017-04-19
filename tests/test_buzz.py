@@ -82,6 +82,16 @@ class TestBuzz:
         assert len(check_list) == 1
         assert 'there was a problem' in check_list[0]
 
+        check_list = []
+        with Buzz.handle_errors(
+            'intercepted exception',
+            re_raise=False,
+            do_except=lambda e, m: check_list.append(m),
+        ):
+            raise Exception("there was a problem")
+        assert len(check_list) == 1
+        assert 'there was a problem' in check_list[0]
+
     def test_accumulate_errors(self):
         with pytest.raises(Buzz) as err_info:
             with Buzz.accumulate_errors('there will be errors') as checker:
