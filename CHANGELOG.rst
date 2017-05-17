@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ----------
 
+v0.2.0 - 2017-05-17
+-------------------
+- Added docs, updated README, and hosted docs on readthedocs
+
 v0.1.12 - 2017-05-17
 --------------------
 - Added ability to handle only specific exceptions to handle_errors
