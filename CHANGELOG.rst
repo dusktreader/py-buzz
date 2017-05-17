@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ----------
 
+v0.2.1 - 2017-05-17
+-------------------
+- Fixed project metadata file
+
 v0.2.0 - 2017-05-17
 -------------------
 - Added docs, updated README, and hosted docs on readthedocs
