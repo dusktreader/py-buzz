@@ -52,7 +52,8 @@ class Buzz(Exception):
     @contextlib.contextmanager
     def handle_errors(
             cls, message, *format_args,
-            re_raise=True, do_finally=None, do_except=None, do_else=None,
+            re_raise=True, exception_class=Exception,
+            do_finally=None, do_except=None, do_else=None,
             **format_kwds
     ):
         """
@@ -63,23 +64,30 @@ class Buzz(Exception):
         with Buzz.handle_errors("It didn't work"):
             some_code_that_might_raise_an_exception()
 
-        :param: message:     The failure message to attach to the raised Buzz
-        :param: format_args: Format arguments. Follows str.format convention
-        :param: format_kwds: Format keyword args. Follows str.format convetion
-        :param: re_raise:    If true, the exception will be re-raised
-        :param: do_finally:  A function that should always be called at the
-                             end of the block. Should take no parameters
-        :param: do_except:   A function that should be called only if there was
-                             an exception. Should take the raised exception as
-                             its first parameter, the final message for the
-                             exception that will be raised as its second, and
-                             the traceback as its third
-        :param: do_else:     A function taht should be called only if there
-                             were no exceptions encountered
+        :param: message:         The message to attach to the raised Buzz
+        :param: format_args:     Format arguments. Follows str.format conv.
+        :param: format_kwds:     Format keyword args. Follows str.format conv.
+        :param: re_raise:        If true, the re-packaged exception will be
+                                 raised
+        :param: exception_class: Limits the class of exceptions that will be
+                                 re-packaged as a Buzz exception.
+                                 Any other exception types will not be caught
+                                 and re-packaged.
+                                 Defaults to Exception (will handle all
+                                 exceptions)
+        :param: do_finally:      A function that should always be called at the
+                                 end of the block. Should take no parameters
+        :param: do_except:       A function that should be called only if there
+                                 was an exception. Should take the raised
+                                 exception as its first parameter, the final
+                                 message for the exception that will be raised
+                                 as its second, and the traceback as its third
+        :param: do_else:         A function taht should be called only if there
+                                 were no exceptions encountered
         """
         try:
             yield
-        except Exception as err:
+        except exception_class as err:
             final_message = message.format(*format_args, **format_kwds)
             final_message = "{} -- {}: {}".format(
                 final_message,

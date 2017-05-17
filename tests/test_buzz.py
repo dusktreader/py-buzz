@@ -24,10 +24,11 @@ class TestBuzz:
             Buzz.require_condition(False, 'fail message with {}', 'formatting')
         assert 'fail message with formatting' in str(err_info.value)
 
-    def test_handle_errors(self):
+    def test_handle_errors__no_exceptions(self):
         with Buzz.handle_errors('no errors should happen here'):
             pass
 
+    def test_handle_errors__basic_handling(self):
         with pytest.raises(Buzz) as err_info:
             with Buzz.handle_errors('intercepted exception'):
                 raise ValueError("there was a problem")
@@ -35,6 +36,7 @@ class TestBuzz:
         assert 'intercepted exception' in str(err_info.value)
         assert 'ValueError' in str(err_info.value)
 
+    def test_handle_errors__with_do_else(self):
         check_list = []
         with Buzz.handle_errors(
             'no errors should happen here, but do_else should be called',
@@ -43,6 +45,7 @@ class TestBuzz:
             pass
         assert check_list == [1]
 
+    def test_handle_errors__with_do_finally(self):
         check_list = []
         with Buzz.handle_errors(
             'no errors should happen here, but do_finally should be called',
@@ -62,6 +65,7 @@ class TestBuzz:
         assert 'intercepted exception' in str(err_info.value)
         assert check_list == [1]
 
+    def test_handle_errors__with_do_except(self):
         check_list = []
         with Buzz.handle_errors(
             'no errors should happen here, so do_except should not be called',
@@ -82,6 +86,7 @@ class TestBuzz:
         assert len(check_list) == 1
         assert 'there was a problem' in check_list[0]
 
+    def test_handle_errors__without_reraise(self):
         check_list = []
         with Buzz.handle_errors(
             'intercepted exception',
@@ -91,6 +96,26 @@ class TestBuzz:
             raise Exception("there was a problem")
         assert len(check_list) == 1
         assert 'there was a problem' in check_list[0]
+
+    def test_handle_errors__with_specific_exception_class(self):
+        class SpecialError(Exception):
+            pass
+
+        with pytest.raises(Exception) as err_info:
+            with Buzz.handle_errors(
+                'there was a problem',
+                exception_class=SpecialError,
+            ):
+                raise Exception("there was a problem")
+        assert err_info.type == Exception
+
+        with pytest.raises(Exception) as err_info:
+            with Buzz.handle_errors(
+                'there was a problem',
+                exception_class=SpecialError,
+            ):
+                raise SpecialError("there was a problem")
+        assert err_info.type == Buzz
 
     def test_accumulate_errors(self):
         with pytest.raises(Buzz) as err_info:
