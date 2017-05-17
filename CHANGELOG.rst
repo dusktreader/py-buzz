@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 Unreleased
 ----------
 
+v0.1.12 - 2017-05-17
+--------------------
+- Added ability to handle only specific exceptions to handle_errors
+- Improved exception reporting from within handle_errors
+
 v0.1.11 - 2017-04-19
 --------------------
 - Added traceback to do_except
