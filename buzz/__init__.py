@@ -88,13 +88,19 @@ class Buzz(Exception):
         try:
             yield
         except exception_class as err:
-            final_message = message.format(*format_args, **format_kwds)
-            final_message = "{} -- {}: {}".format(
-                final_message,
-                type(err).__name__,
-                str(err),
-            )
-            final_message = cls.sanitize_errstr(final_message)
+            try:
+                final_message = message.format(*format_args, **format_kwds)
+                final_message = "{} -- {}: {}".format(
+                    final_message,
+                    type(err).__name__,
+                    str(err),
+                )
+                final_message = cls.sanitize_errstr(final_message)
+            except Exception as msg_err:
+                raise cls(
+                    "Failed while formatting message: {}".format(repr(msg_err))
+                )
+
             trace = sys.exc_info()[2]
             if do_except is not None:
                 do_except(err, final_message, trace)

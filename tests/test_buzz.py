@@ -117,6 +117,13 @@ class TestBuzz:
                 raise SpecialError("there was a problem")
         assert err_info.type == Buzz
 
+    def test_handle_errors__error_formatting_message(self):
+        with pytest.raises(Buzz) as err_info:
+            with Buzz.handle_errors('{format_arg1}', format_arg2='foo'):
+                raise ValueError("there was a problem")
+        assert err_info.type == Buzz
+        assert 'Failed while formatting message' in str(err_info.value)
+
     def test_accumulate_errors(self):
         with pytest.raises(Buzz) as err_info:
             with Buzz.accumulate_errors('there will be errors') as checker:
