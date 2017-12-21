@@ -7,8 +7,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-Unreleased
-----------
+v0.3.0 - 2017-12-21
+-------------------
+- Added several examples to show features and complex behavior
+- Added decals to README
 
 v0.2.0 - 2017-05-18
 -------------------
