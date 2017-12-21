@@ -1,12 +1,16 @@
 from buzz import Buzz
 
+"""
+This example shows the most basic usage of the Buzz exception type
+"""
 
-class MyException(Buzz):
+
+class BasicException(Buzz):
     pass
 
 
 if __name__ == '__main__':
-    with MyException.handle_errors("something went wrong"):
-        print("we are fine")
-        raise Exception("here we die")
-        print("we should not get here")
+    raise BasicException(
+        'Something went wrong: {some_arg}',
+        some_arg='interpolated-arg',
+    )
