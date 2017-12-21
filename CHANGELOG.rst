@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v0.3.1 - 2017-12-21
+-------------------
+- Version bump because pypi is complaining about version conflicts
+
 v0.3.0 - 2017-12-21
 -------------------
 - Added several examples to show features and complex behavior
