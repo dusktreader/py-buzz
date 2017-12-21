@@ -6,6 +6,10 @@
    :target: https://travis-ci.org/dusktreader/py-buzz
    :alt:    Build Status
 
+.. image::  https://readthedocs.org/projects/py-buzz/badge/?version=latest
+   :target: http://py-buzz.readthedocs.io/en/latest/?badge=latest
+   :alt:    Documentation Status
+
 *********
  py-buzz
 *********
