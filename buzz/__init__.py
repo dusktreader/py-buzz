@@ -49,6 +49,21 @@ class Buzz(Exception):
             )
 
     @classmethod
+    def reformat_exception(cls, message, err, *format_args, **format_kwds):
+        """
+        Reformats an exception by adding a message to it and reporting the
+        original exception name and message
+        """
+        final_message = message.format(*format_args, **format_kwds)
+        final_message = "{} -- {}: {}".format(
+            final_message,
+            type(err).__name__,
+            str(err),
+        )
+        final_message = cls.sanitize_errstr(final_message)
+        return final_message
+
+    @classmethod
     @contextlib.contextmanager
     def handle_errors(
             cls, message, *format_args,
@@ -89,13 +104,9 @@ class Buzz(Exception):
             yield
         except exception_class as err:
             try:
-                final_message = message.format(*format_args, **format_kwds)
-                final_message = "{} -- {}: {}".format(
-                    final_message,
-                    type(err).__name__,
-                    str(err),
+                final_message = cls.reformat_exception(
+                    message, err, *format_args, **format_kwds
                 )
-                final_message = cls.sanitize_errstr(final_message)
             except Exception as msg_err:
                 raise cls(
                     "Failed while formatting message: {}".format(repr(msg_err))
