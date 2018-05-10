@@ -4,7 +4,7 @@ Quickstart
 Requirements
 ------------
 
-* Python 3.3 or greater
+* Python 3.4 or greater
 
 Note on Requirements
 ....................
