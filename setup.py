@@ -18,19 +18,13 @@ setup(
     description=project_metadata['description'],
     long_description=long_description,
     long_description_content_type=long_description_content_type,
+    url=project_metadata['url'],
     license=project_metadata['license'],
     install_requires=[],
     extras_require={
         'dev': [
-            'pytest-capturelog',
-        ],
-        'lint': [
             'flake8',
-        ],
-        'test': [
             'pytest',
-        ],
-        'doc': [
             'sphinx',
         ],
     },
