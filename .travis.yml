@@ -3,13 +3,15 @@ python:
 - '3.3'
 - '3.4'
 - '3.5'
+- '3.6'
+- '3.7-dev'
 install:
 - pip install --upgrade pip
-- pip install .[lint,test]
+- pip install .[dev]
 before_script:
 - flake8 buzz
 - flake8 tests
-script: py.test tests
+script: pytest tests
 deploy:
   provider: pypi
   user: dusktreader
@@ -19,3 +21,4 @@ deploy:
     tags: true
     distributions: sdist bdist_wheel
     repo: dusktreader/py-buzz
+    python: 3.6
