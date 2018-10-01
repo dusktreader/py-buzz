@@ -163,19 +163,12 @@ class TestBuzz:
         assert 'I want this to be included (with blah)' in final_message
         assert 'Original Error' in final_message
 
-    def test_reformat_exception_with_traceback(self):
+    def test_get_traceback(self):
         try:
-            raise Exception("Original Error")
+            raise Buzz("Original Error")
         except Exception as err:
-            (final_message, trace) = Buzz.reformat_exception_with_traceback(
-                "I want this to be included (with {format_arg})",
-                err,
-                format_arg='blah',
-            )
-        assert 'I want this to be included (with blah)' in final_message
-        assert 'Original Error' in final_message
-        print(traceback.format_tb(trace))
+            trace = err.get_traceback()
         last_frame = traceback.format_tb(trace)[-1]
         assert 'test_buzz.py' in last_frame
-        assert 'test_reformat_exception_with_traceback' in last_frame
-        assert 'Exception("Original Error")' in last_frame
+        assert 'test_get_traceback' in last_frame
+        assert 'Buzz("Original Error")' in last_frame
