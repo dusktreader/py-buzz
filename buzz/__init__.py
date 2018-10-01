@@ -64,6 +64,20 @@ class Buzz(Exception):
         return final_message
 
     @classmethod
+    def reformat_exception_with_traceback(
+            cls, message, err, *format_args, **format_kwds,
+    ):
+        """
+        Reformats an exception by adding a message to it. Also returns the
+        traceback from the exception
+        """
+        final_message = cls.reformat_exception(
+            message, err, *format_args, **format_kwds,
+        )
+        trace = sys.exc_info()[2]
+        return (final_message, trace)
+
+    @classmethod
     @contextlib.contextmanager
     def handle_errors(
             cls, message, *format_args,
@@ -104,7 +118,7 @@ class Buzz(Exception):
             yield
         except exception_class as err:
             try:
-                final_message = cls.reformat_exception(
+                (final_message, trace) = cls.reformat_exception_with_traceback(
                     message, err, *format_args, **format_kwds
                 )
             except Exception as msg_err:
@@ -112,7 +126,6 @@ class Buzz(Exception):
                     "Failed while formatting message: {}".format(repr(msg_err))
                 )
 
-            trace = sys.exc_info()[2]
             if do_except is not None:
                 do_except(err, final_message, trace)
             if re_raise:

@@ -26,6 +26,7 @@ setup(
             'flake8',
             'pytest',
             'sphinx',
+            'nox',
         ],
     },
     include_package_data=True,
