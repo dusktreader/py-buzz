@@ -1,4 +1,5 @@
 import pytest
+import traceback
 
 from buzz import Buzz
 
@@ -152,3 +153,29 @@ class TestBuzz:
                 with Buzz.handle_errors("inside handler"):
                     raise Exception("this has {curlies}")
         assert 'this has {curlies}' in err_info.value.message
+
+    def test_reformat_exception(self):
+        final_message = Buzz.reformat_exception(
+            "I want this to be included (with {format_arg})",
+            Exception("Original Error"),
+            format_arg='blah',
+        )
+        assert 'I want this to be included (with blah)' in final_message
+        assert 'Original Error' in final_message
+
+    def test_reformat_exception_with_traceback(self):
+        try:
+            raise Exception("Original Error")
+        except Exception as err:
+            (final_message, trace) = Buzz.reformat_exception_with_traceback(
+                "I want this to be included (with {format_arg})",
+                err,
+                format_arg='blah',
+            )
+        assert 'I want this to be included (with blah)' in final_message
+        assert 'Original Error' in final_message
+        print(traceback.format_tb(trace))
+        last_frame = traceback.format_tb(trace)[-1]
+        assert 'test_buzz.py' in last_frame
+        assert 'test_reformat_exception_with_traceback' in last_frame
+        assert 'Exception("Original Error")' in last_frame
