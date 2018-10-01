@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v0.3.5 - 2018-10-01
+-------------------
+- Added reformat_exception_with_traceback
+- Added nox support
+
 v0.3.4 - 2018-05-09
 -------------------
 - Fixed travis deploy collision issue
