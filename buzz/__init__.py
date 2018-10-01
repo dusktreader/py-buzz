@@ -72,7 +72,7 @@ class Buzz(Exception):
         traceback from the exception
         """
         final_message = cls.reformat_exception(
-            message, err, *format_args, **format_kwds,
+            message, err, *format_args, **format_kwds
         )
         trace = sys.exc_info()[2]
         return (final_message, trace)
