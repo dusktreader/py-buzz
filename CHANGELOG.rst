@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 v0.3.5 - 2018-10-01
 -------------------
+- Removed reformat_exception_with_traceback
+- Added get_traceback. Simplicity is better
+
+v0.3.5 - 2018-10-01
+-------------------
 - Added reformat_exception_with_traceback
 - Added nox support
 
