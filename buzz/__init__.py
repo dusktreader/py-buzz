@@ -65,7 +65,7 @@ class Buzz(Exception):
 
     @classmethod
     def reformat_exception_with_traceback(
-            cls, message, err, *format_args, **format_kwds,
+            cls, message, err, *format_args, **format_kwds
     ):
         """
         Reformats an exception by adding a message to it. Also returns the
