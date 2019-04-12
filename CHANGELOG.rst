@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v0.3.7 - 2019-04-12
+-------------------
+- Converted project to use poetry
+- Added more documentation
+
 v0.3.5 - 2018-10-01
 -------------------
 - Removed reformat_exception_with_traceback

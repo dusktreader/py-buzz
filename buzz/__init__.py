@@ -138,10 +138,10 @@ class Buzz(Exception):
         used to assert a certain state. If the expression renders a false
         value, an exception will be raised with the supplied message
 
-        :param: message:    The failure message to attach to the raised Buzz
-        :param: expr:       A boolean value indicating an evaluated expression
-        :param format_args: Format arguments. Follows str.format convention
-        :param format_kwds: Format keyword args. Follows str.format convetion
+        :param: message:     The failure message to attach to the raised Buzz
+        :param: expr:        A boolean value indicating an evaluated expression
+        :param: format_args: Format arguments. Follows str.format convention
+        :param: format_kwds: Format keyword args. Follows str.format convetion
         """
         if not expr:
             raise cls(message, *format_args, **format_kwds)
