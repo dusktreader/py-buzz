@@ -4,6 +4,9 @@ version = "0.3.6"
 description = "\"That's not flying, it's falling with style: Exceptions with extras\""
 authors = ["Tucker Beck <tucker.beck@gmail.com>"]
 license = "MIT"
+packages = [
+    { include = 'buzz' }
+]
 
 [tool.poetry.dependencies]
 python = "^3.5"
