@@ -13,7 +13,7 @@ exception code a little easier to read:
 
 .. code-block:: python
 
-   # Vanilla python
+   # Vanilla python (<3.6)
    raise Exception("a {} message".format('formatted'))
    raise Exception("a {fmt} message".format(fmt='formatted'))
 
