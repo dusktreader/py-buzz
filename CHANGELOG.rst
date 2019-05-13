@@ -7,6 +7,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v1.0.0 - 2019-05-13
+-------------------
+- Deprecated accumulate errors (violated priniciple of least surprise)
+- Added check_expressions as a more explicit multi-expression checker
+
+v0.4.0 - 2019-05-13
+-------------------
+- Moved Buzz class code into base.py
+
 v0.3.7 - 2019-04-12
 -------------------
 - Converted project to use poetry
