@@ -172,39 +172,36 @@ raised. Any additional actions provided by ``do_finally``, ``do_except``, and
 ``do_else`` will still be executed.
 
 
-
-
-
 Additional Features
 -------------------
 
-accumulate_errors
+check_expressions
 .................
 
-The ``accumulate_errors`` context manager is not usable in most situations.
-However, there may be situations where it has some utility.
-
-The idea with this device is that within its context there may be several
-expressions that should be evaluated. Instead of using ``require_condition``
-which will stop at the first failing condtion, ``accumulate_errors`` will check
-each supplied expression and then, if any fail, raise an exception that
-describes each failing expression:
+The ``check_expressions`` context manager is used to check multiple expressions
+inside of a context manager. Each expression is checked and each failing
+expression is reported at the end in a raised exception. If no expressions fail
+in the block, no exception is raised.
 
 .. code-block:: python
 
-   with Buzz.accumulate_errors("Some condtions failed") as acc:
-       acc += value1 is not None
-       acc += value1 > value2
-       acc += value1 < 9
-       acc += value2 is not None
-       acc += value2 > 0
+    with pytest.raises(Buzz) as err_info:
+        with Buzz.check_expressions(
+                main_message='there will be errors',
+        ) as check:
+            check(True)
+            check(False)
+            check(1 == 2, "one is not two")
+            check('cooooooool', 'not a problem')
+            check(0, "zero is still zero")
 
-If the above code was executed with value1=10 and value2=-1, an exception would
+If the above code was executed, an exception would
 be raised that looks like this::
 
-   Buzz: Checked condition(s) failed: Some conditions failed
-   my_program.py[13]->check_values(10, -1): `acc += value1 < 9` resolved as false
-   my_program.py[15]->check_values(10, -1): `acc += value2 > 0` resolved as false
+   Buzz: Checked expressions failed: there will be errors
+     2: 2nd expression failed
+     3: one is not two
+     5: zero is still zero
 
 
 reformat_exception

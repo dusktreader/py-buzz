@@ -11,6 +11,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.5"
+deprecated = "^1.2"
+inflection = "^0.3.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7"
