@@ -5,6 +5,7 @@ description = "\"That's not flying, it's falling with style: Exceptions with ext
 authors = ["Tucker Beck <tucker.beck@gmail.com>"]
 license = "MIT"
 copyright = "2016, Tucker Beck"
+readme = "README.rst"
 packages = [
     { include = 'buzz' }
 ]
