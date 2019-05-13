@@ -7,6 +7,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v1.0.2 - 2019-05-13
+-------------------
+- Updated README
+- Updated examples
+- Updated quickstart docs
+
 v1.0.1 - 2019-05-13
 -------------------
 - Added readme to pyproject.toml
