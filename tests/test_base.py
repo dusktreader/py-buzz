@@ -1,7 +1,7 @@
 import pytest
 import traceback
 
-from buzz import Buzz
+from buzz.base import Buzz
 
 
 class TestBuzz:
@@ -169,6 +169,6 @@ class TestBuzz:
         except Exception as err:
             trace = err.get_traceback()
         last_frame = traceback.format_tb(trace)[-1]
-        assert 'test_buzz.py' in last_frame
+        assert 'test_base.py' in last_frame
         assert 'test_get_traceback' in last_frame
         assert 'Buzz("Original Error")' in last_frame
