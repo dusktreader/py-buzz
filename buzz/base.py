@@ -90,7 +90,7 @@ class Buzz(Exception):
         This would render output like:
         .. code-block:: bash
 
-        Check condition(s) failed: Something wasn't right:
+        Checked expressions failed: Something wasn't right:
           1: first expressoin failed
           3: a must not equal 1
         """
