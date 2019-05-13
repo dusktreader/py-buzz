@@ -117,7 +117,7 @@ class Buzz(Exception):
         yield checker.check
         cls.require_condition(
             len(checker.problems) == 0,
-            "Checked expressions failed: {}\n{}",
+            "Checked expressions failed: {}\n  {}",
             main_message.format(*format_args, **format_kwargs),
             '\n  '.join(checker.problems),
         )
