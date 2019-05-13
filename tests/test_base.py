@@ -141,6 +141,24 @@ class TestBuzz:
         assert '`checker += \'cooooooool\' resolved as false' not in err_msg
         assert '`checker += 0` resolved as false' in err_msg
 
+    def test_check_expressions(self):
+        with pytest.raises(Buzz) as err_info:
+            with Buzz.check_expressions(
+                    main_message='there will be errors',
+            ) as check:
+                check(True)
+                check(False)
+                check(1 == 2, "one is not two")
+                check('cooooooool', 'not a problem')
+                check(0, "zero is still zero")
+        err_msg = err_info.value.message
+        assert 'there will be errors' in err_msg
+        assert '1st expression failed' not in err_msg
+        assert '2nd expression failed' in err_msg
+        assert 'one is not two' in err_msg
+        assert 'not a problem' not in err_msg
+        assert 'zero is still zero' in err_msg
+
     def test_nested_handler(self):
         """
         This test verifies that a handler that is nested inside another buzz

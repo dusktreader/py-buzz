@@ -1,4 +1,6 @@
 import contextlib
+import deprecated
+import inflection
 import inspect
 import os
 import sys
@@ -34,6 +36,10 @@ class Buzz(Exception):
 
     @classmethod
     @contextlib.contextmanager
+    @deprecated.deprecated(
+        reason="Functionality moved to check_expressions",
+        version="1.0.0",
+    )
     def accumulate_errors(cls, message, *format_args, **format_kwargs):
 
         class Accumulator:
@@ -65,6 +71,56 @@ class Buzz(Exception):
             message.format(*format_args, **format_kwargs),
             '\n'.join(accumulator.problems),
             )
+
+    @classmethod
+    @contextlib.contextmanager
+    def check_expressions(cls, *format_args, main_message='', **format_kwargs):
+        """
+        Checks a series of expressions inside of a context manager. Each is
+        checked, and if any fail an exception is raised that contains a main
+        message and a description of each failing expression:
+
+        .. code-block:: python
+        with Buzz.check_expressions("Something wasn't right") as check:
+            check(a is not None)
+            check(a > b, "a must be greater than b")
+            check(a != 1, "a must not equal 1")
+            check(b >= 0, "b must not be negative")
+
+        This would render output like:
+        .. code-block:: bash
+
+        Check condition(s) failed: Something wasn't right:
+          1: first expressoin failed
+          3: a must not equal 1
+        """
+
+        class _Checker:
+
+            def __init__(self):
+                self.problems = []
+                self.expression_counter = 0
+
+            def check(self, evaluated_expression, message=None):
+                self.expression_counter += 1
+                if not evaluated_expression:
+                    if message is None:
+                        message = "{nth} expression failed".format(
+                            nth=inflection.ordinalize(self.expression_counter),
+                        )
+                    self.problems.append("{i}: {msg}".format(
+                        i=self.expression_counter,
+                        msg=message,
+                    ))
+
+        checker = _Checker()
+        yield checker.check
+        cls.require_condition(
+            len(checker.problems) == 0,
+            "Checked expressions failed: {}\n{}",
+            main_message.format(*format_args, **format_kwargs),
+            '\n  '.join(checker.problems),
+        )
 
     @classmethod
     def reformat_exception(cls, message, err, *format_args, **format_kwds):
