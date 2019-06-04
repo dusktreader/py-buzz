@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v1.0.3 - 2019-06-05
+-------------------
+- Added tests for use of handle_errors as a decorator
+- Added deprecation warnings for removal of format args, kwargs
+
 v1.0.2 - 2019-05-13
 -------------------
 - Updated README
