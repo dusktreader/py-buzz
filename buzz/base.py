@@ -5,6 +5,13 @@ import inspect
 import os
 import sys
 import textwrap
+import warnings
+
+DEPRECATED_FORMAT_ARGS_MESSAGE = (
+    "Support for format args and kwargs will be dropped in version 1.1.0."
+    " Python 3.6 f-strings will be the preferred method of formatting error"
+    " messages. Normal (<3.6)" " `.format()` strings should be used otherwise"
+)
 
 
 class Buzz(Exception):
@@ -24,6 +31,9 @@ class Buzz(Exception):
         :param format_args: Format arguments. Follows str.format convention
         :param format_kwds: Format keyword args. Follows str.format convetion
         """
+        if format_args or format_kwds:
+            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
+
         self.message = textwrap.dedent(
             message.format(*format_args, **format_kwds)
         ).strip()
@@ -41,6 +51,8 @@ class Buzz(Exception):
         version="1.0.0",
     )
     def accumulate_errors(cls, message, *format_args, **format_kwargs):
+        if format_args or format_kwargs:
+            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
 
         class Accumulator:
 
@@ -94,6 +106,8 @@ class Buzz(Exception):
           1: first expressoin failed
           3: a must not equal 1
         """
+        if format_args or format_kwargs:
+            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
 
         class _Checker:
 
@@ -128,6 +142,8 @@ class Buzz(Exception):
         Reformats an exception by adding a message to it and reporting the
         original exception name and message
         """
+        if format_args or format_kwds:
+            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
         final_message = message.format(*format_args, **format_kwds)
         final_message = "{} -- {}: {}".format(
             final_message,
