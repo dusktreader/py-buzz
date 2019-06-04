@@ -25,6 +25,26 @@ class TestBuzz:
             Buzz.require_condition(False, 'fail message with {}', 'formatting')
         assert 'fail message with formatting' in str(err_info.value)
 
+    def test_handle_errors__as_decorator_no_exceptions(self):
+
+        @Buzz.handle_errors('no errors should happen here')
+        def do_stuff(arg, kwarg='default'):
+            return 'stuff: arg={}, kwarg={}'.format(arg, kwarg)
+
+        assert do_stuff('blah', kwarg='barf') == 'stuff: arg=blah, kwarg=barf'
+
+    def test_errors_handled__as_decorator_basic_handling(self):
+
+        @Buzz.handle_errors('intercepted exception')
+        def do_stuff(arg, kwarg='default'):
+            raise ValueError('there was a problem')
+
+        with pytest.raises(Buzz) as err_info:
+            do_stuff('blah', kwarg='barf')
+        assert 'there was a problem' in str(err_info.value)
+        assert 'intercepted exception' in str(err_info.value)
+        assert 'ValueError' in str(err_info.value)
+
     def test_handle_errors__no_exceptions(self):
         with Buzz.handle_errors('no errors should happen here'):
             pass
