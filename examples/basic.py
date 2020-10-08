@@ -9,8 +9,9 @@ class BasicException(Buzz):
     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise BasicException(
-        'Something went wrong: {some_arg}',
-        some_arg='interpolated-arg',
+        "Something went wrong: {some_arg}".format(
+            some_arg="interpolated-arg",
+        )
     )

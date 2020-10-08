@@ -1,42 +1,29 @@
 import contextlib
-import deprecated
-import inflection
 import inspect
 import os
 import sys
 import textwrap
-import warnings
 
-DEPRECATED_FORMAT_ARGS_MESSAGE = (
-    "Support for format args and kwargs will be dropped in version 1.1.0."
-    " Python 3.6 f-strings will be the preferred method of formatting error"
-    " messages. Normal (<3.6)" " `.format()` strings should be used otherwise"
-)
+import deprecated
+import inflection
 
 
 class Buzz(Exception):
     """
     This provides a specialized exception class. It has some shiny features
-    like the ability to automatically substitute format args and kwargs into
-    the supplied message. There is also a helper function called
-    require_condition that can be used to assert a certain state and upon
-    failure raise an exception
+    like:
+      * require_condition: asserts a condition and raises an exception otherwise
+      * handle_errors:     a context manager that handles exceptions
+      * check_expressions: a context manager that checks multiple expressions
     """
 
-    def __init__(self, message, *format_args, **format_kwds):
+    def __init__(self, message):
         """
         Initializes the exception
 
         :param: message:    The failure message to attach to the raised Buzz
-        :param format_args: Format arguments. Follows str.format convention
-        :param format_kwds: Format keyword args. Follows str.format convetion
         """
-        if format_args or format_kwds:
-            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
-
-        self.message = textwrap.dedent(
-            message.format(*format_args, **format_kwds)
-        ).strip()
+        self.message = textwrap.dedent(message).strip()
 
     def __str__(self):
         return self.message
@@ -46,47 +33,7 @@ class Buzz(Exception):
 
     @classmethod
     @contextlib.contextmanager
-    @deprecated.deprecated(
-        reason="Functionality moved to check_expressions",
-        version="1.0.0",
-    )
-    def accumulate_errors(cls, message, *format_args, **format_kwargs):
-        if format_args or format_kwargs:
-            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
-
-        class Accumulator:
-
-            def __init__(self):
-                self.problems = []
-                self.msg = (
-                    '{file}[{line}]->{func}(): '
-                    '`{code}` resolved as false'
-                )
-
-            def __iadd__(self, evaluated_expression):
-                if not evaluated_expression:
-                    calling_frame = inspect.currentframe().f_back
-                    traceback = inspect.getframeinfo(calling_frame)
-                    self.problems.append(self.msg.format(
-                        file=os.path.basename(traceback.filename),
-                        func=traceback.function,
-                        line=traceback.lineno,
-                        code=traceback.code_context[0].strip(),
-                    ))
-                return self
-
-        accumulator = Accumulator()
-        yield accumulator
-        cls.require_condition(
-            len(accumulator.problems) == 0,
-            "Checked condition(s) failed: {}\n{}",
-            message.format(*format_args, **format_kwargs),
-            '\n'.join(accumulator.problems),
-            )
-
-    @classmethod
-    @contextlib.contextmanager
-    def check_expressions(cls, *format_args, main_message='', **format_kwargs):
+    def check_expressions(cls, main_message=""):
         """
         Checks a series of expressions inside of a context manager. Each is
         checked, and if any fail an exception is raised that contains a main
@@ -106,11 +53,8 @@ class Buzz(Exception):
           1: first expressoin failed
           3: a must not equal 1
         """
-        if format_args or format_kwargs:
-            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
 
         class _Checker:
-
             def __init__(self):
                 self.problems = []
                 self.expression_counter = 0
@@ -122,31 +66,31 @@ class Buzz(Exception):
                         message = "{nth} expression failed".format(
                             nth=inflection.ordinalize(self.expression_counter),
                         )
-                    self.problems.append("{i}: {msg}".format(
-                        i=self.expression_counter,
-                        msg=message,
-                    ))
+                    self.problems.append(
+                        "{i}: {msg}".format(
+                            i=self.expression_counter,
+                            msg=message,
+                        )
+                    )
 
         checker = _Checker()
         yield checker.check
         cls.require_condition(
             len(checker.problems) == 0,
-            "Checked expressions failed: {}\n  {}",
-            main_message.format(*format_args, **format_kwargs),
-            '\n  '.join(checker.problems),
+            "Checked expressions failed: {}\n  {}".format(
+                main_message,
+                "\n  ".join(checker.problems),
+            ),
         )
 
     @classmethod
-    def reformat_exception(cls, message, err, *format_args, **format_kwds):
+    def reformat_exception(cls, message, err):
         """
         Reformats an exception by adding a message to it and reporting the
         original exception name and message
         """
-        if format_args or format_kwds:
-            warnings.warn(DEPRECATED_FORMAT_ARGS_MESSAGE)
-        final_message = message.format(*format_args, **format_kwds)
         final_message = "{} -- {}: {}".format(
-            final_message,
+            message,
             type(err).__name__,
             str(err),
         )
@@ -163,10 +107,13 @@ class Buzz(Exception):
     @classmethod
     @contextlib.contextmanager
     def handle_errors(
-            cls, message, *format_args,
-            re_raise=True, exception_class=Exception,
-            do_finally=None, do_except=None, do_else=None,
-            **format_kwds
+        cls,
+        message,
+        re_raise=True,
+        exception_class=Exception,
+        do_finally=None,
+        do_except=None,
+        do_else=None,
     ):
         """
         provides a context manager that will intercept exceptions and repackage
@@ -177,8 +124,6 @@ class Buzz(Exception):
             some_code_that_might_raise_an_exception()
 
         :param: message:         The message to attach to the raised Buzz
-        :param: format_args:     Format arguments. Follows str.format conv.
-        :param: format_kwds:     Format keyword args. Follows str.format conv.
         :param: re_raise:        If true, the re-packaged exception will be
                                  raised
         :param: exception_class: Limits the class of exceptions that will be
@@ -201,13 +146,9 @@ class Buzz(Exception):
             yield
         except exception_class as err:
             try:
-                final_message = cls.reformat_exception(
-                    message, err, *format_args, **format_kwds
-                )
+                final_message = cls.reformat_exception(message, err)
             except Exception as msg_err:
-                raise cls(
-                    "Failed while formatting message: {}".format(repr(msg_err))
-                )
+                raise cls("Failed while formatting message: {}".format(repr(msg_err)))
 
             trace = cls.get_traceback()
 
@@ -223,18 +164,16 @@ class Buzz(Exception):
                 do_finally()
 
     @classmethod
-    def require_condition(cls, expr, message, *format_args, **format_kwds):
+    def require_condition(cls, expr, message):
         """
         used to assert a certain state. If the expression renders a false
         value, an exception will be raised with the supplied message
 
         :param: message:     The failure message to attach to the raised Buzz
         :param: expr:        A boolean value indicating an evaluated expression
-        :param: format_args: Format arguments. Follows str.format convention
-        :param: format_kwds: Format keyword args. Follows str.format convetion
         """
         if not expr:
-            raise cls(message, *format_args, **format_kwds)
+            raise cls(message)
 
     @classmethod
     def sanitize_errstr(cls, err):
@@ -246,4 +185,5 @@ class Buzz(Exception):
         :param errstr: The string to sanitize
                        This is typically aquired from a caught error
         """
-        return str(err).replace('{', '{{').replace('}', '}}')
+        return str(err)
+        # return str(err).replace("{", "{{").replace("}", "}}")

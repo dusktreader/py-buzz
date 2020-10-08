@@ -5,26 +5,6 @@ Main Features
 -------------
 There are 3 main features of Buzz that are noteworthy:
 
-Automatic message formatting
-............................
-Buzz exception messages can be automatically formatted with format arguments
-and keyword arguments. This saves a few characters and generally makes the
-exception code a little easier to read:
-
-.. code-block:: python
-
-   # Vanilla python (<3.6)
-   raise Exception("a {} message".format('formatted'))
-   raise Exception("a {fmt} message".format(fmt='formatted'))
-
-   # With py-buzz
-   raise Buzz("a {} message", 'formatted')
-   raise Buzz("a {fmt} message", fmt='formatted')
-
-Obviously the benefits aren't that easy to see with a small message with few
-args, but getting rid of an additional level of nesting can be nice with more
-complex messages
-
 Raise exception on condition failure
 ....................................
 Buzz provides a function that checks a condition and raises an exception if
@@ -228,18 +208,3 @@ get_traceback
 This function is just a tool to fetch the traceback for the current function. It
 does this by fetching it out of ``sys.exc_info``. It is used internally with
 Buzz but could be useful in other contexts
-
-sanitize_errstr
-```````````````
-Again, this is used internally. It simply replaces single curly braces (``{`` or
-``}`` in an exception message with double curlies. This prevents the formatter
-from trying to shove interpolated values into those areas and they appear as
-normal in the string output::
-
-   > input_message = "I have some {curlies} that might cause problems"
-   > input_message.format()
-   KeyError: 'curlies'
-
-   > clean_message = buzz.Buzz.sanitize_errstr(input_message)
-   > clean_message.format()
-   'I have some {curlies} that might cause problems'

@@ -33,9 +33,7 @@ def is_prime(i):
 
 
 def check_number(n):
-    with Buzz.check_expressions(
-            main_message="Some checks failed for {}".format(n)
-    ) as check:
+    with Buzz.check_expressions(main_message="Some checks failed for {}".format(n)) as check:
         check(is_int(n), "number must be even")
         check(is_power_of_2(n), "number must be a power of 2")
         check(is_prime(n), "number must be prime")
@@ -55,5 +53,5 @@ def complex_check_expressions():
             print(err)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     complex_check_expressions()
