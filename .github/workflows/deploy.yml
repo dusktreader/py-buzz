@@ -1,0 +1,25 @@
+name: dusky-python-cd
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python_version: 3.7.4
+    - name: get-poetry
+      run: pip install poetry==1.0.9
+    - name: login
+      run: poetry config http-basic.pypi dusktreader ${{ secrets.PYPI_PASSWORD }}
+    - name: build
+      run: poetry build
+    - name: publish
+      run: poetry publish
