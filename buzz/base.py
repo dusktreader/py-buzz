@@ -33,7 +33,7 @@ class Buzz(Exception):
 
     @classmethod
     @contextlib.contextmanager
-    def check_expressions(cls, main_message=""):
+    def check_expressions(cls, *init_args, main_message="", **init_kwargs):
         """
         Checks a series of expressions inside of a context manager. Each is
         checked, and if any fail an exception is raised that contains a main
@@ -52,6 +52,8 @@ class Buzz(Exception):
         Checked expressions failed: Something wasn't right:
           1: first expressoin failed
           3: a must not equal 1
+
+        Passes along inititalization args if triggered
         """
 
         class _Checker:
@@ -81,6 +83,8 @@ class Buzz(Exception):
                 main_message,
                 "\n  ".join(checker.problems),
             ),
+            *init_args,
+            **init_kwargs,
         )
 
     @classmethod
@@ -109,11 +113,13 @@ class Buzz(Exception):
     def handle_errors(
         cls,
         message,
+        *init_args,
         re_raise=True,
         exception_class=Exception,
         do_finally=None,
         do_except=None,
         do_else=None,
+        **init_kwargs,
     ):
         """
         provides a context manager that will intercept exceptions and repackage
@@ -124,6 +130,9 @@ class Buzz(Exception):
             some_code_that_might_raise_an_exception()
 
         :param: message:         The message to attach to the raised Buzz
+        :param: *init_args:      Additional positional args that should be passed
+                                 to init in the event of an exception. Will be
+                                 used for re-raised exception
         :param: re_raise:        If true, the re-packaged exception will be
                                  raised
         :param: exception_class: Limits the class of exceptions that will be
@@ -141,6 +150,9 @@ class Buzz(Exception):
                                  as its second, and the traceback as its third
         :param: do_else:         A function taht should be called only if there
                                  were no exceptions encountered
+        :param: **init_kwargs:   Additional keyword args that should be passed
+                                 to init in the event of an exception. Will be
+                                 used for re-raised exception
         """
         try:
             yield
@@ -155,7 +167,7 @@ class Buzz(Exception):
             if do_except is not None:
                 do_except(err, final_message, trace)
             if re_raise:
-                raise cls(final_message).with_traceback(trace)
+                raise cls(final_message, *init_args, **init_kwargs).with_traceback(trace)
         else:
             if do_else is not None:
                 do_else()
@@ -164,16 +176,22 @@ class Buzz(Exception):
                 do_finally()
 
     @classmethod
-    def require_condition(cls, expr, message):
+    def require_condition(cls, expr, message, *init_args, **init_kwargs):
         """
         used to assert a certain state. If the expression renders a false
         value, an exception will be raised with the supplied message
 
-        :param: message:     The failure message to attach to the raised Buzz
-        :param: expr:        A boolean value indicating an evaluated expression
+        :param: message:       The failure message to attach to the raised Buzz
+        :param: expr:          A boolean value indicating an evaluated expression
+        :param: **init_args:   Additional positional args that should be passed
+                               to init in the event of a failed expression. Will
+                               be used to initialize the raised exception.
+        :param: **init_kwargs: Additional keyword args that should be passed
+                               to init in the event of a failed expression. Will
+                               be used to initialize the raised exception.
         """
         if not expr:
-            raise cls(message)
+            raise cls(message, *init_args, **init_kwargs)
 
     @classmethod
     def sanitize_errstr(cls, err):

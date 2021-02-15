@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v2.1.0 - 2021-02-10
+-------------------
+- Added ability to forward init args for derived classes
+
 v2.0.0 - 2020-10-08
 -------------------
 - Dropped support for python 3.5
