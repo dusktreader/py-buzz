@@ -28,8 +28,8 @@ class TestDerived:
     def test_check_expressions(self):
         with pytest.raises(MiraNova) as err_info:
             with MiraNova.check_expressions(
+                "there will be errors",
                 "extra arg",
-                main_message="there will be errors",
                 extra_kwarg="extra kwarg",
             ) as check:
                 check(True)
