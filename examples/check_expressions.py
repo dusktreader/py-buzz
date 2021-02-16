@@ -5,8 +5,9 @@ and provide a report of which failed inside of a single exception. If all the
 conditions pass, no exception is raised
 """
 
-from buzz import Buzz
 from math import sqrt
+
+from buzz import Buzz
 
 
 def is_int(i):
@@ -33,7 +34,7 @@ def is_prime(i):
 
 
 def check_number(n):
-    with Buzz.check_expressions(main_message="Some checks failed for {}".format(n)) as check:
+    with Buzz.check_expressions("Some checks failed for {}".format(n)) as check:
         check(is_int(n), "number must be even")
         check(is_power_of_2(n), "number must be a power of 2")
         check(is_prime(n), "number must be prime")

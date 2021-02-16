@@ -33,7 +33,7 @@ class Buzz(Exception):
 
     @classmethod
     @contextlib.contextmanager
-    def check_expressions(cls, *init_args, main_message="", **init_kwargs):
+    def check_expressions(cls, main_message, *init_args, **init_kwargs):
         """
         Checks a series of expressions inside of a context manager. Each is
         checked, and if any fail an exception is raised that contains a main
