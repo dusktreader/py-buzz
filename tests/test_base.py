@@ -122,9 +122,7 @@ class TestBuzz:
 
     def test_check_expressions(self):
         with pytest.raises(Buzz) as err_info:
-            with Buzz.check_expressions(
-                main_message="there will be errors",
-            ) as check:
+            with Buzz.check_expressions("there will be errors") as check:
                 check(True)
                 check(False)
                 check(1 == 2, "one is not two")
