@@ -4,10 +4,11 @@ This context manager is intended to be a tool that can check many conditions
 and provide a report of which failed inside of a single exception. If all the
 conditions pass, no exception is raised
 """
+from textwrap import dedent
 
-from math import sqrt
+from buzz import check_expressions
 
-from buzz import Buzz
+from helpers import wrap_demo
 
 
 def is_int(i):
@@ -30,11 +31,11 @@ def is_prime(i):
         return False
     if i % 2 == 0 and i > 2:
         return False
-    return all(i % n for n in range(3, int(sqrt(i)) + 1, 2))
+    return all(i % n for n in range(3, int(i**0.5) + 1, 2))
 
 
 def check_number(n):
-    with Buzz.check_expressions("Some checks failed for {}".format(n)) as check:
+    with check_expressions(f"Some checks failed for {n}") as check:
         check(is_int(n), "number must be even")
         check(is_power_of_2(n), "number must be a power of 2")
         check(is_prime(n), "number must be prime")
@@ -44,14 +45,24 @@ def complex_check_expressions():
     """
     This function demonstrates usage of the check_expressions context manager.
     """
-    print("Demonstrating complex check_expressions example")
+    print()
+    print(
+        dedent(
+            """
+            ====================================================================================================
+            Demonstrating complex check_expressions examples where each input number n is checked with criteria:
+              1. n must be even
+              2. n must be a power of 2
+              3. n must be a prime
+            ====================================================================================================
+            """
+        ).strip()
+    )
+    print()
 
     for n in (2, 4, 6, 7.5):
-        try:
-            print("Checking {}".format(n))
+        with wrap_demo(f"Demonstrating check_expressions with {n=}"):
             check_number(n)
-        except Buzz as err:
-            print(err)
 
 
 if __name__ == "__main__":
