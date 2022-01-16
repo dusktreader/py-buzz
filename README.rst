@@ -18,15 +18,15 @@
 That's not flying, it's falling with style: Exceptions with extras
 ------------------------------------------------------------------
 
-py-buzz supplies extras to python exceptions in a base Buzz exception class.
-Buzz is fully equipped with exception tools that are written over and over
+py-buzz supplies some useful tools to use with python exceptions as well
+as a base Buzz exception class that includes them as classmethods.
+
+py-buzz is fully equipped with exception tools that are written over and over
 again in python projects such as:
 
 * checking conditions and raising errors on failure (``require_conditon``)
-
 * catching exceptions wrapping them in clearer exception types with better error
   messages (``handle_errors``)
-
 * checking many conditions and reporting which ones failed
   (``check_expressions``)
 
@@ -38,7 +38,7 @@ themselves.
 
 Super-quick Start
 -----------------
- - requirements: `python3`
+ - requirements: `python3.7+`
  - install through pip: `$ pip install py-buzz`
  - minimal usage example: `examples/basic.py <https://github.com/dusktreader/py-buzz/tree/master/examples/basic.py>`_
 

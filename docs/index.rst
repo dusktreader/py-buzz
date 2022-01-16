@@ -1,10 +1,10 @@
-*************
+*********
  py-buzz
-*************
+*********
 
-------------------------------------------------------------------
-That's not flying, it's falling with style: Exceptions with extras
-------------------------------------------------------------------
+*That's not flying, it's falling with style*
+
+Take Exceptions to infinity...and beyond with ``py-buzz``!
 
 .. include:: overview.rst
 

@@ -7,6 +7,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v3.0.0 - 2022-01-15
+-------------------
+* Moved functions to standalone tools module
+* Made Buzz re-use these methods
+* Changed ``handle_errors`` ``exception_class`` parameter to ``handle_exc_class``
+* Changed ``handle_errors`` to send ``DoExceptParams`` as a single parameter
+* Removed ``sanitize_err_string`` as it should not be needed after 2.0.0
+* Removed ``re_raise`` parameter from handle_errors in tools.
+* Made passing ``None`` to raise_exc_class indicate no new excepton should be raised
+* Added a Makefile for running quality checks easier.
+* Updated and added examples.
+* Updated docs a lot.
+* Dropped support for Python 3.6
+
+
 v2.1.1-3 - 2021-02-16
 ---------------------
 - Fixed args in check_expressions

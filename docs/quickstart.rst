@@ -4,24 +4,26 @@ Quickstart
 Requirements
 ------------
 
-* Python 3.5 or greater
+* Python 3.7 or greater
 
 Installation
 ------------
 
 Install from pypi
 .................
+
 This will install the latest release of py-buzz from pypi via pip::
 
 $ pip install py-buzz
 
+
 Using
 -----
+
 Just import!
 
 .. code-block:: python
 
-   from buzz import Buzz
-   raise Buzz("something went wrong!")
+   from buzz import require_condition
 
-Buzz makes an excellent base-class for your project specific exception classes!
+   require_condition(check_something(), "The check failed!")
