@@ -22,7 +22,7 @@ lint: install
 	poetry run pflake8 ${PACKAGE_NAME}
 
 .PHONY: qa
-qa: test lint
+qa: test lint mypy
 	echo "All quality checks pass!"
 
 .PHONY: format
