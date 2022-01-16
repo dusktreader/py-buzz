@@ -42,7 +42,8 @@ master_doc = 'index'
 # General information about the project.
 author = project_metadata['author']
 project = project_metadata['name']
-copyright = project_metadata['copyright']
+copyright = '(c) 2016-2022 Tucker Beck'
+
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
