@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v3.1.0 - 2022-03-23
+-------------------
+* Returned support for Python 3.6
+
 v3.0.0 - 2022-01-15
 -------------------
 * Moved functions to standalone tools module

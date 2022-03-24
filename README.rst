@@ -38,9 +38,9 @@ themselves.
 
 Super-quick Start
 -----------------
- - requirements: `python3.7+`
+ - requirements: `python3.6+`
  - install through pip: `$ pip install py-buzz`
- - minimal usage example: `examples/basic.py <https://github.com/dusktreader/py-buzz/tree/master/examples/basic.py>`_
+ - minimal usage example: `examples/with_buzz_class.py <https://github.com/dusktreader/py-buzz/tree/master/examples/with_buzz_class.py>`_
 
 Documentation
 -------------

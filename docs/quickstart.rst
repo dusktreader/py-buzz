@@ -4,7 +4,7 @@ Quickstart
 Requirements
 ------------
 
-* Python 3.7 or greater
+* Python 3.6 or greater
 
 Installation
 ------------
@@ -27,3 +27,5 @@ Just import!
    from buzz import require_condition
 
    require_condition(check_something(), "The check failed!")
+
+For more examples of usage, see the `Features <features>` page.
