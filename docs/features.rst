@@ -3,7 +3,7 @@ Features
 
 Main Features
 -------------
-There are 2 main features of Buzz that are noteworthy:
+There are 2 main features of ``py-buzz`` that are noteworthy:
 
 Raise exception on condition failure
 ....................................
@@ -22,8 +22,9 @@ base. It's just a little easier with ``py-buzz``:
    # With py-buzz
    require_condition(some_condition(), "some_condition failed")
 
-This is again mostly just a bit of syntactic sugar but can make code a bit more
-palletable, especially if you have to check a lot of invariants in a function.
+This is mostly just a bit of syntactic sugar, but it can make your code a bit more
+palletable. This is especially true in functions that need to check a lot of conditions
+before prior to executing their core logic.
 
 You may also specify the exception type that should be raised by passing it to the
 ``raise_exc_class`` parameter:
@@ -36,7 +37,9 @@ You may also specify the exception type that should be raised by passing it to t
        raise_exc_class=MyProjectError,
    )
 
-There are 3 special keyword argument parameters for the ``reuire_condition()``
+In this case, a ``MyProjectError`` would be raised if the condition fails.
+
+There are 3 special keyword argument parameters for the ``require_condition()``
 function:
 
 
@@ -50,9 +53,8 @@ It defaults to ``Exception``.
 raise_args
 ``````````
 
-With this paramter, you can specify any positional arguments that should be passed
+With this parameter, you can specify any positional arguments that should be passed
 to the raised exception *after the message*. Here is an example:
-
 
 .. code-block:: python
 
@@ -154,7 +156,7 @@ handle_exc_class
 ````````````````
 
 This option describes the type of exception that will be handled by this context
-manager. Any instance of the option's excepion (or any of it's derived exception
+manager. Any instance of the option's exception (or any of it's derived exception
 classes) will be caught. This is very useful if you only want to handle a
 certain category of exceptions and let the others rise up un-altered:
 
@@ -193,7 +195,7 @@ This option might be invoked something like this:
        logger.error(dep.final_message)
        logger.error('\n'.join(dep.trace))
 
-   with handle_errors("Somethign went wrong", do_except=log_error):
+   with handle_errors("Something went wrong", do_except=log_error):
        some_dangerous_function()
 
 
