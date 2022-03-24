@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-buzz"
-version = "3.0.0"
+version = "3.1.0"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
 authors = ["Tucker Beck <tucker.beck@gmail.com>"]
 license = "MIT"
@@ -10,17 +10,18 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.6.2"
+dataclasses = { version = "^0.8", python = "~3.6" }
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"
 sphinx = "^2.0"
-black = "^20.8b1"
-isort = "^5.6.1"
+black = "^22.1"
+isort = "^5.10.1"
 pytest-cov = "^3.0.0"
 pyproject-flake8 = "^0.0.1-alpha.2"
 pytest-random-order = "^1.0.4"
-mypy = "^0.930"
+mypy = "^0.941"
 
 [tool.black]
 line-length = 120
@@ -35,7 +36,9 @@ minversion = "6.0"
 addopts = [
     "--random-order",
     "--failed-first",
-    "--maxfail=1"
+    "--cov=buzz",
+    "--cov-report=term-missing",
+    "--cov-fail-under=90",
 ]
 testpaths = "tests"
 
@@ -43,14 +46,11 @@ testpaths = "tests"
 max-line-length = 120
 max-complexity = 40
 
-# [[tool.mypy.overrides]]
-# module = [
-#     "boto3",
-#     "botocore.*",
-#     "jinja2",
-#     "asyncpg.*",
-# ]
-# ignore_missing_imports = true
+[[tool.mypy.overrides]]
+module = [
+    "dataclasses",
+]
+ignore_missing_imports = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

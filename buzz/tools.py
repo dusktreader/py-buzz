@@ -218,7 +218,7 @@ def handle_errors(
 
         trace = get_traceback()
 
-        do_except(DoExceptParams(err, final_message, trace))
+        do_except(DoExceptParams(err, final_message, trace))  # type: ignore # For packport of dataclasses in python3.6
         if raise_exc_class is not None:
             args = raise_args or []
             kwargs = raise_kwargs or {}
