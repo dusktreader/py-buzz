@@ -61,13 +61,15 @@ def test_handle_errors__no_exceptions():
 
 
 def test_handle_errors__basic_handling():
+    original_error = ValueError("there was a problem")
     with pytest.raises(Exception) as err_info:
         with handle_errors("intercepted exception"):
-            raise ValueError("there was a problem")
+            raise original_error
 
     assert "there was a problem" in str(err_info.value)
     assert "intercepted exception" in str(err_info.value)
     assert "ValueError" in str(err_info.value)
+    assert err_info.value.__cause__ is original_error
 
 
 def test_handle_errors__raise_specific_exception_type():

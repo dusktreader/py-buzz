@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v3.1.1 - 2022-04-05
+-------------------
+* Added `raise from` in handle_errors (how did I miss this for so long?)
+
 v3.1.0 - 2022-03-23
 -------------------
 * Returned support for Python 3.6

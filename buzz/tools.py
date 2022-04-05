@@ -222,7 +222,7 @@ def handle_errors(
         if raise_exc_class is not None:
             args = raise_args or []
             kwargs = raise_kwargs or {}
-            raise raise_exc_class(final_message, *args, **kwargs).with_traceback(trace)
+            raise raise_exc_class(final_message, *args, **kwargs).with_traceback(trace) from err
     else:
         do_else()
     finally:
