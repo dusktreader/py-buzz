@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-buzz"
-version = "3.1.1"
+version = "3.2.0"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
 authors = ["Tucker Beck <tucker.beck@gmail.com>"]
 license = "MIT"
@@ -21,7 +21,7 @@ isort = "^5.10.1"
 pytest-cov = "^3.0.0"
 pyproject-flake8 = "^0.0.1-alpha.2"
 pytest-random-order = "^1.0.4"
-mypy = "^0.941"
+mypy = "^0.961"
 
 [tool.black]
 line-length = 120
@@ -35,7 +35,6 @@ profile = "black"
 minversion = "6.0"
 addopts = [
     "--random-order",
-    "--failed-first",
     "--cov=buzz",
     "--cov-report=term-missing",
     "--cov-fail-under=90",

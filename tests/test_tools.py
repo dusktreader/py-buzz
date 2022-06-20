@@ -1,4 +1,5 @@
 from traceback import format_tb
+from typing import Optional
 from types import TracebackType
 
 import pytest
@@ -6,6 +7,7 @@ import pytest
 
 from buzz.tools import (
     require_condition,
+    enforce_defined,
     check_expressions,
     handle_errors,
     reformat_exception,
@@ -53,6 +55,36 @@ def test_require_condition__passes_along_raise_args_and_raise_kwargs():
 
     assert err_info.value.dummy_arg == "dummy arg"
     assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+
+def test_enforce_defined__basic():
+    some_val: Optional[str] = "boo"
+    some_val = enforce_defined(some_val, "should not fail")
+    with pytest.raises(Exception, match="fail message"):
+        some_val = None
+        enforce_defined(some_val, "fail message")
+
+
+def test_enforce_defined__specific_raise_exc_class():
+    some_val: Optional[str] = "boo"
+    some_val = enforce_defined(
+        some_val,
+        "should not fail",
+        raise_exc_class=DummyArgsException,
+        raise_args=["dummy arg"],
+        raise_kwargs=dict(dummy_kwarg="dummy_kwarg"),
+    )
+    with pytest.raises(Exception, match="fail message") as err_info:
+        some_val = None
+        enforce_defined(
+            some_val,
+            "fail message",
+            raise_exc_class=DummyArgsException,
+            raise_args=["dummy arg"],
+            raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
+        )
+        assert err_info.value.dummy_arg == "dummy arg"
+        assert err_info.value.dummy_kwarg == "dummy kwarg"
 
 
 def test_handle_errors__no_exceptions():

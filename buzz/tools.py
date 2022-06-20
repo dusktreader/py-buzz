@@ -11,7 +11,8 @@ import contextlib
 import dataclasses
 import sys
 import types
-from typing import Any, Callable, Iterable, Iterator, Mapping, Optional, Tuple, Type, Union
+from typing import Any, Callable, Iterable, Iterator, Mapping, Optional, Tuple, Type, Union, TypeVar
+from typing_extensions import TypeGuard
 
 
 def noop(*_, **__):
@@ -43,6 +44,38 @@ def require_condition(
         raise ValueError("The raise_exc_class kwarg may not be None")
 
     if not expr:
+        args = raise_args or []
+        kwargs = raise_kwargs or {}
+        raise raise_exc_class(message, *args, **kwargs)
+
+
+TNonNull = TypeVar("TNonNull")
+
+def enforce_defined(
+    value: Optional[TNonNull],
+    message: str = "Value was not defined (None)",
+    raise_exc_class: Type[Exception] = Exception,
+    raise_args: Optional[Iterable[Any]] = None,
+    raise_kwargs: Optional[Mapping[str, Any]] = None,
+) -> TNonNull:
+    """
+    Assert that a value is not None. If the assertion fails, raise an exception with the supplied message.
+
+    :param: value:            The value that is checked to be non-null
+    :param: message:          The failure message to attach to the raised Exception
+    :param: expr:             The value that is checked for truthiness (usually an evaluated expression)
+    :param: raise_exc_class:  The exception type to raise with the constructed message if the expression is falsey.
+
+                              Defaults to Exception.
+                              May not be None.
+
+    :param: raise_args:       Additional positional args (after the constructed message) that will passed when raising
+                              an instance of the ``raise_exc_class``.
+    :param: raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+    """
+    if value is not None:
+        return value
+    else:
         args = raise_args or []
         kwargs = raise_kwargs or {}
         raise raise_exc_class(message, *args, **kwargs)

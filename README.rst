@@ -25,6 +25,7 @@ py-buzz is fully equipped with exception tools that are written over and over
 again in python projects such as:
 
 * checking conditions and raising errors on failure (``require_conditon``)
+* checking that values are defined and raising errors if not (``enforce_defined``)
 * catching exceptions wrapping them in clearer exception types with better error
   messages (``handle_errors``)
 * checking many conditions and reporting which ones failed
