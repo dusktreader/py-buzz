@@ -1,6 +1,7 @@
 import textwrap
+from typing import Optional
 
-from buzz.tools import check_expressions, get_traceback, handle_errors, require_condition
+from buzz.tools import TNonNull, check_expressions, enforce_defined, get_traceback, handle_errors, require_condition
 
 
 class Buzz(Exception):
@@ -20,22 +21,36 @@ class Buzz(Exception):
     def __repr__(self):
         return self.__class__.__name__
 
+    @staticmethod
+    def _check_kwargs(**kwargs):
+        """
+        Ensure that ``raise_exc_class`` was not passed as a keyword-argument.
+        """
+        if "raise_exc_class" in kwargs:
+            raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods.")
+
     @classmethod
     def require_condition(cls, *args, **kwargs):
         """
         Call the require_condition function with this class as the ``raise_exc_class`` kwarg.
         """
-        if "raise_exc_class" in kwargs:
-            raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods")
+        cls._check_kwargs(**kwargs)
         return require_condition(*args, raise_exc_class=cls, **kwargs)
+
+    @classmethod
+    def enforce_defined(cls, value: Optional[TNonNull], *args, **kwargs) -> TNonNull:
+        """
+        Call the enforce_defined function with this class as the ``raise_exc_class`` kwarg.
+        """
+        cls._check_kwargs(**kwargs)
+        return enforce_defined(value, *args, raise_exc_class=cls, **kwargs)
 
     @classmethod
     def check_expressions(cls, *args, **kwargs):
         """
         Call the check_expressions context manager with this class as the ``raise_exc_class`` kwarg.
         """
-        if "raise_exc_class" in kwargs:
-            raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods")
+        cls._check_kwargs(**kwargs)
         return check_expressions(*args, raise_exc_class=cls, **kwargs)
 
     @classmethod
@@ -44,8 +59,7 @@ class Buzz(Exception):
         Call the handle_errors context manager with this class as the ``raise_exc_class`` kwarg.
         If ``re_raise`` is not True, ``None`` will be passed as the ``raise_exc_class`` kwarg.
         """
-        if "raise_exc_class" in kwargs:
-            raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods")
+        cls._check_kwargs(**kwargs)
         return handle_errors(*args, raise_exc_class=cls if re_raise else None, **kwargs)
 
     @classmethod
