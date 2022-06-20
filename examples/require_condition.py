@@ -1,6 +1,6 @@
 """
 This example set demonstrates the use of the require_conditions function.
-The require_condtion function can be used to assert a boolean condition
+The require_condition function can be used to assert a boolean condition
 wherever needed.
 """
 from buzz import require_condition
@@ -36,7 +36,7 @@ def is_even(i):
 def complex_require_condition():
     """
     This function demonstrates a more complex usage of the require_condition
-    function. It shows the ability to raise sepcific exception types,
+    function. It shows the ability to raise specific exception types,
     handling a more complex boolean expression, and passing args and kwargs
     to the raised exception
     """

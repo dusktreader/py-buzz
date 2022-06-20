@@ -99,6 +99,54 @@ If a ``MyProjectError`` is raised, it will be initialized with ``init_kwarg1 == 
 ``init_kwarg2 == "bar"``.
 
 
+Raise exception if value is not defined
+.......................................
+
+The ``py-buzz`` package provides a function that checks a value and raises
+an exception if it is not defined. This is especially useful for both checking
+if a variable passed to a function is defined and also to satisfy static type
+checkers when you want to call a method on the object.
+
+.. code-block:: python
+
+   # Vanilla python
+   def vanilla(val: Optional[str]):
+       if val is None:
+           raise Exception("Received an undefined value!")
+       return val.upper()
+
+   # With py-buzz
+   def buzzy(val: Optional[str]):
+       val = enforce_defined(val)
+       return val.upper()
+
+This is also mostly just syntactic sugar, but it save you a few lines of code and
+is still very expressive. It might also be useful if you need to supply some
+more context in your error:
+
+.. code-block:: python
+
+   def neopolitan(val: Optional[str]):
+       val = enforce_defined(
+           val = enforce_defined(
+               val,
+               "Received an undefined value!"
+               raise_exc_class=MyProjectError,
+               raise_args=["foo", "bar"],
+               raise_kwargs=dict(baz="QUX"),
+           )
+
+In this case, a ``MyProjectError`` with be raised with positional arguments of
+``"foo"`` and ``"bar"`` and a keyword argument of ``baz="QUX"`` if the value
+passed in is not defined.
+
+By default, ``enforce_defined()`` raises an exception with a basic message saying
+that the value was not defined. However, you may pass in a custom message with the
+``message`` keyword argument. Like ``require_condition()``, ``enforce_defined()``
+also accepts the ``raise_exc_class``, ``raise_args``, and ``raise_kwargs`` keyword
+arguments.
+
+
 Exception handling context manager
 ..................................
 

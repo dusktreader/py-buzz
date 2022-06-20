@@ -2,6 +2,7 @@ from buzz.base import Buzz
 from buzz.tools import (
     DoExceptParams,
     check_expressions,
+    enforce_defined,
     get_traceback,
     handle_errors,
     reformat_exception,
@@ -14,6 +15,7 @@ __all__ = [
     "check_expressions",
     "handle_errors",
     "require_condition",
+    "enforce_defined",
     "reformat_exception",
     "get_traceback",
     "DoExceptParams",
