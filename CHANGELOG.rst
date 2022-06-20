@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+v3.2.1 - 2022-06-20
+-------------------
+* Added ``enforce_defined()`` to Buzz class.
+
 v3.2.0 - 2022-06-20
 -------------------
 * Added ``enforce_defined()`` function with tests and docs.
