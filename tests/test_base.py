@@ -14,6 +14,12 @@ def test_Buzz_require_condition__fails_with_explictly_passed_raise_exc_class():
         Buzz.require_condition(False, "fail message", raise_exc_class=Exception)
 
 
+def test_Buzz_enforce_defined__basic():
+    Buzz.enforce_defined("dummy", "should not fail")
+    with pytest.raises(Buzz, match="fail message"):
+        Buzz.enforce_defined(None, "fail message")
+
+
 def test_Buzz_handle_errors__basic():
     with pytest.raises(Buzz) as err_info:
         with Buzz.handle_errors("intercepted exception"):
