@@ -43,7 +43,9 @@ class Buzz(Exception):
         Call the enforce_defined function with this class as the ``raise_exc_class`` kwarg.
         """
         cls._check_kwargs(**kwargs)
-        return enforce_defined(value, *args, raise_exc_class=cls, **kwargs)
+        # This can't be passed as a kwarg, because: https://github.com/python/mypy/issues/6799
+        kwargs["raise_exc_class"] = cls
+        return enforce_defined(value, *args, **kwargs)
 
     @classmethod
     def check_expressions(cls, *args, **kwargs):
