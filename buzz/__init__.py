@@ -2,9 +2,9 @@ from buzz.base import Buzz
 from buzz.tools import (
     DoExceptParams,
     check_expressions,
+    enforce_defined,
     get_traceback,
     handle_errors,
-    enforce_defined,
     reformat_exception,
     require_condition,
 )

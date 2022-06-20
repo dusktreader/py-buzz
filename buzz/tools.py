@@ -11,8 +11,7 @@ import contextlib
 import dataclasses
 import sys
 import types
-from typing import Any, Callable, Iterable, Iterator, Mapping, Optional, Tuple, Type, Union, TypeVar
-from typing_extensions import TypeGuard
+from typing import Any, Callable, Iterable, Iterator, Mapping, Optional, Tuple, Type, TypeVar, Union
 
 
 def noop(*_, **__):
@@ -50,6 +49,7 @@ def require_condition(
 
 
 TNonNull = TypeVar("TNonNull")
+
 
 def enforce_defined(
     value: Optional[TNonNull],
