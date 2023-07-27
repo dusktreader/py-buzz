@@ -99,6 +99,39 @@ If a ``MyProjectError`` is raised, it will be initialized with ``init_kwarg1 == 
 ``init_kwarg2 == "bar"``.
 
 
+exc_builder
+```````````
+
+If the exception to be raised with the ``raise_exc_class`` option is a non-standard exception
+type that does not take a string message as its first argument, you will need to use an
+alternative exception builder that knows how to map the exception parts to the correct place.
+
+For example, FastAPI's ``HTTPException`` takes a ``status_code`` as its first positional
+argument and expects that any message details are passed as a keyword argument named ``details``.
+
+In this case, you need to define a builder function to construct the exception and pass it
+to the ``exc_builder`` option:
+
+
+.. code-block:: python
+
+   class WeirdArgsError(Exception):
+       def __init__(self, weird_arg, detail=""):
+           self.weird_arg = weird_arg
+           self.detail = detail
+
+   def weird_builder(exc_class, message, *args, **kwargs):
+       return exc_class(*args, detail=message, **kwargs)
+
+   require_condition(
+       some_condition(),
+       "some_condition failed",
+       raise_exc_class=WeirdArgsError,
+       raise_kwargs=dict("foo", "bar"),
+       exc_builder=weird_builder,
+   )
+
+
 Raise exception if value is not defined
 .......................................
 
@@ -143,8 +176,8 @@ passed in is not defined.
 By default, ``enforce_defined()`` raises an exception with a basic message saying
 that the value was not defined. However, you may pass in a custom message with the
 ``message`` keyword argument. Like ``require_condition()``, ``enforce_defined()``
-also accepts the ``raise_exc_class``, ``raise_args``, and ``raise_kwargs`` keyword
-arguments.
+also accepts the ``raise_exc_class``, ``raise_args``, ``raise_kwargs``, and
+``exc_builder`` keyword arguments.
 
 
 Exception handling context manager
@@ -196,6 +229,12 @@ Functions the same as ``require_condition``.
 
 raise_kwargs
 ````````````
+
+Functions the same as ``require_condition``.
+
+
+exc_builder
+```````````
 
 Functions the same as ``require_condition``.
 
@@ -314,7 +353,7 @@ The ``check_expressions()`` also accepts some keyword arguments:
 raise_exc_class
 ```````````````
 
-This parameter is the same as for ``require_condition()``.
+Functions the same as ``require_condition``.
 
 
 raise_args
@@ -325,6 +364,12 @@ Functions the same as ``require_condition``.
 
 raise_kwargs
 ````````````
+
+Functions the same as ``require_condition``.
+
+
+exc_builder
+```````````
 
 Functions the same as ``require_condition``.
 
