@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-buzz"
-version = "3.2.1"
+version = "3.3.0"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
 authors = ["Tucker Beck <tucker.beck@gmail.com>"]
 license = "MIT"

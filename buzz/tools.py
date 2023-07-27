@@ -18,12 +18,26 @@ def noop(*_, **__):
     pass
 
 
+TExc = TypeVar("TExc", bound=Exception)
+
+
+def default_exc_builder(exc: Type[TExc], message: str, *args, **kwargs) -> TExc:
+    """
+    Build an exception instance using default behavior where message is passed as first positional argument.
+
+    Some exception types such as FastAPI's HTTPException do not take a message as the first positional argument, so
+    they will need a different exception builder.
+    """
+    return exc(message, *args, **kwargs)
+
+
 def require_condition(
     expr: Any,
     message: str,
     raise_exc_class: Type[Exception] = Exception,
     raise_args: Optional[Iterable[Any]] = None,
     raise_kwargs: Optional[Mapping[str, Any]] = None,
+    exc_builder: Callable[..., Exception] = default_exc_builder,
 ):
     """
     Assert that an expression is truthy. If the assertion fails, raise an exception with the supplied message.
@@ -45,7 +59,7 @@ def require_condition(
     if not expr:
         args = raise_args or []
         kwargs = raise_kwargs or {}
-        raise raise_exc_class(message, *args, **kwargs)
+        raise exc_builder(raise_exc_class, message, *args, **kwargs)
 
 
 TNonNull = TypeVar("TNonNull")
@@ -57,6 +71,7 @@ def enforce_defined(
     raise_exc_class: Type[Exception] = Exception,
     raise_args: Optional[Iterable[Any]] = None,
     raise_kwargs: Optional[Mapping[str, Any]] = None,
+    exc_builder: Callable[..., Exception] = default_exc_builder,
 ) -> TNonNull:
     """
     Assert that a value is not None. If the assertion fails, raise an exception with the supplied message.
@@ -78,7 +93,7 @@ def enforce_defined(
     else:
         args = raise_args or []
         kwargs = raise_kwargs or {}
-        raise raise_exc_class(message, *args, **kwargs)
+        raise exc_builder(raise_exc_class, message, *args, **kwargs)
 
 
 class _ExpressionChecker:
@@ -118,6 +133,7 @@ def check_expressions(
     raise_exc_class: Type[Exception] = Exception,
     raise_args: Optional[Iterable[Any]] = None,
     raise_kwargs: Optional[Mapping[str, Any]] = None,
+    exc_builder: Callable[..., Exception] = default_exc_builder,
 ):
     """
     Check a series of expressions inside of a context manager. If any fail an exception is raised that contains a
@@ -170,6 +186,7 @@ def check_expressions(
         raise_exc_class=raise_exc_class,
         raise_args=raise_args,
         raise_kwargs=raise_kwargs,
+        exc_builder=exc_builder,
     )
 
 
@@ -208,6 +225,7 @@ def handle_errors(
     do_finally: Callable[[], None] = noop,
     do_except: Callable[[DoExceptParams], None] = noop,
     do_else: Callable[[], None] = noop,
+    exc_builder: Callable[..., Exception] = default_exc_builder,
 ) -> Iterator[None]:
     """
     Provide a context manager that will intercept exceptions and repackage them with a message attached:
@@ -239,7 +257,7 @@ def handle_errors(
     :param: do_except:         A function that should be called only if there was an exception. Must accept one
                                parameter that is an instance of the ``DoExceptParams`` dataclass.
                                Note that the ``do_except`` method is passed the *original exception*.
-    :param: do_else:           A function taht should be called only if there were no exceptions encountered.
+    :param: do_else:           A function that should be called only if there were no exceptions encountered.
     """
     try:
         yield
@@ -255,7 +273,7 @@ def handle_errors(
         if raise_exc_class is not None:
             args = raise_args or []
             kwargs = raise_kwargs or {}
-            raise raise_exc_class(final_message, *args, **kwargs).with_traceback(trace) from err
+            raise exc_builder(raise_exc_class, final_message, *args, **kwargs).with_traceback(trace) from err
     else:
         do_else()
     finally:

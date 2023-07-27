@@ -26,6 +26,17 @@ class DummyArgsException(Exception):
         self.dummy_kwarg = dummy_kwarg
 
 
+class DummyWeirdArgsException(Exception):
+    def __init__(self, dummy_arg, detail="", dummy_kwarg=None):
+        self.dummy_arg = dummy_arg
+        self.dummy_kwarg = dummy_kwarg
+        self.detail = detail
+
+
+def alt_builder(exc, message, *args, **kwargs):
+    return exc(*args, detail=message, **kwargs)
+
+
 def test_require_condition__basic():
     require_condition(True, "should not fail")
     with pytest.raises(Exception, match="fail message"):
@@ -57,6 +68,22 @@ def test_require_condition__passes_along_raise_args_and_raise_kwargs():
     assert err_info.value.dummy_kwarg == "dummy kwarg"
 
 
+def test_require_condition__using_alternative_exception_builder():
+    with pytest.raises(DummyWeirdArgsException) as err_info:
+        require_condition(
+            False,
+            "fail message",
+            raise_exc_class=DummyWeirdArgsException,
+            raise_args=["dummy arg"],
+            raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
+            exc_builder=alt_builder,
+        )
+
+    assert err_info.value.dummy_arg == "dummy arg"
+    assert err_info.value.detail == "fail message"
+    assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+
 def test_enforce_defined__basic():
     some_val: Optional[str] = "boo"
     some_val = enforce_defined(some_val, "should not fail")
@@ -85,6 +112,23 @@ def test_enforce_defined__specific_raise_exc_class():
         )
         assert err_info.value.dummy_arg == "dummy arg"
         assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+
+def test_enforce_defined__using_alternative_exception_builder():
+    with pytest.raises(Exception) as err_info:
+        some_val = None
+        enforce_defined(
+            some_val,
+            "fail message",
+            raise_exc_class=DummyWeirdArgsException,
+            raise_args=["dummy arg"],
+            raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
+            exc_builder=alt_builder,
+        )
+
+    assert err_info.value.dummy_arg == "dummy arg"
+    assert err_info.value.dummy_kwarg == "dummy kwarg"
+    assert err_info.value.detail == "fail message"
 
 
 def test_handle_errors__no_exceptions():
@@ -130,6 +174,23 @@ def test_handle_errors__uses_raise_args_and_kwargs():
 
     assert err_info.value.dummy_arg == "dummy arg"
     assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+
+def test_handle_errors____using_alternative_exception_builder():
+    with pytest.raises(DummyWeirdArgsException) as err_info:
+        with handle_errors(
+            "intercepted exception",
+            raise_exc_class=DummyWeirdArgsException,
+            raise_args=["dummy arg"],
+            raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
+            exc_builder=alt_builder,
+        ):
+            raise ValueError("there was a problem")
+
+    assert err_info.value.dummy_arg == "dummy arg"
+    assert err_info.value.dummy_kwarg == "dummy kwarg"
+    assert "there was a problem" in err_info.value.detail
+    assert "intercepted exception" in err_info.value.detail
 
 
 def test_handle_errors__with_do_else():
@@ -302,6 +363,23 @@ def test_check_expressions__uses_raise_args_and_kwargs():
 
     assert err_info.value.dummy_arg == "dummy arg"
     assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+
+def test_check_expressions____using_alternative_exception_builder():
+    with pytest.raises(DummyWeirdArgsException) as err_info:
+        with check_expressions(
+            "there will be errors",
+            raise_exc_class=DummyWeirdArgsException,
+            raise_args=["dummy arg"],
+            raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
+            exc_builder=alt_builder,
+        ) as check:
+            check(False)
+
+    assert err_info.value.dummy_arg == "dummy arg"
+    assert err_info.value.dummy_kwarg == "dummy kwarg"
+    assert "there will be errors" in err_info.value.detail
+    assert "1st expression failed" in err_info.value.detail
 
 
 def test_reformat_exception():
