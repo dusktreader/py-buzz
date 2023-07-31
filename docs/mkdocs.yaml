@@ -1,3 +1,5 @@
+# Configuration for mkdocs
+
 site_name: py-buzz documentation
 site_url: http://py-buzz.readthedocs.io/en/latest/
 repo_url: https://github.com/dusktreader/py-buzz
