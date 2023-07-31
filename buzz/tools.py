@@ -1,17 +1,14 @@
 """
 This module supplies the core functions of the py-buzz package.
-
-Includes:
-
-* require_condition:  asserts a condition and raises an exception otherwise
-* handle_errors:      a context manager that handles exceptions
-* check_expressions:  a context manager that checks multiple expressions
 """
+
+from __future__ import annotations
+
 import contextlib
 import dataclasses
 import sys
 import types
-from typing import Any, Callable, Iterable, Iterator, Mapping, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Callable, Iterable, Iterator, Mapping, Tuple, TypeVar
 
 
 def noop(*_, **__):
@@ -21,7 +18,7 @@ def noop(*_, **__):
 TExc = TypeVar("TExc", bound=Exception)
 
 
-def default_exc_builder(exc: Type[TExc], message: str, *args, **kwargs) -> TExc:
+def default_exc_builder(exc: type[TExc], message: str, *args, **kwargs) -> TExc:
     """
     Build an exception instance using default behavior where message is passed as first positional argument.
 
@@ -34,24 +31,24 @@ def default_exc_builder(exc: Type[TExc], message: str, *args, **kwargs) -> TExc:
 def require_condition(
     expr: Any,
     message: str,
-    raise_exc_class: Type[Exception] = Exception,
-    raise_args: Optional[Iterable[Any]] = None,
-    raise_kwargs: Optional[Mapping[str, Any]] = None,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[..., Exception] = default_exc_builder,
 ):
     """
     Assert that an expression is truthy. If the assertion fails, raise an exception with the supplied message.
 
-    :param: message:          The failure message to attach to the raised Exception
-    :param: expr:             The value that is checked for truthiness (usually an evaluated expression)
-    :param: raise_exc_class:  The exception type to raise with the constructed message if the expression is falsey.
+    Args:
 
-                              Defaults to Exception.
-                              May not be None.
-
-    :param: raise_args:       Additional positional args (after the constructed message) that will passed when raising
-                              an instance of the ``raise_exc_class``.
-    :param: raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+        message:         The failure message to attach to the raised Exception
+        expr:            The value that is checked for truthiness (usually an evaluated expression)
+        raise_exc_class: The exception type to raise with the constructed message if the expression is falsey.
+                         Defaults to Exception.
+                         May not be None.
+        raise_args:      Additional positional args (after the constructed message) that will passed when raising
+                         an instance of the ``raise_exc_class``.
+        raise_kwargs:    Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
     """
     if raise_exc_class is None:
         raise ValueError("The raise_exc_class kwarg may not be None")
@@ -66,27 +63,29 @@ TNonNull = TypeVar("TNonNull")
 
 
 def enforce_defined(
-    value: Optional[TNonNull],
+    value: TNonNull | None,
     message: str = "Value was not defined (None)",
-    raise_exc_class: Type[Exception] = Exception,
-    raise_args: Optional[Iterable[Any]] = None,
-    raise_kwargs: Optional[Mapping[str, Any]] = None,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[..., Exception] = default_exc_builder,
 ) -> TNonNull:
     """
     Assert that a value is not None. If the assertion fails, raise an exception with the supplied message.
 
-    :param: value:            The value that is checked to be non-null
-    :param: message:          The failure message to attach to the raised Exception
-    :param: expr:             The value that is checked for truthiness (usually an evaluated expression)
-    :param: raise_exc_class:  The exception type to raise with the constructed message if the expression is falsey.
+    Args:
 
-                              Defaults to Exception.
-                              May not be None.
+        value:            The value that is checked to be non-null
+        message:          The failure message to attach to the raised Exception
+        expr:             The value that is checked for truthiness (usually an evaluated expression)
+        raise_exc_class:  The exception type to raise with the constructed message if the expression is falsey.
 
-    :param: raise_args:       Additional positional args (after the constructed message) that will passed when raising
-                              an instance of the ``raise_exc_class``.
-    :param: raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                          Defaults to Exception.
+                          May not be None.
+
+        raise_args:       Additional positional args (after the constructed message) that will passed when raising
+                          an instance of the ``raise_exc_class``.
+        raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
     """
     if value is not None:
         return value
@@ -119,7 +118,7 @@ class _ExpressionChecker:
                 3: f"{n}rd",
             }.get(n % 10, f"{n}th")
 
-    def check(self, evaluated_expression: Any, message: str = None):
+    def check(self, evaluated_expression: Any, message: str | None = None):
         self.expression_counter += 1
         if not evaluated_expression:
             if message is None:
@@ -130,43 +129,42 @@ class _ExpressionChecker:
 @contextlib.contextmanager
 def check_expressions(
     main_message: str,
-    raise_exc_class: Type[Exception] = Exception,
-    raise_args: Optional[Iterable[Any]] = None,
-    raise_kwargs: Optional[Mapping[str, Any]] = None,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[..., Exception] = default_exc_builder,
 ):
     """
     Check a series of expressions inside of a context manager. If any fail an exception is raised that contains a
     main message and a description of each failing expression.
 
-    :param: main message:      The main failure message to include in the constructed message that is passed to the
-                               raised Exception
-    :param: raise_exc_class:   The exception type to raise with the constructed message if the expression is falsey.
+    Args:
+        main message:      The main failure message to include in the constructed message that is passed to the
+                           raised Exception
+        raise_exc_class:   The exception type to raise with the constructed message if the expression is falsey.
 
-                               Defaults to Exception.
+                           Defaults to Exception.
 
-                               May not be None.
-    :param: raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                               an instance of the ``raise_exc_class``.
-    :param: raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                           May not be None.
+        raise_args:        Additional positional args (after the constructed message) that will passed when raising
+                           an instance of the ``raise_exc_class``.
+        raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
 
     Example:
 
-    .. code-block:: python
+        The following is an example usage::
 
-       with check_expressions("Something wasn't right") as check:
-           check(a is not None)
-           check(a > b, "a must be greater than b")
-           check(a != 1, "a must not equal 1")
-           check(b >= 0, "b must not be negative")
+            with check_expressions("Something wasn't right") as check:
+                check(a is not None)
+                check(a > b, "a must be greater than b")
+                check(a != 1, "a must not equal 1")
+                check(b >= 0, "b must not be negative")
 
-    This would render output like:
+        This would render output like::
 
-    .. code-block:: bash
-
-       Checked expressions failed: Something wasn't right:
-         1: first expressoin failed
-         3: a must not equal 1
+            Checked expressions failed: Something wasn't right:
+              1: first expressoin failed
+              3: a must not equal 1
     """
     if raise_exc_class is None:
         raise ValueError("The raise_exc_class kwarg may not be None")
@@ -197,7 +195,7 @@ def reformat_exception(message: str, err: Exception) -> str:
     return f"{message} -- {type(err).__name__}: {str(err)}"
 
 
-def get_traceback() -> Union[types.TracebackType, None]:
+def get_traceback() -> types.TracebackType | None:
     """
     Retrieves the traceback after an exception has been raised.
     """
@@ -207,21 +205,27 @@ def get_traceback() -> Union[types.TracebackType, None]:
 @dataclasses.dataclass
 class DoExceptParams:
     """
-    Dataclass for the ``do_except`` user supplied handling method.
+    Dataclass for the `do_except` user supplied handling method.
+
+    Attributes:
+
+        err:           The exception instance itself.
+        final_message: The final, combined message
+        trace:         A traceback of the exception
     """
 
     err: Exception
     final_message: str
-    trace: Optional[types.TracebackType]
+    trace: types.TracebackType | None
 
 
 @contextlib.contextmanager
 def handle_errors(
     message: str,
-    raise_exc_class: Union[Type[Exception], None] = Exception,
-    raise_args: Optional[Iterable[Any]] = None,
-    raise_kwargs: Optional[Mapping[str, Any]] = None,
-    handle_exc_class: Union[Type[Exception], Tuple[Type[Exception], ...]] = Exception,
+    raise_exc_class: type[Exception] | None = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
+    handle_exc_class: type[Exception] | Tuple[type[Exception], ...] = Exception,
     do_finally: Callable[[], None] = noop,
     do_except: Callable[[DoExceptParams], None] = noop,
     do_else: Callable[[], None] = noop,
@@ -230,34 +234,35 @@ def handle_errors(
     """
     Provide a context manager that will intercept exceptions and repackage them with a message attached:
 
+    Args:
+        message:           The message to attach to the raised exception.
+        raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
+                           managed context.
+
+                           Defaults to Exception.
+
+                           If ``None`` is passed, no new exception will be raised and only the ``do_except``,
+                           ``do_else``, and ``do_finally`` functions will be called.
+        raise_args:        Additional positional args (after the constructed message) that will passed when raising
+                           an instance of the ``raise_exc_class``.
+        raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+        handle_exc_class:  Limits the class of exceptions that will be intercepted
+                           Any other exception types will not be caught and re-packaged.
+                           Defaults to Exception (will handle all exceptions). May also be provided as a tuple
+                           of multiple exception types to handle.
+        do_finally:        A function that should always be called at the end of the block.
+                           Should take no parameters.
+        do_except:         A function that should be called only if there was an exception. Must accept one
+                           parameter that is an instance of the ``DoExceptParams`` dataclass.
+                           Note that the ``do_except`` method is passed the *original exception*.
+        do_else:           A function that should be called only if there were no exceptions encountered.
+
     Example:
 
-    .. code-block:: python
+        The following is an example usage::
 
-       with handle_errors("It didn't work"):
-           some_code_that_might_raise_an_exception()
-
-    :param: message:           The message to attach to the raised exception.
-    :param: raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
-                               managed context.
-
-                               Defaults to Exception.
-
-                               If ``None`` is passed, no new exception will be raised and only the ``do_except``,
-                               ``do_else``, and ``do_finally`` functions will be called.
-    :param: raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                               an instance of the ``raise_exc_class``.
-    :param: raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-    :param: handle_exc_class:  Limits the class of exceptions that will be intercepted
-                               Any other exception types will not be caught and re-packaged.
-                               Defaults to Exception (will handle all exceptions). May also be provided as a tuple
-                               of multiple exception types to handle.
-    :param: do_finally:        A function that should always be called at the end of the block.
-                               Should take no parameters.
-    :param: do_except:         A function that should be called only if there was an exception. Must accept one
-                               parameter that is an instance of the ``DoExceptParams`` dataclass.
-                               Note that the ``do_except`` method is passed the *original exception*.
-    :param: do_else:           A function that should be called only if there were no exceptions encountered.
+            with handle_errors("It didn't work"):
+                some_code_that_might_raise_an_exception()
     """
     try:
         yield

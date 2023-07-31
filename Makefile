@@ -19,7 +19,7 @@ mypy: install
 lint: install
 	poetry run black --check ${PACKAGE_NAME}
 	poetry run isort --check ${PACKAGE_NAME}
-	poetry run pflake8 ${PACKAGE_NAME}
+	poetry run flake8 ${PACKAGE_NAME}
 
 .PHONY: qa
 qa: test lint mypy

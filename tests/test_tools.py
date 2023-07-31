@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from traceback import format_tb
-from typing import Optional
 from types import TracebackType
 
 import pytest
@@ -85,7 +86,7 @@ def test_require_condition__using_alternative_exception_builder():
 
 
 def test_enforce_defined__basic():
-    some_val: Optional[str] = "boo"
+    some_val: str | None = "boo"
     some_val = enforce_defined(some_val, "should not fail")
     with pytest.raises(Exception, match="fail message"):
         some_val = None
@@ -93,7 +94,7 @@ def test_enforce_defined__basic():
 
 
 def test_enforce_defined__specific_raise_exc_class():
-    some_val: Optional[str] = "boo"
+    some_val: str | None = "boo"
     some_val = enforce_defined(
         some_val,
         "should not fail",

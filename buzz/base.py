@@ -1,5 +1,10 @@
+"""
+This module defines the Buzz base class.
+"""
+
+from __future__ import annotations
+
 import textwrap
-from typing import Optional
 
 from buzz.tools import TNonNull, check_expressions, enforce_defined, get_traceback, handle_errors, require_condition
 
@@ -24,7 +29,7 @@ class Buzz(Exception):
     @staticmethod
     def _check_kwargs(**kwargs):
         """
-        Ensure that ``raise_exc_class`` was not passed as a keyword-argument.
+        Ensure that `raise_exc_class()` was not passed as a keyword-argument.
         """
         if "raise_exc_class" in kwargs:
             raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods.")
@@ -32,15 +37,15 @@ class Buzz(Exception):
     @classmethod
     def require_condition(cls, *args, **kwargs):
         """
-        Call the require_condition function with this class as the ``raise_exc_class`` kwarg.
+        Call the `require_condition()` function with this class as the `raise_exc_class` kwarg.
         """
         cls._check_kwargs(**kwargs)
         return require_condition(*args, raise_exc_class=cls, **kwargs)
 
     @classmethod
-    def enforce_defined(cls, value: Optional[TNonNull], *args, **kwargs) -> TNonNull:
+    def enforce_defined(cls, value: TNonNull | None, *args, **kwargs) -> TNonNull:
         """
-        Call the enforce_defined function with this class as the ``raise_exc_class`` kwarg.
+        Call the `enforce_defined()` function with this class as the `raise_exc_class` kwarg.
         """
         cls._check_kwargs(**kwargs)
         # This can't be passed as a kwarg, because: https://github.com/python/mypy/issues/6799
@@ -50,7 +55,7 @@ class Buzz(Exception):
     @classmethod
     def check_expressions(cls, *args, **kwargs):
         """
-        Call the check_expressions context manager with this class as the ``raise_exc_class`` kwarg.
+        Call the `check_expressions()` context manager with this class as the `raise_exc_class` kwarg.
         """
         cls._check_kwargs(**kwargs)
         return check_expressions(*args, raise_exc_class=cls, **kwargs)
@@ -58,8 +63,11 @@ class Buzz(Exception):
     @classmethod
     def handle_errors(cls, *args, re_raise=True, **kwargs):
         """
-        Call the handle_errors context manager with this class as the ``raise_exc_class`` kwarg.
-        If ``re_raise`` is not True, ``None`` will be passed as the ``raise_exc_class`` kwarg.
+        Call the `handle_errors()` context manager with this class as the `raise_exc_class` kwarg.
+
+        Note:
+
+            If `re_raise` is not True, `None` will be passed as the `raise_exc_class` kwarg.
         """
         cls._check_kwargs(**kwargs)
         return handle_errors(*args, raise_exc_class=cls if re_raise else None, **kwargs)
@@ -67,6 +75,6 @@ class Buzz(Exception):
     @classmethod
     def get_traceback(cls, *args, **kwargs):
         """
-        Call the get_traceback function.
+        Call the `get_traceback()` function.
         """
         return get_traceback(*args, **kwargs)
