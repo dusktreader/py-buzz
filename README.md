@@ -29,7 +29,7 @@ themselves.
 
 * requirements: `python3.6+`
 * install through pip: `$ pip install py-buzz`
-* minimal usage example: [examples/with_buzz_class.py](https://github.com/dusktreader/py-buzz/tree/master/examples/with_buzz_class.py)
+* minimal usage example: [examples/with_buzz_class.py](https://github.com/dusktreader/py-buzz/tree/main/examples/with_buzz_class.py)
 
 ## Documentation
 

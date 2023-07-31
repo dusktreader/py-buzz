@@ -11,7 +11,7 @@ documentation = "https://dusktreader.github.io/py-buzz/"
 packages = [{include = "buzz"}]
 
 [tool.poetry.urls]
-CHANGELOG = "https://github.com/dusktreader/py-buzz/blob/master/CHANGELOG.md"
+CHANGELOG = "https://github.com/dusktreader/py-buzz/blob/main/CHANGELOG.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
