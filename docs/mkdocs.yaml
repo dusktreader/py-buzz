@@ -1,0 +1,38 @@
+site_name: py-buzz documentation
+site_url: http://py-buzz.readthedocs.io/en/latest/
+repo_url: https://github.com/dusktreader/py-buzz
+docs_dir: source
+theme:
+  name: material
+  features:
+    - navigation.expand
+  pallete:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+nav:
+  - Home: index.md
+  - Features: features.md
+  - Reference: reference.md
+watch:
+  - ../buzz
+plugins:
+  search:
+    lang: en
+  mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        paths: [..]
+        options:
+          heading_level: 3
+          show_root_heading: true
+          separate_signature: true
+          show_signature_annotations: true
+          show_source: false
+          docstring_style: google

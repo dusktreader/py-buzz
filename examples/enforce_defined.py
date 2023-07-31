@@ -3,7 +3,8 @@ This example set demonstrates the use of the enforce_defined function.
 The enforce_defined function can be used to assert that a value is
 defined (not None).
 """
-from typing import Optional
+
+from __future__ import annotations
 
 from buzz import enforce_defined
 
@@ -18,7 +19,7 @@ def simple_enforce_defined():
     expression so that static type checker's won't complain if you attempt to
     access an attribute of a value that may not be undefined.
     """
-    val: Optional[str] = "test-value"
+    val: str | None = "test-value"
     val = enforce_defined(val)
     # I can safely access the `upper()` method of `val` now."
     val.upper()
@@ -36,7 +37,7 @@ class DemoException(Exception):
         return f"{super().__str__()} (with demo_arg={self.demo_arg} and demo_kwarg={self.demo_kwarg})"
 
 
-def get_val(defined=True) -> Optional[str]:
+def get_val(defined=True) -> str | None:
     if defined:
         return "test-value"
     else:
