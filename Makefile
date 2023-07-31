@@ -30,6 +30,16 @@ format: install
 	poetry run black ${PACKAGE_NAME}
 	poetry run isort ${PACKAGE_NAME}
 
+.PHONY: docs
+docs: install
+	cd docs
+	poetry run mkdocs build
+
+.PHONY: docs-serve
+docs-serve: install
+	cd docs
+	poetry run mkdocs serve
+
 .PHONY: clean
 clean:
 	@find . -iname '*.pyc' -delete

@@ -1,4 +1,4 @@
-name: dusky-python-ci
+name: Run QA Checks on Push
 
 on:
   push:
@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9']
+        python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - name: Install Poetry
+      run: pipx install poetry==1.4.2
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: get-poetry
-      run: pip install poetry==1.1.4
-    - name: check_quality
+    - name: Check Quality
       run: make qa

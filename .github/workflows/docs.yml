@@ -1,0 +1,35 @@
+name: build-docs
+
+# This action:
+#   - Is triggered when a file in the docs folder is pushed;
+#   - Build the documentation using Mkdocs;
+#   - Publish the documentation to GitHub Pages.
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+    types:
+      - closed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Set up Poetry
+        uses: Gr1N/setup-poetry@v8
+
+      - name: Build Sphinx documentation
+        run: make docs
+
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
