@@ -1,0 +1,1059 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="http://py-buzz.readthedocs.io/en/latest/features/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../reference/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.1, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>Features - py-buzz documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#features" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="py-buzz documentation" class="md-header__button md-logo" aria-label="py-buzz documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            py-buzz documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Features
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/dusktreader/py-buzz" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="py-buzz documentation" class="md-nav__button md-logo" aria-label="py-buzz documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    py-buzz documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/dusktreader/py-buzz" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Features
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-features" class="md-nav__link">
+    Main Features
+  </a>
+  
+    <nav class="md-nav" aria-label="Main Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise-exception-on-condition-failure" class="md-nav__link">
+    Raise exception on condition failure
+  </a>
+  
+    <nav class="md-nav" aria-label="Raise exception on condition failure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise-exception-if-value-is-not-defined" class="md-nav__link">
+    Raise exception if value is not defined
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-handling-context-manager" class="md-nav__link">
+    Exception handling context manager
+  </a>
+  
+    <nav class="md-nav" aria-label="Exception handling context manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class_1" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args_1" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs_1" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder_1" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle_exc_class" class="md-nav__link">
+    handle_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do_except" class="md-nav__link">
+    do_except
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do_else" class="md-nav__link">
+    do_else
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do_finally" class="md-nav__link">
+    do_finally
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-features" class="md-nav__link">
+    Additional Features
+  </a>
+  
+    <nav class="md-nav" aria-label="Additional Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check_expressions" class="md-nav__link">
+    check_expressions
+  </a>
+  
+    <nav class="md-nav" aria-label="check_expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class_2" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args_2" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs_2" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder_2" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reformat_exception" class="md-nav__link">
+    reformat_exception
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_traceback" class="md-nav__link">
+    get_traceback
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-buzz-base-class" class="md-nav__link">
+    The Buzz base class
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        Reference
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#main-features" class="md-nav__link">
+    Main Features
+  </a>
+  
+    <nav class="md-nav" aria-label="Main Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise-exception-on-condition-failure" class="md-nav__link">
+    Raise exception on condition failure
+  </a>
+  
+    <nav class="md-nav" aria-label="Raise exception on condition failure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise-exception-if-value-is-not-defined" class="md-nav__link">
+    Raise exception if value is not defined
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-handling-context-manager" class="md-nav__link">
+    Exception handling context manager
+  </a>
+  
+    <nav class="md-nav" aria-label="Exception handling context manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class_1" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args_1" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs_1" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder_1" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handle_exc_class" class="md-nav__link">
+    handle_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do_except" class="md-nav__link">
+    do_except
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do_else" class="md-nav__link">
+    do_else
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do_finally" class="md-nav__link">
+    do_finally
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-features" class="md-nav__link">
+    Additional Features
+  </a>
+  
+    <nav class="md-nav" aria-label="Additional Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#check_expressions" class="md-nav__link">
+    check_expressions
+  </a>
+  
+    <nav class="md-nav" aria-label="check_expressions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class_2" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args_2" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs_2" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder_2" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reformat_exception" class="md-nav__link">
+    reformat_exception
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_traceback" class="md-nav__link">
+    get_traceback
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-buzz-base-class" class="md-nav__link">
+    The Buzz base class
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="features">Features</h1>
+<h2 id="main-features">Main Features</h2>
+<p>There are a few main features of <code>py-buzz</code> that are noteworthy:</p>
+<h3 id="raise-exception-on-condition-failure">Raise exception on condition failure</h3>
+<p>The <code>py-buzz</code> package provides a function that checks a condition and raises
+an exception if it fails. This is nice, because you often find your self writing
+a lot of <code>if &lt;whatever&gt;: raise Exception(&lt;message&gt;)</code> throughout your code
+base. It's just a little easier with <code>py-buzz</code>:</p>
+<pre><code class="language-python"># Vanilla python
+if not some_condition():
+    raise Exception(&quot;some_condition failed&quot;)
+
+# With py-buzz
+require_condition(some_condition(), &quot;some_condition failed&quot;)
+</code></pre>
+<p>This is mostly just a bit of syntactic sugar, but it can make your code a bit more
+palletable. This is especially true in functions that need to check a lot of conditions
+before prior to executing their core logic.</p>
+<p>You may also specify the exception type that should be raised by passing it to the
+<code>raise_exc_class</code> parameter:</p>
+<pre><code class="language-python">require_condition(
+    some_condition(),
+    &quot;some_condition failed&quot;,
+    raise_exc_class=MyProjectError,
+)
+</code></pre>
+<p>In this case, a <code>MyProjectError</code> would be raised if the condition fails.</p>
+<p>There are a few special keyword argument parameters for the <code>require_condition()</code>
+function:</p>
+<h4 id="raise_exc_class">raise_exc_class</h4>
+<p>This just specifies the type of exception to raise if the condition fails.
+It defaults to <code>Exception</code>.</p>
+<h4 id="raise_args">raise_args</h4>
+<p>With this parameter, you can specify any positional arguments that should be passed
+to the raised exception <em>after the message</em>. Here is an example:</p>
+<pre><code class="language-python">
+class MyProjectError(Exception):
+    def __init__(self, message, init_arg1, init_arg2):
+        self.init_arg1 = init_arg1
+        self.init_arg2 = init_arg2
+
+require_condition(
+    some_condition(),
+    &quot;some_condition failed&quot;,
+    raise_exc_class=MyProjectError,
+    raise_args=[&quot;foo&quot;, &quot;bar&quot;],
+)
+</code></pre>
+<p>If the condition fails, <code>require_condition</code> will rais a <code>MyProjectError</code> initialized
+with positional args <code>init_arg1 == "foo"</code> and <code>init_arg2 == "bar"</code>.</p>
+<h4 id="raise_kwargs">raise_kwargs</h4>
+<p>Like the <code>raise_args</code> parameter, this one passes along a dictionary of keyword arguments
+to the newly raised exception:</p>
+<pre><code class="language-python">class MyProjectError(Exception):
+    def __init__(self, message, init_kwarg1=None, init_kwarg2=None):
+        self.init_kwarg1 = init_kwarg1
+        self.init_kwarg2 = init_kwarg2
+
+require_condition(
+    some_condition(),
+    &quot;some_condition failed&quot;,
+    raise_exc_class=MyProjectError,
+    raise_kwargs=dict(&quot;foo&quot;, &quot;bar&quot;),
+)
+</code></pre>
+<p>If the condition fails, <code>require_condition</code> will rais a <code>MyProjectError</code> initialized
+with keyword arguments <code>init_kwarg1 == "foo"</code> and <code>init_kwarg2 == "bar"</code>.</p>
+<h4 id="exc_builder">exc_builder</h4>
+<p>If the exception to be raised with the <code>raise_exc_class</code> option is a non-standard
+exception type that does not take a string message as its first argument, you will need
+to use an alternative exception builder that knows how to map the exception parts to the
+correct place.</p>
+<p>For example, <a href="https://fastapi.tiangolo.com/">FastAPI</a>'s <code>HTTPException</code> takes a
+<code>status_code</code> as its first positional argument and expects that any message details are
+passed as a keyword argument named <code>details</code>.</p>
+<p>In this case, you need to define a builder function to construct the exception and pass
+it to the <code>exc_builder</code> option:</p>
+<pre><code class="language-python">class WeirdArgsError(Exception):
+    def __init__(self, weird_arg, detail=&quot;&quot;):
+        self.weird_arg = weird_arg
+        self.detail = detail
+
+def weird_builder(exc_class, message, *args, **kwargs):
+    return exc_class(*args, detail=message, **kwargs)
+
+require_condition(
+    some_condition(),
+    &quot;some_condition failed&quot;,
+    raise_exc_class=WeirdArgsError,
+    raise_kwargs=dict(&quot;foo&quot;, &quot;bar&quot;),
+    exc_builder=weird_builder,
+)
+</code></pre>
+<h3 id="raise-exception-if-value-is-not-defined">Raise exception if value is not defined</h3>
+<p>The <code>py-buzz</code> package provides a function that checks a value and raises an exception if
+it is not defined. This is especially useful for both checking if a variable passed to a
+function is defined and also to satisfy static type checkers when you want to call a
+method on the object.</p>
+<pre><code class="language-python">    # Vanilla python
+    def vanilla(val: Optional[str]):
+        if val is None:
+            raise Exception(&quot;Received an undefined value!&quot;)
+        return val.upper()
+
+    # With py-buzz
+    def buzzy(val: Optional[str]):
+        val = enforce_defined(val)
+        return val.upper()
+</code></pre>
+<p>This is also mostly just syntactic sugar, but it save you a few lines of code and is
+still very expressive. It might also be useful if you need to supply some more context
+in your error:</p>
+<pre><code class="language-python">def neopolitan(val: Optional[str]):
+    val = enforce_defined(
+        val,
+        &quot;Received an undefined value!&quot;
+        raise_exc_class=MyProjectError,
+        raise_args=[&quot;foo&quot;, &quot;bar&quot;],
+        raise_kwargs=dict(baz=&quot;QUX&quot;),
+    )
+    return val
+</code></pre>
+<p>In this case, a <code>MyProjectError</code> with be raised with positional arguments of <code>"foo"</code> and
+<code>"bar"</code> and a keyword argument of <code>baz="QUX"</code> if the value passed in is not defined.</p>
+<p>By default, <code>enforce_defined()</code> raises an exception with a basic message saying that the
+value was not defined. However, you may pass in a custom message with the <code>message</code>
+keyword argument. Like <code>require_condition()</code>, the <code>enforce_defined()</code> function also
+accepts the <code>raise_exc_class</code>, <code>raise_args</code>, <code>raise_kwargs</code>, and <code>exc_builder</code> keyword
+arguments.</p>
+<h3 id="exception-handling-context-manager">Exception handling context manager</h3>
+<p>The <code>py-buzz</code> package also provides a context manager that catches any exceptions that
+might be raised while executing a bit of code. The caught exceptions are re-packaged and
+raised as another exception type. The message attahed to the new expression captures the
+initial exception's message:</p>
+<pre><code class="language-python"># Vanilla python
+try:
+    this_could_fail()
+    this_could_also_fail()
+    this_will_definitely_fail()
+except Exception as err:
+    raise RuntimeError(f&quot;Something didn't work -- Error: {err}&quot;)
+
+# With py-buzz
+with handle_errors(&quot;Something didn't work&quot;, raise_exc_class=RuntimeError):
+    this_could_fail()
+    this_could_also_fail()
+    this_will_definitely_fail()
+</code></pre>
+<p>This actually can save a bit of code and makes things a bit cleaner. It is also a
+implements pattern that tends to get repeated over and over again. If you need to do
+very complicated things while handling an exception, you should use a standard try-
+catch block. However, there are some extra bells and whistles on <code>handle_errors</code> that
+can be used by passing additional keyword arguments to the function.</p>
+<h4 id="raise_exc_class_1">raise_exc_class</h4>
+<p>This parameter is the same as for <code>require_condition()</code>. However, if you pass <code>None</code> it
+<em>will not raise a new exception</em>. Instead, <code>handle_errors</code> will process the <code>do_except</code>,
+<code>do_else</code>, and <code>do_finally</code> methods and then continue. This effectively absorbs any
+exceptions that occur in the context. However <em>the context is immediately exited after
+the first raised exception</em>.</p>
+<h4 id="raise_args_1">raise_args</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="raise_kwargs_1">raise_kwargs</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="exc_builder_1">exc_builder</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="handle_exc_class">handle_exc_class</h4>
+<p>This option describes the type of exception that will be handled by this context
+manager. Any instance of the option's exception (or any of it's derived exception
+classes) will be caught. This is very useful if you only want to handle a certain
+category of exceptions and let the others rise up un-altered:</p>
+<pre><code class="language-python">with handle_errors(&quot;Something went wrong&quot;, handle_exc_class=MyProjectError):
+   some_function_that_could_raise_mine_or_other_errors()
+</code></pre>
+<p>Exception instances that do not fall within the inheritance tree of the
+<code>handle_exc_class</code> option <em>will not be handled at all</em>. It is worth noting that the
+<code>do_except</code> task will <em>not</em> be executed if another exception type occurs. However,
+the <code>do_else</code> and <code>do_finally</code> tasks will be executed normally.</p>
+<h4 id="do_except">do_except</h4>
+<p>Often, it is useful to do some particular things when an exception is caught.  Most
+frequently this includes logging the exception. The <code>do_except</code> optional argument
+provides the ability to do this. The <code>do_except</code> option should be a callable function
+that accepts a paramter of type <code>DoExceptParams</code> that can be imported from <code>buzz</code>.
+This <code>dataclass</code> has three attributes:</p>
+<ul>
+<li>err: The caught exception itself</li>
+<li>final_message: A message describing the error (This will be the formatted error message)</li>
+<li>trace: A stack trace</li>
+</ul>
+<p>This option might be invoked something like this:</p>
+<pre><code class="language-python">def log_error(dep: DoExceptParams):
+    logger.error(dep.final_message)
+    logger.error('\n'.join(dep.trace))
+
+with handle_errors(&quot;Something went wrong&quot;, do_except=log_error):
+    some_dangerous_function()
+</code></pre>
+<h4 id="do_else">do_else</h4>
+<p>This option describes some action that should happen if no exceptions are encountered.
+This option is less useful than <code>do_except</code> but it may useful in some circumstances.
+This option should be a callable that takes no arguments:</p>
+<pre><code class="language-python">    def log_yay():
+        logger.info(&quot;we did it!&quot;)
+
+    with handle_errors(&quot;Something went wrong&quot;, do_else=log_yay):
+        some_not_dangerous_function()
+</code></pre>
+<h4 id="do_finally">do_finally</h4>
+<p>This option describes some action that should happen at the end of the context
+regardless to whether an exception occurred or not. This is a useful feature if you need
+to do some cleanup in either case. It should take a callable that receives no arguments:</p>
+<pre><code class="language-python">def close_resource():
+    resource.close()
+
+with handle_errors(&quot;Something went wrong&quot;, do_finally=close_resource):
+    some_dangerous_function_that_uses_resource(resource)
+</code></pre>
+<h2 id="additional-features">Additional Features</h2>
+<hr />
+<h3 id="check_expressions">check_expressions</h3>
+<p>The <code>check_expressions</code> context manager is used to check multiple expressions inside of
+a context manager. Each expression is checked and each failing expression is reported at
+the end in a raised exception. If no expressions fail in the block, no exception is
+raised.</p>
+<pre><code class="language-python">with check_expressions(main_message='there will be errors') as check:
+    check(True)
+    check(False)
+    check(1 == 2, &quot;one is not two&quot;)
+    check('cooooooool', 'not a problem')
+    check(0, &quot;zero is still zero&quot;)
+</code></pre>
+<p>If the above code was executed, an exception would be raised that looks like this:</p>
+<pre><code>Exception: Checked expressions failed: there will be errors
+   2: 2nd expression failed
+   3: one is not two
+   5: zero is still zero
+</code></pre>
+<p>The <code>check_expressions()</code> also accepts some keyword arguments:</p>
+<h4 id="raise_exc_class_2">raise_exc_class</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="raise_args_2">raise_args</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="raise_kwargs_2">raise_kwargs</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="exc_builder_2">exc_builder</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h3 id="reformat_exception">reformat_exception</h3>
+<p>This method is used internally by the <code>handle_errors</code> context manager.  However, it is
+sometimes useful in other circumstances. It simply allows you to wrap an exception
+message in a more informative block of text:</p>
+<pre><code class="language-python">try:
+    raise ValueError(&quot;I didn't like that&quot;)
+except Exception as err:
+    print(reformat_exception(&quot;welp...that didn't work&quot;, err))
+</code></pre>
+<p>The above block would result in output like:</p>
+<pre><code>&gt; welp...that didn't work -- ValueError: I didn't like that
+</code></pre>
+<h3 id="get_traceback">get_traceback</h3>
+<p>This function is just a tool to fetch the traceback for the current function. It does
+this by fetching it out of <code>sys.exc_info</code>. It is used internally with Buzz but could
+be useful in other contexts.</p>
+<h2 id="the-buzz-base-class">The Buzz base class</h2>
+<p>All of the methods described above are attached to the special exception class, <code>Buzz</code>.
+You could, for example, use this as the base exception type for your project and then
+access all the functions of <code>py-buzz</code> from that exception type:</p>
+<pre><code class="language-python">from buzz import Buzz
+
+class MyProjectError(Buzz):
+    pass
+
+MyProjectError.require_condition(check_vals(), &quot;Value check failed!&quot;)
+</code></pre>
+<p>The code above would raise a <code>MyProjectError</code> with the supplied message if the condition
+expression was falsey.</p>
+<p>The <code>Buzz</code> base class provides the same sort of access for <code>handle_errors</code>,
+<code>enforce_defined</code>, and <code>check_expressions</code>.</p>
+<p>Check out the examples for more.</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
