@@ -1,15 +1,12 @@
-name: build-docs
+name: Build Documentation
 
-# This action:
-#   - Is triggered when a file in the docs folder is pushed;
-#   - Build the documentation using Mkdocs;
-#   - Publish the documentation to GitHub Pages.
 on:
   pull_request:
     paths:
       - 'docs/**'
     types:
       - closed
+
 jobs:
   build:
     runs-on: ubuntu-latest
