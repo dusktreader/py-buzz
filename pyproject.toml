@@ -5,7 +5,13 @@ description = "\"That's not flying, it's falling with style\": Exceptions with e
 authors = ["Tucker Beck <tucker.beck@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+homepage = "https://github.com/dusktreader/py-buzz"
+repository = "https://github.com/dusktreader/py-buzz"
+documentation = "https://dusktreader.github.io/py-buzz/"
 packages = [{include = "buzz"}]
+
+[tool.poetry.urls]
+CHANGELOG = "https://github.com/dusktreader/py-buzz/blob/master/CHANGELOG.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"

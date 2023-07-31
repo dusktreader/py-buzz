@@ -11,15 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
-    - name: get-poetry
-      run: pip install poetry==1.1.4
-    - name: login
+
+    - name: Set up Poetry
+      uses: Gr1N/setup-poetry@v8
+
+    - name: Log in to pypi
       run: poetry config http-basic.pypi dusktreader ${{ secrets.PYPI_PASSWORD }}
-    - name: build
+
+    - name: Build package
       run: poetry build
-    - name: publish
+
+    - name: Publish package
       run: poetry publish
