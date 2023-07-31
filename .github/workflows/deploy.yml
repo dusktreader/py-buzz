@@ -1,4 +1,4 @@
-name: dusky-python-cd
+name: deploy-on-tag
 
 on:
   push:

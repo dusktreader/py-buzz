@@ -1,4 +1,4 @@
-name: Build Documentation
+name: build-docs
 
 # This action:
 #   - Is triggered when a file in the docs folder is pushed;

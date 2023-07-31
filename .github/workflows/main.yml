@@ -1,4 +1,4 @@
-name: dusky-python-ci
+name: qa-checks-on-push
 
 on:
   push:
