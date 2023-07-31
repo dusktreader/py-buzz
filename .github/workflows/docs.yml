@@ -23,8 +23,9 @@ jobs:
       - name: Set up Poetry
         uses: Gr1N/setup-poetry@v8
 
-      - name: Build Sphinx documentation
-        run: make docs
+      - name: Build Documentation
+        run: |
+          make docs
 
       - name: Deploy documentation
         uses: peaceiris/actions-gh-pages@v3
