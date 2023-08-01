@@ -4,7 +4,7 @@ _That's not flying, it's falling with style_
 
 Take Exceptions to infinity...and beyond with ``py-buzz``!
 
-[![asciicast](https://asciinema.org/a/CS8ehx8MKvf8ra21UdR1dEGTB.svg)](https://asciinema.org/a/CS8ehx8MKvf8ra21UdR1dEGTB)
+[![py-buzz-demo](images/py-buzz-demo.gif)
 
 
 ## Overview
