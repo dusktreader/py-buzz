@@ -725,7 +725,7 @@
 
 
 </h4>
-<div class="highlight"><pre><span></span><code><span class="n">check_expressions</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="n">check_expressions</span><span class="p">(</span>
     <span class="n">main_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -777,10 +777,10 @@ main message and a description of each failing expression.</p>
           <td>
             <div class="doc-md-description">
               <p>The exception type to raise with the constructed message if the expression is falsey.</p>
-<pre><code>           Defaults to Exception.
+<div class="codehilite"><pre><span></span><code>           Defaults to Exception.
 
            May not be None.
-</code></pre>
+</code></pre></div>
             </div>
           </td>
           <td>
@@ -822,17 +822,18 @@ main message and a description of each failing expression.</p>
 <details class="example" open>
   <summary>Example</summary>
   <p>The following is an example usage::</p>
-<pre><code>with check_expressions("Something wasn't right") as check:
+<div class="codehilite"><pre><span></span><code>with check_expressions(&quot;Something wasn&#39;t right&quot;) as check:
     check(a is not None)
-    check(a &gt; b, "a must be greater than b")
-    check(a != 1, "a must not equal 1")
-    check(b &gt;= 0, "b must not be negative")
-</code></pre>
+    check(a &gt; b, &quot;a must be greater than b&quot;)
+    check(a != 1, &quot;a must not equal 1&quot;)
+    check(b &gt;= 0, &quot;b must not be negative&quot;)
+</code></pre></div>
+
 <p>This would render output like::</p>
-<pre><code>Checked expressions failed: Something wasn't right:
+<div class="codehilite"><pre><span></span><code>Checked expressions failed: Something wasn&#39;t right:
   1: first expressoin failed
   3: a must not equal 1
-</code></pre>
+</code></pre></div>
 </details>
   </div>
 
@@ -848,7 +849,7 @@ main message and a description of each failing expression.</p>
 
 
 </h4>
-<div class="highlight"><pre><span></span><code><span class="n">default_exc_builder</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="n">default_exc_builder</span><span class="p">(</span>
     <span class="n">exc</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">TExc</span><span class="p">],</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TExc</span>
 </code></pre></div>
@@ -873,7 +874,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="highlight"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Value was not defined (None)&quot;</span><span class="p">,</span>
     <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
@@ -951,9 +952,9 @@ they will need a different exception builder.</p>
           <td>
             <div class="doc-md-description">
               <p>The exception type to raise with the constructed message if the expression is falsey.</p>
-<pre><code>          Defaults to Exception.
+<div class="codehilite"><pre><span></span><code>          Defaults to Exception.
           May not be None.
-</code></pre>
+</code></pre></div>
             </div>
           </td>
           <td>
@@ -1006,7 +1007,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="highlight"><pre><span></span><code><span class="n">get_traceback</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span>
+<div class="codehilite"><pre><span></span><code><span class="n">get_traceback</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">types</span><span class="o">.</span><span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1027,7 +1028,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="highlight"><pre><span></span><code><span class="n">handle_errors</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="n">handle_errors</span><span class="p">(</span>
     <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1083,11 +1084,11 @@ they will need a different exception builder.</p>
             <div class="doc-md-description">
               <p>The exception type to raise with the constructed message if an exception is caught in the
                managed context.</p>
-<pre><code>           Defaults to Exception.
+<div class="codehilite"><pre><span></span><code><span class="w">           </span><span class="n">Defaults</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Exception</span><span class="p">.</span>
 
-           If ``None`` is passed, no new exception will be raised and only the ``do_except``,
-           ``do_else``, and ``do_finally`` functions will be called.
-</code></pre>
+<span class="w">           </span><span class="k">If</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="k">None</span><span class="n n-Quoted">``</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">passed</span><span class="p">,</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">do_except</span><span class="n n-Quoted">``</span><span class="p">,</span>
+<span class="w">           </span><span class="n n-Quoted">``</span><span class="n">do_else</span><span class="n n-Quoted">``</span><span class="p">,</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">do_finally</span><span class="n n-Quoted">``</span><span class="w"> </span><span class="n">functions</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="p">.</span>
+</code></pre></div>
             </div>
           </td>
           <td>
@@ -1191,9 +1192,9 @@ they will need a different exception builder.</p>
 <details class="example" open>
   <summary>Example</summary>
   <p>The following is an example usage::</p>
-<pre><code>with handle_errors("It didn't work"):
+<div class="codehilite"><pre><span></span><code>with handle_errors(&quot;It didn&#39;t work&quot;):
     some_code_that_might_raise_an_exception()
-</code></pre>
+</code></pre></div>
 </details>
   </div>
 
@@ -1209,7 +1210,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="highlight"><pre><span></span><code><span class="n">reformat_exception</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+<div class="codehilite"><pre><span></span><code><span class="n">reformat_exception</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1230,7 +1231,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="highlight"><pre><span></span><code><span class="n">require_condition</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="n">require_condition</span><span class="p">(</span>
     <span class="n">expr</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
@@ -1413,7 +1414,7 @@ they will need a different exception builder.</p>
 
 
 </h5>
-<div class="highlight"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1438,7 +1439,7 @@ they will need a different exception builder.</p>
   </span>
 
 </h5>
-<div class="highlight"><pre><span></span><code><span class="n">check_expressions</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">check_expressions</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1463,7 +1464,7 @@ they will need a different exception builder.</p>
   </span>
 
 </h5>
-<div class="highlight"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span>
     <span class="n">value</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span>
@@ -1492,7 +1493,7 @@ they will need a different exception builder.</p>
   </span>
 
 </h5>
-<div class="highlight"><pre><span></span><code><span class="n">get_traceback</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">get_traceback</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1517,7 +1518,7 @@ they will need a different exception builder.</p>
   </span>
 
 </h5>
-<div class="highlight"><pre><span></span><code><span class="n">handle_errors</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">re_raise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">handle_errors</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">re_raise</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1546,7 +1547,7 @@ they will need a different exception builder.</p>
   </span>
 
 </h5>
-<div class="highlight"><pre><span></span><code><span class="n">require_condition</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">require_condition</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">

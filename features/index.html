@@ -743,24 +743,26 @@
 an exception if it fails. This is nice, because you often find your self writing
 a lot of <code>if &lt;whatever&gt;: raise Exception(&lt;message&gt;)</code> throughout your code
 base. It's just a little easier with <code>py-buzz</code>:</p>
-<pre><code class="language-python"># Vanilla python
-if not some_condition():
-    raise Exception(&quot;some_condition failed&quot;)
+<div class="codehilite"><pre><span></span><code><span class="c1"># Vanilla python</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">some_condition</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;some_condition failed&quot;</span><span class="p">)</span>
 
-# With py-buzz
-require_condition(some_condition(), &quot;some_condition failed&quot;)
-</code></pre>
+<span class="c1"># With py-buzz</span>
+<span class="n">require_condition</span><span class="p">(</span><span class="n">some_condition</span><span class="p">(),</span> <span class="s2">&quot;some_condition failed&quot;</span><span class="p">)</span>
+</code></pre></div>
+
 <p>This is mostly just a bit of syntactic sugar, but it can make your code a bit more
 palatable. This is especially true in functions that need to check a lot of conditions
 before prior to executing their core logic.</p>
 <p>You may also specify the exception type that should be raised by passing it to the
 <code>raise_exc_class</code> parameter:</p>
-<pre><code class="language-python">require_condition(
-    some_condition(),
-    &quot;some_condition failed&quot;,
-    raise_exc_class=MyProjectError,
-)
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">require_condition</span><span class="p">(</span>
+    <span class="n">some_condition</span><span class="p">(),</span>
+    <span class="s2">&quot;some_condition failed&quot;</span><span class="p">,</span>
+    <span class="n">raise_exc_class</span><span class="o">=</span><span class="n">MyProjectError</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
 <p>In this case, a <code>MyProjectError</code> would be raised if the condition fails.</p>
 <p>There are a few special keyword argument parameters for the <code>require_condition()</code>
 function:</p>
@@ -770,36 +772,37 @@ It defaults to <code>Exception</code>.</p>
 <h4 id="raise_args">raise_args</h4>
 <p>With this parameter, you can specify any positional arguments that should be passed
 to the raised exception <em>after the message</em>. Here is an example:</p>
-<pre><code class="language-python">
-class MyProjectError(Exception):
-    def __init__(self, message, init_arg1, init_arg2):
-        self.init_arg1 = init_arg1
-        self.init_arg2 = init_arg2
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">MyProjectError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">init_arg1</span><span class="p">,</span> <span class="n">init_arg2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_arg1</span> <span class="o">=</span> <span class="n">init_arg1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_arg2</span> <span class="o">=</span> <span class="n">init_arg2</span>
 
-require_condition(
-    some_condition(),
-    &quot;some_condition failed&quot;,
-    raise_exc_class=MyProjectError,
-    raise_args=[&quot;foo&quot;, &quot;bar&quot;],
-)
-</code></pre>
+<span class="n">require_condition</span><span class="p">(</span>
+    <span class="n">some_condition</span><span class="p">(),</span>
+    <span class="s2">&quot;some_condition failed&quot;</span><span class="p">,</span>
+    <span class="n">raise_exc_class</span><span class="o">=</span><span class="n">MyProjectError</span><span class="p">,</span>
+    <span class="n">raise_args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div>
+
 <p>If the condition fails, <code>require_condition</code> will rais a <code>MyProjectError</code> initialized
 with positional args <code>init_arg1 == "foo"</code> and <code>init_arg2 == "bar"</code>.</p>
 <h4 id="raise_kwargs">raise_kwargs</h4>
 <p>Like the <code>raise_args</code> parameter, this one passes along a dictionary of keyword arguments
 to the newly raised exception:</p>
-<pre><code class="language-python">class MyProjectError(Exception):
-    def __init__(self, message, init_kwarg1=None, init_kwarg2=None):
-        self.init_kwarg1 = init_kwarg1
-        self.init_kwarg2 = init_kwarg2
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">MyProjectError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">init_kwarg1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init_kwarg2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_kwarg1</span> <span class="o">=</span> <span class="n">init_kwarg1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_kwarg2</span> <span class="o">=</span> <span class="n">init_kwarg2</span>
 
-require_condition(
-    some_condition(),
-    &quot;some_condition failed&quot;,
-    raise_exc_class=MyProjectError,
-    raise_kwargs=dict(&quot;foo&quot;, &quot;bar&quot;),
-)
-</code></pre>
+<span class="n">require_condition</span><span class="p">(</span>
+    <span class="n">some_condition</span><span class="p">(),</span>
+    <span class="s2">&quot;some_condition failed&quot;</span><span class="p">,</span>
+    <span class="n">raise_exc_class</span><span class="o">=</span><span class="n">MyProjectError</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</code></pre></div>
+
 <p>If the condition fails, <code>require_condition</code> will rais a <code>MyProjectError</code> initialized
 with keyword arguments <code>init_kwarg1 == "foo"</code> and <code>init_kwarg2 == "bar"</code>.</p>
 <h4 id="exc_builder">exc_builder</h4>
@@ -812,51 +815,54 @@ correct place.</p>
 passed as a keyword argument named <code>details</code>.</p>
 <p>In this case, you need to define a builder function to construct the exception and pass
 it to the <code>exc_builder</code> option:</p>
-<pre><code class="language-python">class WeirdArgsError(Exception):
-    def __init__(self, weird_arg, detail=&quot;&quot;):
-        self.weird_arg = weird_arg
-        self.detail = detail
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">WeirdArgsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weird_arg</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weird_arg</span> <span class="o">=</span> <span class="n">weird_arg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="o">=</span> <span class="n">detail</span>
 
-def weird_builder(exc_class, message, *args, **kwargs):
-    return exc_class(*args, detail=message, **kwargs)
+<span class="k">def</span> <span class="nf">weird_builder</span><span class="p">(</span><span class="n">exc_class</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">exc_class</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-require_condition(
-    some_condition(),
-    &quot;some_condition failed&quot;,
-    raise_exc_class=WeirdArgsError,
-    raise_kwargs=dict(&quot;foo&quot;, &quot;bar&quot;),
-    exc_builder=weird_builder,
-)
-</code></pre>
+<span class="n">require_condition</span><span class="p">(</span>
+    <span class="n">some_condition</span><span class="p">(),</span>
+    <span class="s2">&quot;some_condition failed&quot;</span><span class="p">,</span>
+    <span class="n">raise_exc_class</span><span class="o">=</span><span class="n">WeirdArgsError</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">),</span>
+    <span class="n">exc_builder</span><span class="o">=</span><span class="n">weird_builder</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
 <h3 id="raise-exception-if-value-is-not-defined">Raise exception if value is not defined</h3>
 <p>The <code>py-buzz</code> package provides a function that checks a value and raises an exception if
 it is not defined. This is especially useful for both checking if a variable passed to a
 function is defined and also to satisfy static type checkers when you want to call a
 method on the object.</p>
-<pre><code class="language-python">    # Vanilla python
-    def vanilla(val: Optional[str]):
-        if val is None:
-            raise Exception(&quot;Received an undefined value!&quot;)
-        return val.upper()
+<div class="codehilite"><pre><span></span><code>    <span class="c1"># Vanilla python</span>
+    <span class="k">def</span> <span class="nf">vanilla</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Received an undefined value!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
-    # With py-buzz
-    def buzzy(val: Optional[str]):
-        val = enforce_defined(val)
-        return val.upper()
-</code></pre>
+    <span class="c1"># With py-buzz</span>
+    <span class="k">def</span> <span class="nf">buzzy</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">enforce_defined</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</code></pre></div>
+
 <p>This is also mostly just syntactic sugar, but it save you a few lines of code and is
 still very expressive. It might also be useful if you need to supply some more context
 in your error:</p>
-<pre><code class="language-python">def neopolitan(val: Optional[str]):
-    val = enforce_defined(
-        val,
-        &quot;Received an undefined value!&quot;
-        raise_exc_class=MyProjectError,
-        raise_args=[&quot;foo&quot;, &quot;bar&quot;],
-        raise_kwargs=dict(baz=&quot;QUX&quot;),
-    )
-    return val
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">neopolitan</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">enforce_defined</span><span class="p">(</span>
+        <span class="n">val</span><span class="p">,</span>
+        <span class="s2">&quot;Received an undefined value!&quot;</span>
+        <span class="n">raise_exc_class</span><span class="o">=</span><span class="n">MyProjectError</span><span class="p">,</span>
+        <span class="n">raise_args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">],</span>
+        <span class="n">raise_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">baz</span><span class="o">=</span><span class="s2">&quot;QUX&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span>
+</code></pre></div>
+
 <p>In this case, a <code>MyProjectError</code> with be raised with positional arguments of <code>"foo"</code> and
 <code>"bar"</code> and a keyword argument of <code>baz="QUX"</code> if the value passed in is not defined.</p>
 <p>By default, <code>enforce_defined()</code> raises an exception with a basic message saying that the
@@ -869,20 +875,21 @@ arguments.</p>
 might be raised while executing a bit of code. The caught exceptions are re-packaged and
 raised as another exception type. The message attahed to the new expression captures the
 initial exception's message:</p>
-<pre><code class="language-python"># Vanilla python
-try:
-    this_could_fail()
-    this_could_also_fail()
-    this_will_definitely_fail()
-except Exception as err:
-    raise RuntimeError(f&quot;Something didn't work -- Error: {err}&quot;)
+<div class="codehilite"><pre><span></span><code><span class="c1"># Vanilla python</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">this_could_fail</span><span class="p">()</span>
+    <span class="n">this_could_also_fail</span><span class="p">()</span>
+    <span class="n">this_will_definitely_fail</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Something didn&#39;t work -- Error: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-# With py-buzz
-with handle_errors(&quot;Something didn't work&quot;, raise_exc_class=RuntimeError):
-    this_could_fail()
-    this_could_also_fail()
-    this_will_definitely_fail()
-</code></pre>
+<span class="c1"># With py-buzz</span>
+<span class="k">with</span> <span class="n">handle_errors</span><span class="p">(</span><span class="s2">&quot;Something didn&#39;t work&quot;</span><span class="p">,</span> <span class="n">raise_exc_class</span><span class="o">=</span><span class="ne">RuntimeError</span><span class="p">):</span>
+    <span class="n">this_could_fail</span><span class="p">()</span>
+    <span class="n">this_could_also_fail</span><span class="p">()</span>
+    <span class="n">this_will_definitely_fail</span><span class="p">()</span>
+</code></pre></div>
+
 <p>This actually can save a bit of code and makes things a bit cleaner. It is also a
 implements pattern that tends to get repeated over and over again. If you need to do
 very complicated things while handling an exception, you should use a standard try-
@@ -905,9 +912,10 @@ the first raised exception</em>.</p>
 manager. Any instance of the option's exception (or any of it's derived exception
 classes) will be caught. This is very useful if you only want to handle a certain
 category of exceptions and let the others rise up un-altered:</p>
-<pre><code class="language-python">with handle_errors(&quot;Something went wrong&quot;, handle_exc_class=MyProjectError):
-   some_function_that_could_raise_mine_or_other_errors()
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">handle_errors</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">,</span> <span class="n">handle_exc_class</span><span class="o">=</span><span class="n">MyProjectError</span><span class="p">):</span>
+   <span class="n">some_function_that_could_raise_mine_or_other_errors</span><span class="p">()</span>
+</code></pre></div>
+
 <p>Exception instances that do not fall within the inheritance tree of the
 <code>handle_exc_class</code> option <em>will not be handled at all</em>. It is worth noting that the
 <code>do_except</code> task will <em>not</em> be executed if another exception type occurs. However,
@@ -924,33 +932,36 @@ This <code>dataclass</code> has three attributes:</p>
 <li>trace: A stack trace</li>
 </ul>
 <p>This option might be invoked something like this:</p>
-<pre><code class="language-python">def log_error(dep: DoExceptParams):
-    logger.error(dep.final_message)
-    logger.error('\n'.join(dep.trace))
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">log_error</span><span class="p">(</span><span class="n">dep</span><span class="p">:</span> <span class="n">DoExceptParams</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">dep</span><span class="o">.</span><span class="n">final_message</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dep</span><span class="o">.</span><span class="n">trace</span><span class="p">))</span>
 
-with handle_errors(&quot;Something went wrong&quot;, do_except=log_error):
-    some_dangerous_function()
-</code></pre>
+<span class="k">with</span> <span class="n">handle_errors</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">,</span> <span class="n">do_except</span><span class="o">=</span><span class="n">log_error</span><span class="p">):</span>
+    <span class="n">some_dangerous_function</span><span class="p">()</span>
+</code></pre></div>
+
 <h4 id="do_else">do_else</h4>
 <p>This option describes some action that should happen if no exceptions are encountered.
 This option is less useful than <code>do_except</code> but it may useful in some circumstances.
 This option should be a callable that takes no arguments:</p>
-<pre><code class="language-python">    def log_yay():
-        logger.info(&quot;we did it!&quot;)
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">log_yay</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;we did it!&quot;</span><span class="p">)</span>
 
-    with handle_errors(&quot;Something went wrong&quot;, do_else=log_yay):
-        some_not_dangerous_function()
-</code></pre>
+    <span class="k">with</span> <span class="n">handle_errors</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">,</span> <span class="n">do_else</span><span class="o">=</span><span class="n">log_yay</span><span class="p">):</span>
+        <span class="n">some_not_dangerous_function</span><span class="p">()</span>
+</code></pre></div>
+
 <h4 id="do_finally">do_finally</h4>
 <p>This option describes some action that should happen at the end of the context
 regardless to whether an exception occurred or not. This is a useful feature if you need
 to do some cleanup in either case. It should take a callable that receives no arguments:</p>
-<pre><code class="language-python">def close_resource():
-    resource.close()
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">close_resource</span><span class="p">():</span>
+    <span class="n">resource</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-with handle_errors(&quot;Something went wrong&quot;, do_finally=close_resource):
-    some_dangerous_function_that_uses_resource(resource)
-</code></pre>
+<span class="k">with</span> <span class="n">handle_errors</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">,</span> <span class="n">do_finally</span><span class="o">=</span><span class="n">close_resource</span><span class="p">):</span>
+    <span class="n">some_dangerous_function_that_uses_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+</code></pre></div>
+
 <h2 id="additional-features">Additional Features</h2>
 <hr />
 <h3 id="check_expressions">check_expressions</h3>
@@ -958,19 +969,21 @@ with handle_errors(&quot;Something went wrong&quot;, do_finally=close_resource):
 a context manager. Each expression is checked and each failing expression is reported at
 the end in a raised exception. If no expressions fail in the block, no exception is
 raised.</p>
-<pre><code class="language-python">with check_expressions(main_message='there will be errors') as check:
-    check(True)
-    check(False)
-    check(1 == 2, &quot;one is not two&quot;)
-    check('cooooooool', 'not a problem')
-    check(0, &quot;zero is still zero&quot;)
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">check_expressions</span><span class="p">(</span><span class="n">main_message</span><span class="o">=</span><span class="s1">&#39;there will be errors&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">check</span><span class="p">:</span>
+    <span class="n">check</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">check</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">check</span><span class="p">(</span><span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;one is not two&quot;</span><span class="p">)</span>
+    <span class="n">check</span><span class="p">(</span><span class="s1">&#39;cooooooool&#39;</span><span class="p">,</span> <span class="s1">&#39;not a problem&#39;</span><span class="p">)</span>
+    <span class="n">check</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;zero is still zero&quot;</span><span class="p">)</span>
+</code></pre></div>
+
 <p>If the above code was executed, an exception would be raised that looks like this:</p>
-<pre><code>Exception: Checked expressions failed: there will be errors
-   2: 2nd expression failed
-   3: one is not two
-   5: zero is still zero
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="n">Exception</span><span class="o">:</span><span class="w"> </span><span class="n">Checked</span><span class="w"> </span><span class="n">expressions</span><span class="w"> </span><span class="n">failed</span><span class="o">:</span><span class="w"> </span><span class="n">there</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">errors</span>
+<span class="w">   </span><span class="mi">2</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="n">nd</span><span class="w"> </span><span class="n">expression</span><span class="w"> </span><span class="n">failed</span>
+<span class="w">   </span><span class="mi">3</span><span class="o">:</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">two</span>
+<span class="w">   </span><span class="mi">5</span><span class="o">:</span><span class="w"> </span><span class="n">zero</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">still</span><span class="w"> </span><span class="n">zero</span>
+</code></pre></div>
+
 <p>The <code>check_expressions()</code> also accepts some keyword arguments:</p>
 <h4 id="raise_exc_class_2">raise_exc_class</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
@@ -984,14 +997,16 @@ raised.</p>
 <p>This method is used internally by the <code>handle_errors</code> context manager.  However, it is
 sometimes useful in other circumstances. It simply allows you to wrap an exception
 message in a more informative block of text:</p>
-<pre><code class="language-python">try:
-    raise ValueError(&quot;I didn't like that&quot;)
-except Exception as err:
-    print(reformat_exception(&quot;welp...that didn't work&quot;, err))
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;I didn&#39;t like that&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">reformat_exception</span><span class="p">(</span><span class="s2">&quot;welp...that didn&#39;t work&quot;</span><span class="p">,</span> <span class="n">err</span><span class="p">))</span>
+</code></pre></div>
+
 <p>The above block would result in output like:</p>
-<pre><code>&gt; welp...that didn't work -- ValueError: I didn't like that
-</code></pre>
+<div class="codehilite"><pre><span></span><code>&gt; welp...that didn&#39;t work -- ValueError: I didn&#39;t like that
+</code></pre></div>
+
 <h3 id="get_traceback">get_traceback</h3>
 <p>This function is just a tool to fetch the traceback for the current function. It does
 this by fetching it out of <code>sys.exc_info</code>. It is used internally with Buzz but could
@@ -1000,13 +1015,14 @@ be useful in other contexts.</p>
 <p>All of the methods described above are attached to the special exception class, <code>Buzz</code>.
 You could, for example, use this as the base exception type for your project and then
 access all the functions of <code>py-buzz</code> from that exception type:</p>
-<pre><code class="language-python">from buzz import Buzz
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">buzz</span> <span class="kn">import</span> <span class="n">Buzz</span>
 
-class MyProjectError(Buzz):
-    pass
+<span class="k">class</span> <span class="nc">MyProjectError</span><span class="p">(</span><span class="n">Buzz</span><span class="p">):</span>
+    <span class="k">pass</span>
 
-MyProjectError.require_condition(check_vals(), &quot;Value check failed!&quot;)
-</code></pre>
+<span class="n">MyProjectError</span><span class="o">.</span><span class="n">require_condition</span><span class="p">(</span><span class="n">check_vals</span><span class="p">(),</span> <span class="s2">&quot;Value check failed!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
 <p>The code above would raise a <code>MyProjectError</code> with the supplied message if the condition
 expression was falsey.</p>
 <p>The <code>Buzz</code> base class provides the same sort of access for <code>handle_errors</code>,
