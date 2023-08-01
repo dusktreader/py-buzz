@@ -7,31 +7,41 @@ Take Exceptions to infinity...and beyond with ``py-buzz``!
 
 ## Overview
 
-py-buzz supplies some useful tools to use with python exceptions as well
-as a base Buzz exception class that includes them as classmethods.
+Have you ever found yourself writing the same code over and over to provide error
+handling in your python projects? I certainly did. In fact, I found that I often
+needed to re-implement the same patterns in almost every project. These patterns
+included:
 
-py-buzz is fully equipped with an arsenal of helpful tools to replace boilerplate
-code that appear over and over again in python projects such as:
-
-* checking conditions and raising errors on failure (`require_conditon`)
-* checking that values are defined and raising errors if not (`enforce_defined`)
+* checking conditions and raising errors on failure
+* checking that values are defined and raising errors if they are not
 * catching exceptions and wrapping them in clearer exception types with better error
-  messages (`handle_errors`)
-* checking many conditions and reporting which ones failed (`check_expressions`)
+  messages
+* checking many conditions and reporting which ones failed
 
-py-buzz provides two different main use-cases:
+This led me to create an exception toolkit called `py-buzz` that provides powerful
+helper tools for each of the cases listed above. The `py-buzz` package intends to
+make your error handling easy, expressive, and robust.
 
-It provides a set of functions that can be used with any exceptions. So, if you already
-have a set of custom exceptions or simply wish to use existing exceptinos, you can
-use the py-buzz functions like `require_condition`, `handle_errors`, `enforce_defined`,
-and so on with those pre-existing exception types.
+Because `py-buzz` requires only Python itself, it's a very light-weight package
+that you can use in any project with very little overhead.
 
-It also prived the `Buzz` exception class that can be used  as a bass class for custom
-exceptions within a project.
+`py-buzz` provides functionality or two different main use-cases. Either use-case
+allows you to focus on clear and concise error handling in your project without
+a lot of repetitive code:
 
-Either use-case allows the user to focus on clear and concise error handling in their
-code base without having to re-write the same error handling code over and over or
-having to re-write convenience functions themselves.
+### Helper Functions
+
+This set of functions can be used with any exception types. So, if you already
+have a set of custom exceptions or simply wish to use existing exceptions, you can
+import the py-buzz functions like `require_condition`, `handle_errors`, `enforce_defined`,
+and use them in your code immediately.
+
+### `Buzz` base class
+
+This class is meant to be used as a base class for custom exceptions that you can use
+in your project. `Buzz` includes all of the helper functions as class methods that will
+use your custom exception type.
+
 
 
 ## Quickstart
@@ -50,7 +60,7 @@ pip install py-buzz
 ```
 
 
-### Using
+### Usage
 
 Just import!
 
