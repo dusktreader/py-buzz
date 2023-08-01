@@ -246,6 +246,26 @@
     Overview
   </a>
   
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#helper-functions" class="md-nav__link">
+    Helper Functions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz-base-class" class="md-nav__link">
+    Buzz base class
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -271,8 +291,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#using" class="md-nav__link">
-    Using
+  <a href="#usage" class="md-nav__link">
+    Usage
   </a>
   
 </li>
@@ -351,6 +371,26 @@
     Overview
   </a>
   
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#helper-functions" class="md-nav__link">
+    Helper Functions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz-base-class" class="md-nav__link">
+    Buzz base class
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -376,8 +416,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#using" class="md-nav__link">
-    Using
+  <a href="#usage" class="md-nav__link">
+    Usage
   </a>
   
 </li>
@@ -409,27 +449,34 @@
 <p><em>That's not flying, it's falling with style</em></p>
 <p>Take Exceptions to infinity...and beyond with <code>py-buzz</code>!</p>
 <h2 id="overview">Overview</h2>
-<p>py-buzz supplies some useful tools to use with python exceptions as well
-as a base Buzz exception class that includes them as classmethods.</p>
-<p>py-buzz is fully equipped with an arsenal of helpful tools to replace boilerplate
-code that appear over and over again in python projects such as:</p>
+<p>Have you ever found yourself writing the same code over and over to provide error
+handling in your python projects? I certainly did. In fact, I found that I often
+needed to re-implement the same patterns in almost every project. These patterns
+included:</p>
 <ul>
-<li>checking conditions and raising errors on failure (<code>require_conditon</code>)</li>
-<li>checking that values are defined and raising errors if not (<code>enforce_defined</code>)</li>
+<li>checking conditions and raising errors on failure</li>
+<li>checking that values are defined and raising errors if they are not</li>
 <li>catching exceptions and wrapping them in clearer exception types with better error
-  messages (<code>handle_errors</code>)</li>
-<li>checking many conditions and reporting which ones failed (<code>check_expressions</code>)</li>
+  messages</li>
+<li>checking many conditions and reporting which ones failed</li>
 </ul>
-<p>py-buzz provides two different main use-cases:</p>
-<p>It provides a set of functions that can be used with any exceptions. So, if you already
-have a set of custom exceptions or simply wish to use existing exceptinos, you can
-use the py-buzz functions like <code>require_condition</code>, <code>handle_errors</code>, <code>enforce_defined</code>,
-and so on with those pre-existing exception types.</p>
-<p>It also prived the <code>Buzz</code> exception class that can be used  as a bass class for custom
-exceptions within a project.</p>
-<p>Either use-case allows the user to focus on clear and concise error handling in their
-code base without having to re-write the same error handling code over and over or
-having to re-write convenience functions themselves.</p>
+<p>This led me to create an exception toolkit called <code>py-buzz</code> that provides powerful
+helper tools for each of the cases listed above. The <code>py-buzz</code> package intends to
+make your error handling easy, expressive, and robust.</p>
+<p>Because <code>py-buzz</code> requires only Python itself, it's a very light-weight package
+that you can use in any project with very little overhead.</p>
+<p><code>py-buzz</code> provides functionality or two different main use-cases. Either use-case
+allows you to focus on clear and concise error handling in your project without
+a lot of repetitive code:</p>
+<h3 id="helper-functions">Helper Functions</h3>
+<p>This set of functions can be used with any exception types. So, if you already
+have a set of custom exceptions or simply wish to use existing exceptions, you can
+import the py-buzz functions like <code>require_condition</code>, <code>handle_errors</code>, <code>enforce_defined</code>,
+and use them in your code immediately.</p>
+<h3 id="buzz-base-class"><code>Buzz</code> base class</h3>
+<p>This class is meant to be used as a base class for custom exceptions that you can use
+in your project. <code>Buzz</code> includes all of the helper functions as class methods that will
+use your custom exception type.</p>
 <h2 id="quickstart">Quickstart</h2>
 <h3 id="requirements">Requirements</h3>
 <ul>
@@ -439,7 +486,7 @@ having to re-write convenience functions themselves.</p>
 <p>This will install the latest release of py-buzz from pypi via pip:</p>
 <pre><code class="language-bash">pip install py-buzz
 </code></pre>
-<h3 id="using">Using</h3>
+<h3 id="usage">Usage</h3>
 <p>Just import!</p>
 <pre><code class="language-python">from buzz import require_condition
 
