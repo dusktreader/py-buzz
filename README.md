@@ -1,6 +1,6 @@
 ![Latest Version](https://badge.fury.io/py/py-buzz.svg)
 ![Build Status](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml/badge.svg)
-![Documentation Status](https://readthedocs.org/projects/py-buzz/badge/?version=latest)
+![Documentation Status](https://github.com/dusktreader/py-buzz/actions/workflows/docs.yml/badge.svg)
 
 # py-buzz
 
