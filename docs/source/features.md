@@ -23,7 +23,7 @@ require_condition(some_condition(), "some_condition failed")
 ```
 
 This is mostly just a bit of syntactic sugar, but it can make your code a bit more
-palletable. This is especially true in functions that need to check a lot of conditions
+palatable. This is especially true in functions that need to check a lot of conditions
 before prior to executing their core logic.
 
 You may also specify the exception type that should be raised by passing it to the
