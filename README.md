@@ -6,7 +6,7 @@
 
 **_That's not flying, it's falling with style_: Exceptions with extras**
 
-![asciicast](https://github.com/dusktreader/py-buzz/tree/main/docs/source/images/py-buzz.gif)
+![asciicast](https://github.com/dusktreader/py-buzz/blob/main/docs/source/images/py-buzz.gif)
 
 py-buzz is fully equipped with a suite of exception tools that will save you
 from writing the same code over and over again in your python projects. These
