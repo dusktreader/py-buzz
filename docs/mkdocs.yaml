@@ -38,3 +38,6 @@ plugins:
           show_signature_annotations: true
           show_source: false
           docstring_style: google
+markdown_extensions:
+  - codehilite:
+      use_pygments: true
