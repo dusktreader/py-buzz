@@ -4,7 +4,7 @@ _That's not flying, it's falling with style_
 
 Take Exceptions to infinity...and beyond with ``py-buzz``!
 
-[![py-buzz-demo](images/py-buzz-demo.gif)
+![py-buzz-demo](images/py-buzz.gif)
 
 
 ## Overview
