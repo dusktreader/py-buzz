@@ -2,7 +2,7 @@
 ![Build Status](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml/badge.svg)
 ![Documentation Status](https://github.com/dusktreader/py-buzz/actions/workflows/docs.yml/badge.svg)
 
-# py-buzz
+![py-buzz-logo](https://github.com/dusktreader/py-buzz/blob/main/docs/source/images/buzz-logo-text.png)
 
 **_That's not flying, it's falling with style_: Exceptions with extras**
 

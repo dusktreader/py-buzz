@@ -6,6 +6,7 @@ repo_url: https://github.com/dusktreader/py-buzz
 docs_dir: source
 theme:
   name: material
+  logo: images/buzz-logo-light.png
   features:
     - navigation.expand
   pallete:
