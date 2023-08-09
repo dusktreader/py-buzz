@@ -1,4 +1,4 @@
-# py-buzz
+![py-buzz-logo](images/buzz-logo-text.png)
 
 _That's not flying, it's falling with style_
 
