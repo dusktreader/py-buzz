@@ -226,6 +226,7 @@ def handle_errors(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     handle_exc_class: type[Exception] | Tuple[type[Exception], ...] = Exception,
+    ignore_exc_class: type[Exception] | Tuple[type[Exception], ...] | None = None,
     do_finally: Callable[[], None] = noop,
     do_except: Callable[[DoExceptParams], None] = noop,
     do_else: Callable[[], None] = noop,
@@ -250,6 +251,12 @@ def handle_errors(
                            Any other exception types will not be caught and re-packaged.
                            Defaults to Exception (will handle all exceptions). May also be provided as a tuple
                            of multiple exception types to handle.
+        ignore_exc_class:  Defines an exception or set of exception types that should not be handled at all.
+                           Any matching exception types will be immediately re-raised. They will not be handled by
+                           the `handle_errors` context manager at all. This is useful if you want a specific variant of
+                           your `handle_exc_class` to not be handled by `handle_errors`. For example, if you want to use
+                           `handle_exc_class=Exception` but you do not want `handle_errors` to handle `RuntimeError`.
+                           Then, you would set `ignore_exc_class=RuntimeError`.
         do_finally:        A function that should always be called at the end of the block.
                            Should take no parameters.
         do_except:         A function that should be called only if there was an exception. Must accept one
@@ -264,8 +271,24 @@ def handle_errors(
             with handle_errors("It didn't work"):
                 some_code_that_might_raise_an_exception()
     """
+
+    class _DefaultIgnoreException(Exception):
+        """
+        Define a special exception class to use for the default ignore behavior.
+
+        Basically, this exception type can't be extracted from this method (easily), and thus could never actually
+        be raised in any other context. This is only created here to preserve the `try/except/except/else/finally`
+        structure.
+        """
+
+        pass
+
+    ignore_exc_class = _DefaultIgnoreException if ignore_exc_class is None else ignore_exc_class
+
     try:
         yield
+    except ignore_exc_class:
+        raise
     except handle_exc_class as err:
         try:
             final_message = reformat_exception(message, err)
