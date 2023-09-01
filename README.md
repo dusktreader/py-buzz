@@ -4,7 +4,7 @@
 
 ![py-buzz-logo](https://github.com/dusktreader/py-buzz/blob/main/docs/source/images/buzz-logo-text.png)
 
-**_That's not flying, it's falling with style_: Exceptions with extras**
+**That's not flying, _it's falling with style_: Exceptions with extras**
 
 ![asciicast](https://github.com/dusktreader/py-buzz/blob/main/docs/source/images/py-buzz.gif)
 
