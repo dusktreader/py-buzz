@@ -235,7 +235,7 @@ Functions the same as `require_condition`.
 #### handle_exc_class
 
 This option describes the type of exception that will be handled by this context
-manager. Any instance of the option's exception (or any of it's derived exception
+manager. Any instance of the option's exception (or any of its derived exception
 classes) will be caught. This is very useful if you only want to handle a certain
 category of exceptions and let the others rise up un-altered:
 
@@ -248,6 +248,19 @@ Exception instances that do not fall within the inheritance tree of the
 `handle_exc_class` option _will not be handled at all_. It is worth noting that the
 `do_except` task will _not_ be executed if another exception type occurs. However,
 the `do_else` and `do_finally` tasks will be executed normally.
+
+
+#### ignore_exc_class
+
+This option describes a type of exception that should _not_ be handled by this
+context manager. Any instance of the option's exception (or any of its derived
+exception classes) will be raised immediately by `handle_errors` and will be not
+be handled or processed.
+
+This is useful if you want a specific variant of your `handle_exc_class` to not
+be handled by `handle_errors`. For example, if you want to use
+`handle_exc_class=Exception` but you do not want `handle_errors` to handle
+`RuntimeError`, then, you would set `ignore_exc_class=RuntimeError`.
 
 
 #### do_except

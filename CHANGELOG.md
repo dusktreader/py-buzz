@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v4.1.0 - 2022-08-31
+
+* Added `ignore_exc_class` option to `handle_errors`.
+
 ## v4.0.0 - 2022-07-30
 
 * Dropped support for Python 3.6 and Python 3.7
@@ -14,21 +18,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## v3.3.0 - 2022-06-20
 
-* Added ``exc_builder`` option to all methods.
+* Added `exc_builder` option to all methods.
 
 
 ## v3.2.1 - 2022-06-20
 
-* Added ``enforce_defined()`` to Buzz class.
+* Added `enforce_defined()` to Buzz class.
 
 ## v3.2.0 - 2022-06-20
 
-* Added ``enforce_defined()`` function with tests and docs.
+* Added `enforce_defined()` function with tests and docs.
 
 
 ## v3.1.1 - 2022-04-05
 
-* Added ``raise from`` in handle_errors (how did I miss this for so long?)
+* Added `raise from` in handle_errors (how did I miss this for so long?)
 
 
 ## v3.1.0 - 2022-03-23
@@ -40,11 +44,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 * Moved functions to standalone tools module
 * Made Buzz re-use these methods
-* Changed ``handle_errors`` ``exception_class`` parameter to ``handle_exc_class``
-* Changed ``handle_errors`` to send ``DoExceptParams`` as a single parameter
-* Removed ``sanitize_err_string`` as it should not be needed after 2.0.0
-* Removed ``re_raise`` parameter from handle_errors in tools.
-* Made passing ``None`` to raise_exc_class indicate no new excepton should be raised
+* Changed `handle_errors` `exception_class` parameter to `handle_exc_class`
+* Changed `handle_errors` to send `DoExceptParams` as a single parameter
+* Removed `sanitize_err_string` as it should not be needed after 2.0.0
+* Removed `re_raise` parameter from handle_errors in tools.
+* Made passing `None` to raise_exc_class indicate no new excepton should be raised
 * Added a Makefile for running quality checks easier.
 * Updated and added examples.
 * Updated docs a lot.
