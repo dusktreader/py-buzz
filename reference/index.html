@@ -1033,6 +1033,9 @@ they will need a different exception builder.</p>
     <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
     <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
+    <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
     <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
     <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
@@ -1137,6 +1140,25 @@ they will need a different exception builder.</p>
           </td>
           <td>
                 <code>Exception</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>ignore_exc_class</code></td>
+          <td>
+                <code>type[Exception] | <span title="typing.Tuple">Tuple</span>[type[Exception], ...] | None</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Defines an exception or set of exception types that should not be handled at all.
+               Any matching exception types will be immediately re-raised. They will not be handled by
+               the <code>handle_errors</code> context manager at all. This is useful if you want a specific variant of
+               your <code>handle_exc_class</code> to not be handled by <code>handle_errors</code>. For example, if you want to use
+               <code>handle_exc_class=Exception</code> but you do not want <code>handle_errors</code> to handle <code>RuntimeError</code>.
+               Then, you would set <code>ignore_exc_class=RuntimeError</code>.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
         <tr>

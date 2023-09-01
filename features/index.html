@@ -356,6 +356,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ignore_exc_class" class="md-nav__link">
+    ignore_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#do_except" class="md-nav__link">
     do_except
   </a>
@@ -605,6 +612,13 @@
           <li class="md-nav__item">
   <a href="#handle_exc_class" class="md-nav__link">
     handle_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ignore_exc_class" class="md-nav__link">
+    ignore_exc_class
   </a>
   
 </li>
@@ -907,7 +921,7 @@ the first raised exception</em>.</p>
 <p>Functions the same as <code>require_condition</code>.</p>
 <h4 id="handle_exc_class">handle_exc_class</h4>
 <p>This option describes the type of exception that will be handled by this context
-manager. Any instance of the option's exception (or any of it's derived exception
+manager. Any instance of the option's exception (or any of its derived exception
 classes) will be caught. This is very useful if you only want to handle a certain
 category of exceptions and let the others rise up un-altered:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="n">handle_errors</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">,</span> <span class="n">handle_exc_class</span><span class="o">=</span><span class="n">MyProjectError</span><span class="p">):</span>
@@ -918,6 +932,15 @@ category of exceptions and let the others rise up un-altered:</p>
 <code>handle_exc_class</code> option <em>will not be handled at all</em>. It is worth noting that the
 <code>do_except</code> task will <em>not</em> be executed if another exception type occurs. However,
 the <code>do_else</code> and <code>do_finally</code> tasks will be executed normally.</p>
+<h4 id="ignore_exc_class">ignore_exc_class</h4>
+<p>This option describes a type of exception that should <em>not</em> be handled by this
+context manager. Any instance of the option's exception (or any of its derived
+exception classes) will be raised immediately by <code>handle_errors</code> and will be not
+be handled or processed.</p>
+<p>This is useful if you want a specific variant of your <code>handle_exc_class</code> to not
+be handled by <code>handle_errors</code>. For example, if you want to use
+<code>handle_exc_class=Exception</code> but you do not want <code>handle_errors</code> to handle
+<code>RuntimeError</code>, then, you would set <code>ignore_exc_class=RuntimeError</code>.</p>
 <h4 id="do_except">do_except</h4>
 <p>Often, it is useful to do some particular things when an exception is caught.  Most
 frequently this includes logging the exception. The <code>do_except</code> optional argument
