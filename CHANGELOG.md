@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v4.2.0 - 2024-10-08
+
+* Added `base_message` option to `DoExceptParams`.
+* Changed `exc_builder` option to expect a new `ExcBuilderParams` class.
+* Updated documentation.
+
 ## v4.1.0 - 2022-08-31
 
 * Added `ignore_exc_class` option to `handle_errors`.

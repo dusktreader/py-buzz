@@ -17,9 +17,7 @@ mypy: install
 
 .PHONY: lint
 lint: install
-	poetry run black --check ${PACKAGE_NAME}
-	poetry run isort --check ${PACKAGE_NAME}
-	poetry run flake8 ${PACKAGE_NAME}
+	poetry run ruff check ${PACKAGE_NAME} tests
 
 .PHONY: qa
 qa: test lint mypy
@@ -27,8 +25,7 @@ qa: test lint mypy
 
 .PHONY: format
 format: install
-	poetry run black ${PACKAGE_NAME}
-	poetry run isort ${PACKAGE_NAME}
+	poetry run ruff format ${PACKAGE_NAME} tests
 
 .PHONY: docs
 docs: install

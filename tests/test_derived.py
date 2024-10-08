@@ -1,5 +1,3 @@
-import traceback
-
 import pytest
 
 from buzz.base import Buzz
@@ -19,9 +17,8 @@ class WarpDarkmatter(Buzz):
         self.detail = detail
 
 
-def warp_builder(exc, message, *args, **kwargs):
-    return exc(*args, detail=message, **kwargs)
-
+def warp_builder(params):
+    return params.raise_exc_class(*params.raise_args, detail=params.message, **params.raise_kwargs)
 
 
 def test_derived_require_condition():
