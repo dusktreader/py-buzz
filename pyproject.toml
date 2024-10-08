@@ -16,29 +16,21 @@ CHANGELOG = "https://github.com/dusktreader/py-buzz/blob/main/CHANGELOG.md"
 [tool.poetry.dependencies]
 python = "^3.8"
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
-black = "^23.7.0"
-isort = "^5.12.0"
 pytest-cov = "^4.1.0"
-flake8-pyproject = "^1.2.3"
 pytest-random-order = "^1.1.0"
 mypy = "^1.4.1"
 mkdocs-material = "^9.1.21"
 mkdocstrings = {extras = ["python"], version = "^0.22.0"}
 pygments = "^2.15.1"
+ruff = "^0.6.9"
 
-[tool.black]
+[tool.ruff]
 line-length = 120
 
-[tool.isort]
-line_length = 120
-lines_after_imports = "2"
-profile = "black"
-
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.4.0"
 addopts = [
     "--random-order",
     "--cov=buzz",
@@ -51,12 +43,6 @@ testpaths = "tests"
 [tool.flake8]
 max-line-length = 120
 max-complexity = 40
-
-[[tool.mypy.overrides]]
-module = [
-    "dataclasses",
-]
-ignore_missing_imports = true
 
 [build-system]
 requires = ["poetry-core"]

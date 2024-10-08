@@ -110,7 +110,9 @@ For example, [FastAPI](https://fastapi.tiangolo.com/)'s `HTTPException` takes a
 passed as a keyword argument named `details`.
 
 In this case, you need to define a builder function to construct the exception and pass
-it to the `exc_builder` option:
+it to the `exc_builder` option. The `exc_builder` option should be a callable function
+that accepts a single parameter of type `ExcBuilderParams` that can be imported from
+``buzz``.
 
 
 ```python
@@ -119,14 +121,14 @@ class WeirdArgsError(Exception):
         self.weird_arg = weird_arg
         self.detail = detail
 
-def weird_builder(exc_class, message, *args, **kwargs):
-    return exc_class(*args, detail=message, **kwargs)
+def weird_builder(params):
+    return exc_class(*params.raise_args, detail=params.message)
 
 require_condition(
     some_condition(),
     "some_condition failed",
     raise_exc_class=WeirdArgsError,
-    raise_kwargs=dict("foo", "bar"),
+    raise_args=["weird"],
     exc_builder=weird_builder,
 )
 ```
@@ -173,9 +175,30 @@ In this case, a `MyProjectError` with be raised with positional arguments of `"f
 
 By default, `enforce_defined()` raises an exception with a basic message saying that the
 value was not defined. However, you may pass in a custom message with the `message`
-keyword argument. Like `require_condition()`, the `enforce_defined()` function also
-accepts the `raise_exc_class`, `raise_args`, `raise_kwargs`, and `exc_builder` keyword
-arguments.
+keyword argument.
+
+The `enforce_defined()` function also accepts some keyword arguments:
+
+
+#### raise_exc_class
+
+Functions the same as `require_condition`.
+
+
+#### raise_args
+
+Functions the same as `require_condition`.
+
+
+#### raise_kwargs
+
+Functions the same as `require_condition`.
+
+
+#### exc_builder
+
+Functions the same as `require_condition`.
+
 
 
 ### Exception handling context manager
@@ -268,7 +291,7 @@ be handled by `handle_errors`. For example, if you want to use
 Often, it is useful to do some particular things when an exception is caught.  Most
 frequently this includes logging the exception. The `do_except` optional argument
 provides the ability to do this. The `do_except` option should be a callable function
-that accepts a paramter of type `DoExceptParams` that can be imported from ``buzz``.
+that accepts a parameter of type `DoExceptParams` that can be imported from ``buzz``.
 This `dataclass` has three attributes:
 
 * err: The caught exception itself
@@ -316,6 +339,10 @@ with handle_errors("Something went wrong", do_finally=close_resource):
     some_dangerous_function_that_uses_resource(resource)
 ```
 
+#### exc_builder
+
+Functions the same as `require_condition`.
+
 
 ## Additional Features
 -------------------
@@ -345,7 +372,7 @@ Exception: Checked expressions failed: there will be errors
    5: zero is still zero
 ```
 
-The `check_expressions()` also accepts some keyword arguments:
+The `check_expressions()` context manager also accepts some keyword arguments:
 
 
 #### raise_exc_class

@@ -13,7 +13,7 @@ from buzz.tools import (
     handle_errors,
     reformat_exception,
     get_traceback,
-    DoExceptParams,
+    ExcBuilderParams,
 )
 
 
@@ -34,8 +34,12 @@ class DummyWeirdArgsException(Exception):
         self.detail = detail
 
 
-def alt_builder(exc, message, *args, **kwargs):
-    return exc(*args, detail=message, **kwargs)
+def alt_builder(params: ExcBuilderParams) -> Exception:
+    return params.raise_exc_class(
+        *params.raise_args,
+        detail=params.message,
+        **params.raise_kwargs,
+    )
 
 
 def test_require_condition__basic():
@@ -247,9 +251,11 @@ def test_handle_errors__with_do_except():
 
     (problem, *remains) = check_list
     assert remains == []
+    assert "intercepted exception" == problem.base_message
     assert "there was a problem" in problem.final_message
     assert isinstance(problem.err, Exception)
     assert isinstance(problem.trace, TracebackType)
+
 
 def test_handle_errors__does_not_raise_when_raise_exc_class_is_None():
     check_list = []
@@ -271,10 +277,7 @@ def test_handle_errors__only_catches_exceptions_matching_handle_exc_class():
     class SpecialError1(Exception):
         pass
 
-    class SpecialError2(Exception):
-        pass
-
-    with pytest.raises(RuntimeError) as err_info:
+    with pytest.raises(RuntimeError):
         with handle_errors(
             "there was a problem",
             raise_exc_class=DummyException,
@@ -282,7 +285,7 @@ def test_handle_errors__only_catches_exceptions_matching_handle_exc_class():
         ):
             raise RuntimeError("there was a problem")
 
-    with pytest.raises(DummyException) as err_info:
+    with pytest.raises(DummyException):
         with handle_errors(
             "there was a problem",
             raise_exc_class=DummyException,
@@ -290,7 +293,7 @@ def test_handle_errors__only_catches_exceptions_matching_handle_exc_class():
         ):
             raise SpecialError1("there was a problem")
 
-    with pytest.raises(DummyException) as err_info:
+    with pytest.raises(DummyException):
         with handle_errors(
             "there was a problem",
             raise_exc_class=DummyException,
