@@ -310,14 +310,7 @@
     Raise exception if value is not defined
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#exception-handling-context-manager" class="md-nav__link">
-    Exception handling context manager
-  </a>
-  
-    <nav class="md-nav" aria-label="Exception handling context manager">
+    <nav class="md-nav" aria-label="Raise exception if value is not defined">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -343,6 +336,47 @@
         
           <li class="md-nav__item">
   <a href="#exc_builder_1" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-handling-context-manager" class="md-nav__link">
+    Exception handling context manager
+  </a>
+  
+    <nav class="md-nav" aria-label="Exception handling context manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class_2" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args_2" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs_2" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder_2" class="md-nav__link">
     exc_builder
   </a>
   
@@ -383,6 +417,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#exc_builder_3" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -410,28 +451,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#raise_exc_class_2" class="md-nav__link">
+  <a href="#raise_exc_class_3" class="md-nav__link">
     raise_exc_class
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#raise_args_2" class="md-nav__link">
+  <a href="#raise_args_3" class="md-nav__link">
     raise_args
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#raise_kwargs_2" class="md-nav__link">
+  <a href="#raise_kwargs_3" class="md-nav__link">
     raise_kwargs
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#exc_builder_2" class="md-nav__link">
+  <a href="#exc_builder_4" class="md-nav__link">
     exc_builder
   </a>
   
@@ -571,14 +612,7 @@
     Raise exception if value is not defined
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#exception-handling-context-manager" class="md-nav__link">
-    Exception handling context manager
-  </a>
-  
-    <nav class="md-nav" aria-label="Exception handling context manager">
+    <nav class="md-nav" aria-label="Raise exception if value is not defined">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -604,6 +638,47 @@
         
           <li class="md-nav__item">
   <a href="#exc_builder_1" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exception-handling-context-manager" class="md-nav__link">
+    Exception handling context manager
+  </a>
+  
+    <nav class="md-nav" aria-label="Exception handling context manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raise_exc_class_2" class="md-nav__link">
+    raise_exc_class
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_args_2" class="md-nav__link">
+    raise_args
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raise_kwargs_2" class="md-nav__link">
+    raise_kwargs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exc_builder_2" class="md-nav__link">
     exc_builder
   </a>
   
@@ -644,6 +719,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#exc_builder_3" class="md-nav__link">
+    exc_builder
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -671,28 +753,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#raise_exc_class_2" class="md-nav__link">
+  <a href="#raise_exc_class_3" class="md-nav__link">
     raise_exc_class
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#raise_args_2" class="md-nav__link">
+  <a href="#raise_args_3" class="md-nav__link">
     raise_args
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#raise_kwargs_2" class="md-nav__link">
+  <a href="#raise_kwargs_3" class="md-nav__link">
     raise_kwargs
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#exc_builder_2" class="md-nav__link">
+  <a href="#exc_builder_4" class="md-nav__link">
     exc_builder
   </a>
   
@@ -826,20 +908,22 @@ correct place.</p>
 <code>status_code</code> as its first positional argument and expects that any message details are
 passed as a keyword argument named <code>details</code>.</p>
 <p>In this case, you need to define a builder function to construct the exception and pass
-it to the <code>exc_builder</code> option:</p>
+it to the <code>exc_builder</code> option. The <code>exc_builder</code> option should be a callable function
+that accepts a single parameter of type <code>ExcBuilderParams</code> that can be imported from
+<code>buzz</code>.</p>
 <div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">WeirdArgsError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weird_arg</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weird_arg</span> <span class="o">=</span> <span class="n">weird_arg</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">detail</span> <span class="o">=</span> <span class="n">detail</span>
 
-<span class="k">def</span> <span class="nf">weird_builder</span><span class="p">(</span><span class="n">exc_class</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">exc_class</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">weird_builder</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">exc_class</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="o">.</span><span class="n">raise_args</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
 
 <span class="n">require_condition</span><span class="p">(</span>
     <span class="n">some_condition</span><span class="p">(),</span>
     <span class="s2">&quot;some_condition failed&quot;</span><span class="p">,</span>
     <span class="n">raise_exc_class</span><span class="o">=</span><span class="n">WeirdArgsError</span><span class="p">,</span>
-    <span class="n">raise_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">),</span>
+    <span class="n">raise_args</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;weird&quot;</span><span class="p">],</span>
     <span class="n">exc_builder</span><span class="o">=</span><span class="n">weird_builder</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -879,9 +963,16 @@ in your error:</p>
 <code>"bar"</code> and a keyword argument of <code>baz="QUX"</code> if the value passed in is not defined.</p>
 <p>By default, <code>enforce_defined()</code> raises an exception with a basic message saying that the
 value was not defined. However, you may pass in a custom message with the <code>message</code>
-keyword argument. Like <code>require_condition()</code>, the <code>enforce_defined()</code> function also
-accepts the <code>raise_exc_class</code>, <code>raise_args</code>, <code>raise_kwargs</code>, and <code>exc_builder</code> keyword
-arguments.</p>
+keyword argument.</p>
+<p>The <code>enforce_defined()</code> function also accepts some keyword arguments:</p>
+<h4 id="raise_exc_class_1">raise_exc_class</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="raise_args_1">raise_args</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="raise_kwargs_1">raise_kwargs</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
+<h4 id="exc_builder_1">exc_builder</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
 <h3 id="exception-handling-context-manager">Exception handling context manager</h3>
 <p>The <code>py-buzz</code> package also provides a context manager that catches any exceptions that
 might be raised while executing a bit of code. The caught exceptions are re-packaged and
@@ -907,17 +998,17 @@ implements pattern that tends to get repeated over and over again. If you need t
 very complicated things while handling an exception, you should use a standard try-
 catch block. However, there are some extra bells and whistles on <code>handle_errors</code> that
 can be used by passing additional keyword arguments to the function.</p>
-<h4 id="raise_exc_class_1">raise_exc_class</h4>
+<h4 id="raise_exc_class_2">raise_exc_class</h4>
 <p>This parameter is the same as for <code>require_condition()</code>. However, if you pass <code>None</code> it
 <em>will not raise a new exception</em>. Instead, <code>handle_errors</code> will process the <code>do_except</code>,
 <code>do_else</code>, and <code>do_finally</code> methods and then continue. This effectively absorbs any
 exceptions that occur in the context. However <em>the context is immediately exited after
 the first raised exception</em>.</p>
-<h4 id="raise_args_1">raise_args</h4>
+<h4 id="raise_args_2">raise_args</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
-<h4 id="raise_kwargs_1">raise_kwargs</h4>
+<h4 id="raise_kwargs_2">raise_kwargs</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
-<h4 id="exc_builder_1">exc_builder</h4>
+<h4 id="exc_builder_2">exc_builder</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
 <h4 id="handle_exc_class">handle_exc_class</h4>
 <p>This option describes the type of exception that will be handled by this context
@@ -945,7 +1036,7 @@ be handled by <code>handle_errors</code>. For example, if you want to use
 <p>Often, it is useful to do some particular things when an exception is caught.  Most
 frequently this includes logging the exception. The <code>do_except</code> optional argument
 provides the ability to do this. The <code>do_except</code> option should be a callable function
-that accepts a paramter of type <code>DoExceptParams</code> that can be imported from <code>buzz</code>.
+that accepts a parameter of type <code>DoExceptParams</code> that can be imported from <code>buzz</code>.
 This <code>dataclass</code> has three attributes:</p>
 <ul>
 <li>err: The caught exception itself</li>
@@ -983,6 +1074,8 @@ to do some cleanup in either case. It should take a callable that receives no ar
     <span class="n">some_dangerous_function_that_uses_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
 </code></pre></div>
 
+<h4 id="exc_builder_3">exc_builder</h4>
+<p>Functions the same as <code>require_condition</code>.</p>
 <h2 id="additional-features">Additional Features</h2>
 <hr />
 <h3 id="check_expressions">check_expressions</h3>
@@ -1005,14 +1098,14 @@ raised.</p>
 <span class="w">   </span><span class="mi">5</span><span class="o">:</span><span class="w"> </span><span class="n">zero</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">still</span><span class="w"> </span><span class="n">zero</span>
 </code></pre></div>
 
-<p>The <code>check_expressions()</code> also accepts some keyword arguments:</p>
-<h4 id="raise_exc_class_2">raise_exc_class</h4>
+<p>The <code>check_expressions()</code> context manager also accepts some keyword arguments:</p>
+<h4 id="raise_exc_class_3">raise_exc_class</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
-<h4 id="raise_args_2">raise_args</h4>
+<h4 id="raise_args_3">raise_args</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
-<h4 id="raise_kwargs_2">raise_kwargs</h4>
+<h4 id="raise_kwargs_3">raise_kwargs</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
-<h4 id="exc_builder_2">exc_builder</h4>
+<h4 id="exc_builder_4">exc_builder</h4>
 <p>Functions the same as <code>require_condition</code>.</p>
 <h3 id="reformat_exception">reformat_exception</h3>
 <p>This method is used internally by the <code>handle_errors</code> context manager.  However, it is

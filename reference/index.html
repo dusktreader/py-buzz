@@ -285,6 +285,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#buzz.tools.ExcBuilderParams" class="md-nav__link">
+    ExcBuilderParams
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#buzz.tools.check_expressions" class="md-nav__link">
     check_expressions()
   </a>
@@ -451,6 +458,13 @@
           <li class="md-nav__item">
   <a href="#buzz.tools.DoExceptParams" class="md-nav__link">
     DoExceptParams
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz.tools.ExcBuilderParams" class="md-nav__link">
+    ExcBuilderParams
   </a>
   
 </li>
@@ -662,7 +676,18 @@
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The exception instance itself.</p>
+              <p>The exception instance itself</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>base_message</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The base message parameter that was passed to the <code>handle_errors()</code> function</p>
             </div>
           </td>
         </tr>
@@ -673,7 +698,7 @@
           </td>
           <td>
             <div class="doc-md-description">
-              <p>The final, combined message</p>
+              <p>The final, combined message including the base message and string formatted exception</p>
             </div>
           </td>
         </tr>
@@ -712,6 +737,108 @@
 
 </div>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h4 id="buzz.tools.ExcBuilderParams" class="doc doc-heading">
+          <span class="doc doc-object-name doc-class-name">ExcBuilderParams</span>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+          <p class="doc doc-class-bases">
+            Bases: <code><span title="typing.Generic">Generic</span>[<span title="buzz.tools.TExc">TExc</span>]</code></p>
+
+  
+      <p>Dataclass for the <code>exc_builder</code> user supplied exception constructor.</p>
+
+
+
+  <p><strong>Attributes:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>raise_exc_class</code></td>
+          <td>
+                <code><span title="typing.Type">Type</span>[<span title="buzz.tools.TExc">TExc</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The exception class that should be built</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>message</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The message to build the exception with</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>raise_args</code></td>
+          <td>
+                <code><span title="typing.Iterable">Iterable</span>[<span title="typing.Any">Any</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The positional arguments that are needed to build the exception</p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><code>raise_kwargs</code></td>
+          <td>
+                <code><span title="typing.Mapping">Mapping</span>[str, <span title="typing.Any">Any</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The keyword arguments that are needed to build the exception</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
 
 
 <div class="doc doc-object doc-function">
@@ -723,15 +850,7 @@
 
 
 </h4>
-<div class="codehilite"><pre><span></span><code><span class="n">check_expressions</span><span class="p">(</span>
-    <span class="n">main_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
-        <span class="o">...</span><span class="p">,</span> <span class="ne">Exception</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">check_expressions</span><span class="p">(</span><span class="n">main_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -814,6 +933,21 @@ main message and a description of each failing expression.</p>
                 <code>None</code>
           </td>
         </tr>
+        <tr>
+          <td><code>exc_builder</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[<a class="autorefs autorefs-internal" title="buzz.tools.ExcBuilderParams" href="#buzz.tools.ExcBuilderParams">ExcBuilderParams</a>], Exception]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A function that should be called to construct the raised <code>raise_exc_class</code>. Useful for
+               exception classes that do not take a message as the first positional argument.</p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="buzz.tools.default_exc_builder" href="#buzz.tools.default_exc_builder">default_exc_builder</a></code>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -847,9 +981,7 @@ main message and a description of each failing expression.</p>
 
 
 </h4>
-<div class="codehilite"><pre><span></span><code><span class="n">default_exc_builder</span><span class="p">(</span>
-    <span class="n">exc</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">TExc</span><span class="p">],</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">str</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TExc</span>
+<div class="codehilite"><pre><span></span><code><span class="n">default_exc_builder</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">ExcBuilderParams</span><span class="p">[</span><span class="n">TExc</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TExc</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -872,16 +1004,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="codehilite"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span>
-    <span class="n">value</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Value was not defined (None)&quot;</span><span class="p">,</span>
-    <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
-        <span class="o">...</span><span class="p">,</span> <span class="ne">Exception</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TNonNull</span>
+<div class="codehilite"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Value was not defined (None)&#39;</span><span class="p">,</span> <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TNonNull</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -988,6 +1111,21 @@ they will need a different exception builder.</p>
                 <code>None</code>
           </td>
         </tr>
+        <tr>
+          <td><code>exc_builder</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[<a class="autorefs autorefs-internal" title="buzz.tools.ExcBuilderParams" href="#buzz.tools.ExcBuilderParams">ExcBuilderParams</a>], Exception]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A function that should be called to construct the raised <code>raise_exc_class</code>. Useful for
+             exception classes that do not take a message as the first positional argument.</p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="buzz.tools.default_exc_builder" href="#buzz.tools.default_exc_builder">default_exc_builder</a></code>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -1026,23 +1164,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="codehilite"><pre><span></span><code><span class="n">handle_errors</span><span class="p">(</span>
-    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
-    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
-    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
-    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
-    <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
-        <span class="o">...</span><span class="p">,</span> <span class="ne">Exception</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<div class="codehilite"><pre><span></span><code><span class="n">handle_errors</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">|</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span> <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span> <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span> <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1084,12 +1206,8 @@ they will need a different exception builder.</p>
           <td>
             <div class="doc-md-description">
               <p>The exception type to raise with the constructed message if an exception is caught in the
-               managed context.</p>
-<div class="codehilite"><pre><span></span><code><span class="w">           </span><span class="n">Defaults</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Exception</span><span class="p">.</span>
-
-<span class="w">           </span><span class="k">If</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="k">None</span><span class="n n-Quoted">``</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">passed</span><span class="p">,</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">do_except</span><span class="n n-Quoted">``</span><span class="p">,</span>
-<span class="w">           </span><span class="n n-Quoted">``</span><span class="n">do_else</span><span class="n n-Quoted">``</span><span class="p">,</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">do_finally</span><span class="n n-Quoted">``</span><span class="w"> </span><span class="n">functions</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="p">.</span>
-</code></pre></div>
+               managed context. If <code>None</code> is passed, no new exception will be raised and only the
+               <code>do_except</code>, <code>do_else</code>, and <code>do_finally</code> functions will be called.</p>
             </div>
           </td>
           <td>
@@ -1206,12 +1324,27 @@ they will need a different exception builder.</p>
                 <code><span title="buzz.tools.noop">noop</span></code>
           </td>
         </tr>
+        <tr>
+          <td><code>exc_builder</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[<a class="autorefs autorefs-internal" title="buzz.tools.ExcBuilderParams" href="#buzz.tools.ExcBuilderParams">ExcBuilderParams</a>], Exception]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A function that should be called to construct the raised <code>raise_exc_class</code>. Useful for
+               exception classes that do not take a message as the first positional argument.</p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="buzz.tools.default_exc_builder" href="#buzz.tools.default_exc_builder">default_exc_builder</a></code>
+          </td>
+        </tr>
     </tbody>
   </table>
 
 <details class="example" open>
   <summary>Example</summary>
-  <p>The following is an example usage::</p>
+  <p>The following is an example usage:</p>
 <div class="codehilite"><pre><span></span><code>with handle_errors(&quot;It didn&#39;t work&quot;):
     some_code_that_might_raise_an_exception()
 </code></pre></div>
@@ -1251,16 +1384,7 @@ they will need a different exception builder.</p>
 
 
 </h4>
-<div class="codehilite"><pre><span></span><code><span class="n">require_condition</span><span class="p">(</span>
-    <span class="n">expr</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
-        <span class="o">...</span><span class="p">,</span> <span class="ne">Exception</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">require_condition</span><span class="p">(</span><span class="n">expr</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">)</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
@@ -1351,6 +1475,21 @@ they will need a different exception builder.</p>
           </td>
           <td>
                 <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exc_builder</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[<a class="autorefs autorefs-internal" title="buzz.tools.ExcBuilderParams" href="#buzz.tools.ExcBuilderParams">ExcBuilderParams</a>], Exception]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>A function that should be called to construct the raised <code>raise_exc_class</code>. Useful for
+             exception classes that do not take a message as the first positional argument.</p>
+            </div>
+          </td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="buzz.tools.default_exc_builder" href="#buzz.tools.default_exc_builder">default_exc_builder</a></code>
           </td>
         </tr>
     </tbody>
@@ -1484,11 +1623,7 @@ they will need a different exception builder.</p>
   </span>
 
 </h5>
-<div class="codehilite"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span>
-    <span class="n">value</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TNonNull</span>
+<div class="codehilite"><pre><span></span><code><span class="n">enforce_defined</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">TNonNull</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TNonNull</span>
 </code></pre></div>
 
   <div class="doc doc-contents ">
