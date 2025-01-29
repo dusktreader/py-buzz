@@ -373,7 +373,7 @@ async def handle_errors_async(
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
 ) -> AsyncIterator[None]:
     """
-    Provide a context manager that will intercept exceptions and repackage them with a message attached:
+    Provide an async context manager that will intercept exceptions and repackage them with a message attached:
 
     Args:
         message:           The message to attach to the raised exception.
