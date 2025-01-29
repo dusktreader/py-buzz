@@ -35,6 +35,7 @@ plugins:
         options:
           heading_level: 3
           show_root_heading: true
+          docstring_section_style: list
           separate_signature: true
           show_signature_annotations: true
           show_source: false

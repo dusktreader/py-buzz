@@ -21,11 +21,11 @@ pytest = "^8.3.4"
 pytest-cov = "^6.0.0"
 mypy = "^1.14.1"
 mkdocs-material = "^9.1.21"
-mkdocstrings = {extras = ["python"], version = "^0.22.0"}
 pygments = "^2.15.1"
 ruff = "^0.9.3"
 pytest-asyncio = "^0.25.3"
 pytest-randomly = "^3.16.0"
+mkdocstrings-python = "^1.13.0"
 
 [tool.ruff]
 line-length = 120

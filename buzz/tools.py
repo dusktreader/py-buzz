@@ -177,7 +177,7 @@ def check_expressions(
     main message and a description of each failing expression.
 
     Args:
-        main message:      The main failure message to include in the constructed message that is passed to the
+        main_message:      The main failure message to include in the constructed message that is passed to the
                            raised Exception
         raise_exc_class:   The exception type to raise with the constructed message if the expression is falsey.
 
