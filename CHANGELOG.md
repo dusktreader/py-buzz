@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v5.0.1 - 2025-01-29
+* Added `handle_errors_async` to exported list from base package
+
 ## v5.0.0 - 2025-01-29
 * Dropped support for Python 3.8
 * Updated some dependencies
