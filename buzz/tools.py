@@ -359,6 +359,7 @@ def handle_errors(
     finally:
         do_finally()
 
+
 @contextlib.asynccontextmanager
 async def handle_errors_async(
     message: str,
