@@ -11,8 +11,10 @@ from buzz.tools import (
     enforce_defined,
     check_expressions,
     handle_errors,
+    handle_errors_async,
     reformat_exception,
     get_traceback,
+    DoExceptParams,
     ExcBuilderParams,
 )
 
@@ -332,6 +334,85 @@ def test_handle_errors__ignores_errors_matching_ignore_exc_class():
             ignore_exc_class=RuntimeError,
         ):
             raise RuntimeError("Boom!")
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__with_do_else():
+    async def _anoop():
+        pass
+
+    check_list = []
+    async def _add_to_list():
+        check_list.append(1)
+
+    async with handle_errors_async(
+        "no errors should happen here, but do_else should be called",
+        do_else=_add_to_list,
+    ):
+        await _anoop()
+
+    assert check_list == [1]
+
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__with_do_finally():
+    async def _anoop():
+        pass
+
+    check_list = []
+    async def _add_to_list():
+        check_list.append(1)
+
+    async with handle_errors_async(
+        "no errors should happen here, but do_finally should be called",
+        do_finally=_add_to_list,
+    ):
+        await _anoop()
+
+    assert check_list == [1]
+
+    check_list = []
+    with pytest.raises(Exception, match="intercepted exception.*there was a problem") as err_info:
+        async with handle_errors_async("intercepted exception", do_finally=_add_to_list):
+            raise Exception("there was a problem")
+
+    assert "there was a problem" in str(err_info.value)
+    assert "intercepted exception" in str(err_info.value)
+    assert check_list == [1]
+
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__with_do_except():
+    async def _anoop():
+        pass
+
+    check_list = []
+    async def _add_to_list(p: DoExceptParams):
+        check_list.append(p)
+
+    async with handle_errors_async(
+        "no errors should happen here, so do_except should not be called",
+        do_except=_add_to_list,
+    ):
+        await _anoop()
+    assert check_list == []
+
+    check_list = []
+    with pytest.raises(Exception, match="intercepted exception.*there was a problem") as err_info:
+        async with handle_errors_async(
+            "intercepted exception",
+            do_except=_add_to_list,
+        ):
+            raise Exception("there was a problem")
+
+    assert "there was a problem" in str(err_info.value)
+    assert "intercepted exception" in str(err_info.value)
+
+    (problem, *remains) = check_list
+    assert remains == []
+    assert "intercepted exception" == problem.base_message
+    assert "there was a problem" in problem.final_message
+    assert isinstance(problem.err, Exception)
+    assert isinstance(problem.trace, TracebackType)
 
 
 def test_check_expressions__basic():

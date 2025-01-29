@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -24,6 +24,8 @@ jobs:
 
     - name: Set up Poetry
       uses: Gr1N/setup-poetry@v8
+      with:
+        poetry-version: 1.8.4
 
     - name: Check Quality
       run: make qa
