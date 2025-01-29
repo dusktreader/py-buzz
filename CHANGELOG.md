@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v5.0.0 - 2025-01-29
+* Dropped support for Python 3.8
+* Updated some dependencies
+* Added `handle_errors_async`
+
 ## v4.2.0 - 2024-10-08
 
 * Added `base_message` option to `DoExceptParams`.

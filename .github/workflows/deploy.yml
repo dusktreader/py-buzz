@@ -12,15 +12,17 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.8
+        python-version: 3.13
 
     - name: Set up Poetry
       uses: Gr1N/setup-poetry@v8
+      with:
+        poetry-version: 1.8.4
 
     - name: Log in to pypi
       run: poetry config pypi-token.pypi ${{ secrets.PYPI_API_KEY }}
