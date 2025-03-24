@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v6.0.3 - 2025-03-24
+* Restored py.typed that was accidentally excluded
+
 ## v6.0.2 - 2025-03-24
 * Fixed badges in README.md
 
