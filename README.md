@@ -1,5 +1,5 @@
 [![Latest Version](https://img.shields.io/pypi/v/py-buzz?label=pypi-version&logo=python&style=plastic)](https://pypi.org/project/py-buzz/)
-[![Python Versions](https://raw.githubusercontent.com/dusktreader/py-buzz/main/pyproject.toml?label=python-versions&logo=python&style=plastic)](https://www.python.org/)
+[![Python Versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fdusktreader%2Fpy-buzz%2Fmain%2Fpyproject.toml&style=plastic&logo=python&label=python-versions)](https://www.python.org/)
 [![Build Status](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml/badge.svg)](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml)
 [![Documentation Status](https://github.com/dusktreader/py-buzz/actions/workflows/docs.yml/badge.svg)](https://dusktreader.github.io/py-buzz/)
 
