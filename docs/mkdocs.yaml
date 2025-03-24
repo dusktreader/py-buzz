@@ -24,7 +24,7 @@ nav:
   - Reference: reference.md
   - Changelog: changelog.md
 watch:
-  - ../buzz
+  - ../src/buzz
 plugins:
   search:
     lang: en
