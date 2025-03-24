@@ -2,14 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>http://py-buzz.readthedocs.io/en/latest/</loc>
-         <lastmod>2025-01-29</lastmod>
+         <lastmod>2025-03-24</lastmod>
+    </url>
+    <url>
+         <loc>http://py-buzz.readthedocs.io/en/latest/changelog/</loc>
+         <lastmod>2025-03-24</lastmod>
     </url>
     <url>
          <loc>http://py-buzz.readthedocs.io/en/latest/features/</loc>
-         <lastmod>2025-01-29</lastmod>
+         <lastmod>2025-03-24</lastmod>
     </url>
     <url>
          <loc>http://py-buzz.readthedocs.io/en/latest/reference/</loc>
-         <lastmod>2025-01-29</lastmod>
+         <lastmod>2025-03-24</lastmod>
     </url>
 </urlset>
