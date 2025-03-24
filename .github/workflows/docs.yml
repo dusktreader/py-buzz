@@ -14,17 +14,13 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.13
-
-    - name: Set up Poetry
-      uses: Gr1N/setup-poetry@v8
-      with:
-        poetry-version: 1.8.4
+      run: uv python install 3.13
 
     - name: Build Documentation
       run: |

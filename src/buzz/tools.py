@@ -8,19 +8,19 @@ import contextlib
 import dataclasses
 import sys
 import types
+from collections.abc import AsyncIterator, Coroutine, Iterable, Iterator, Mapping
 from asyncio import iscoroutinefunction
-from typing import Any, AsyncIterator, Callable, Coroutine, Iterable, Iterator, Mapping, Tuple, TypeVar, Generic, Type
+from typing import Any, Callable, TypeVar
 
 
-def noop(*_, **__):
+def noop(*_: Any, **__: Any):  # pyright: ignore[reportUnusedParameter]
     pass
 
 
-TExc = TypeVar("TExc", bound=Exception)
-
+TNonNull = TypeVar("TNonNull")
 
 @dataclasses.dataclass
-class ExcBuilderParams(Generic[TExc]):
+class ExcBuilderParams:
     """
     Dataclass for the `exc_builder` user supplied exception constructor.
 
@@ -32,13 +32,13 @@ class ExcBuilderParams(Generic[TExc]):
         raise_kwargs:    The keyword arguments that are needed to build the exception
     """
 
-    raise_exc_class: Type[TExc]
+    raise_exc_class: type[Exception]
     message: str
     raise_args: Iterable[Any]
     raise_kwargs: Mapping[str, Any]
 
 
-def default_exc_builder(params: ExcBuilderParams[TExc]) -> TExc:
+def default_exc_builder(params: ExcBuilderParams) -> Exception:
     """
     Build an exception instance using default behavior where message is passed as first positional argument.
 
@@ -76,8 +76,6 @@ def require_condition(
         exc_builder:     A function that should be called to construct the raised ``raise_exc_class``. Useful for
                          exception classes that do not take a message as the first positional argument.
     """
-    if raise_exc_class is None:
-        raise ValueError("The raise_exc_class kwarg may not be None")
 
     if not expr:
         raise exc_builder(
@@ -88,9 +86,6 @@ def require_condition(
                 raise_kwargs=raise_kwargs or {},
             )
         )
-
-
-TNonNull = TypeVar("TNonNull")
 
 
 def enforce_defined(
@@ -137,6 +132,8 @@ class _ExpressionChecker:
     """
     A utility class to be used with the ``check_expressions`` context manager.
     """
+    problems: list[str]
+    expression_counter: int
 
     def __init__(self):
         self.problems = []
@@ -206,8 +203,6 @@ def check_expressions(
               1: first expressoin failed
               3: a must not equal 1
     """
-    if raise_exc_class is None:
-        raise ValueError("The raise_exc_class kwarg may not be None")
 
     checker = _ExpressionChecker()
     yield checker.check
@@ -267,8 +262,8 @@ def handle_errors(
     raise_exc_class: type[Exception] | None = Exception,
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
-    handle_exc_class: type[Exception] | Tuple[type[Exception], ...] = Exception,
-    ignore_exc_class: type[Exception] | Tuple[type[Exception], ...] | None = None,
+    handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
+    ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
     do_finally: Callable[[], None] = noop,
     do_except: Callable[[DoExceptParams], None] = noop,
     do_else: Callable[[], None] = noop,
@@ -366,8 +361,8 @@ async def handle_errors_async(
     raise_exc_class: type[Exception] | None = Exception,
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
-    handle_exc_class: type[Exception] | Tuple[type[Exception], ...] = Exception,
-    ignore_exc_class: type[Exception] | Tuple[type[Exception], ...] | None = None,
+    handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
+    ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
     do_finally: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] = noop,
     do_except: Callable[[DoExceptParams], None] | Callable[[DoExceptParams], Coroutine[Any, Any, None]] = noop,
     do_else: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] = noop,
@@ -449,7 +444,8 @@ async def handle_errors_async(
                 )
             )
         else:
-            do_except(
+            # Assigning to `_` shuts basedpyright up
+            _ = do_except(
                 DoExceptParams(
                     err=err,
                     base_message=message,
@@ -471,9 +467,11 @@ async def handle_errors_async(
         if iscoroutinefunction(do_else):
             await do_else()
         else:
-            do_else()
+            # Assigning to `_` shuts basedpyright up
+            _ = do_else()
     finally:
         if iscoroutinefunction(do_finally):
             await do_finally()
         else:
-            do_finally()
+            # Assigning to `_` shuts basedpyright up
+            _ = do_finally()

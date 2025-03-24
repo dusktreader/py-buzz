@@ -56,11 +56,6 @@ def test_require_condition__specific_raise_exc_class():
         require_condition(False, "fail message", raise_exc_class=DummyException)
 
 
-def test_require_condition__raises_ValueError_if_raise_exc_class_is_None():
-    with pytest.raises(ValueError, match="raise_exc_class kwarg may not be None"):
-        require_condition(True, "doesn't matter", raise_exc_class=None)
-
-
 def test_require_condition__passes_along_raise_args_and_raise_kwargs():
     with pytest.raises(DummyArgsException, match="fail message") as err_info:
         require_condition(
