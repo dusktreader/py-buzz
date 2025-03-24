@@ -1,6 +1,7 @@
-![Latest Version](https://badge.fury.io/py/py-buzz.svg)
-![Build Status](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml/badge.svg)
-![Documentation Status](https://github.com/dusktreader/py-buzz/actions/workflows/docs.yml/badge.svg)
+[![Latest Version](https://img.shields.io/pypi/v/py-buzz?label=pypi-version&logo=python&style=plastic)](https://pypi.org/project/py-buzz/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/py-buzz?label=python-versions&logo=python&style=plastic)](https://www.python.org/)
+[![Build Status](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml/badge.svg)](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml)
+[![Documentation Status](https://github.com/dusktreader/py-buzz/actions/workflows/docs.yml/badge.svg)](https://dusktreader.github.io/py-buzz/)
 
 ![py-buzz-logo](https://github.com/dusktreader/py-buzz/blob/main/docs/source/images/buzz-logo-text.png)
 
@@ -19,7 +20,7 @@ include:
 * checking many conditions and reporting which ones failed
   (`check_expressions`)
 
-py-buz also provides an exception class, Buzz, that can be used  as a base class
+py-buzz also provides an exception class, Buzz, that can be used  as a base class
 for custom exceptions within a project.
 
 ## Super-quick Start

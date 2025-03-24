@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v6.0.2 - 2025-03-24
+* Fixed badges in README.md
+
 ## v6.0.1 - 2025-03-24
 * Fixed wrong version (3.8) mention in README.md
 * Fixed wrong version (3.8) mention in docs
