@@ -50,7 +50,7 @@ use your custom exception type.
 
 ### Requirements
 
-* Python 3.8 or greater
+* Python 3.9 or greater
 
 
 ### Installation

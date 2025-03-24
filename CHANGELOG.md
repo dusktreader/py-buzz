@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v6.0.1 - 2025-03-24
+* Fixed wrong version (3.8) mention in README.md
+* Fixed wrong version (3.8) mention in docs
+
 ## v6.0.0 - 2025-03-21
 * Converted to a uv project
 * Fixed typing issues

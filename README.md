@@ -24,7 +24,7 @@ for custom exceptions within a project.
 
 ## Super-quick Start
 
-* Only requires Python 3.8 or later
+* Only requires Python 3.9 or later
 * Installed with pip (`$ pip install py-buzz`)
 * Each feature demonstrated in [examples](https://github.com/dusktreader/py-buzz/tree/main/examples)
 
