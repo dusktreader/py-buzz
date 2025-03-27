@@ -19,6 +19,7 @@ def noop(*_: Any, **__: Any):  # pyright: ignore[reportUnusedParameter]
 
 TNonNull = TypeVar("TNonNull")
 
+
 @dataclasses.dataclass
 class ExcBuilderParams:
     """
@@ -30,12 +31,16 @@ class ExcBuilderParams:
         message:         The message to build the exception with
         raise_args:      The positional arguments that are needed to build the exception
         raise_kwargs:    The keyword arguments that are needed to build the exception
+        base_message:    An optional "base" message. This will carry the original message from:
+                         - handle_errors
+                         - check_expressions
     """
 
     raise_exc_class: type[Exception]
     message: str
     raise_args: Iterable[Any]
     raise_kwargs: Mapping[str, Any]
+    base_message: str | None = None
 
 
 def default_exc_builder(params: ExcBuilderParams) -> Exception:
@@ -112,8 +117,8 @@ def enforce_defined(
         raise_args:       Additional positional args (after the constructed message) that will passed when raising
                           an instance of the ``raise_exc_class``.
         raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-        exc_builder:     A function that should be called to construct the raised ``raise_exc_class``. Useful for
-                         exception classes that do not take a message as the first positional argument.
+        exc_builder:      A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                          exception classes that do not take a message as the first positional argument.
     """
     if value is not None:
         return value
@@ -132,6 +137,7 @@ class _ExpressionChecker:
     """
     A utility class to be used with the ``check_expressions`` context manager.
     """
+
     problems: list[str]
     expression_counter: int
 
@@ -163,7 +169,7 @@ class _ExpressionChecker:
 
 @contextlib.contextmanager
 def check_expressions(
-    main_message: str,
+    base_message: str,
     raise_exc_class: type[Exception] = Exception,
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
@@ -174,8 +180,8 @@ def check_expressions(
     main message and a description of each failing expression.
 
     Args:
-        main_message:      The main failure message to include in the constructed message that is passed to the
-                           raised Exception
+        base_message:      The base failure message to include in the constructed message that is passed to the
+                           raised Exception. Will be included in `ExcBuilderParams` passed to `exc_builder`.
         raise_exc_class:   The exception type to raise with the constructed message if the expression is falsey.
 
                            Defaults to Exception.
@@ -208,19 +214,21 @@ def check_expressions(
     yield checker.check
     message = "\n  ".join(
         [
-            f"Checked expressions failed: {main_message}",
+            f"Checked expressions failed: {base_message}",
             *checker.problems,
         ]
     )
 
-    require_condition(
-        len(checker.problems) == 0,
-        message,
-        raise_exc_class=raise_exc_class,
-        raise_args=raise_args,
-        raise_kwargs=raise_kwargs,
-        exc_builder=exc_builder,
-    )
+    if len(checker.problems) > 0:
+        raise exc_builder(
+            ExcBuilderParams(
+                raise_exc_class=raise_exc_class,
+                message=message,
+                raise_args=raise_args or [],
+                raise_kwargs=raise_kwargs or {},
+                base_message=base_message,
+            )
+        )
 
 
 def reformat_exception(message: str, err: Exception) -> str:
@@ -258,7 +266,7 @@ class DoExceptParams:
 
 @contextlib.contextmanager
 def handle_errors(
-    message: str,
+    base_message: str,
     raise_exc_class: type[Exception] | None = Exception,
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
@@ -270,10 +278,12 @@ def handle_errors(
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
 ) -> Iterator[None]:
     """
-    Provide a context manager that will intercept exceptions and repackage them with a message attached:
+    Provide a context manager that will intercept exceptions and repackage them in a new exception with a message
+    attached that combines the base message along with the message from the handled exception:
 
     Args:
-        message:           The message to attach to the raised exception.
+        base_message:      The base message to attach to the raised exception. Will be included in `ExcBuilderParams`
+                           passed to `exc_builder`.
         raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
                            managed context. If ``None`` is passed, no new exception will be raised and only the
                            ``do_except``, ``do_else``, and ``do_finally`` functions will be called.
@@ -326,7 +336,7 @@ def handle_errors(
         raise
     except handle_exc_class as err:
         try:
-            final_message = reformat_exception(message, err)
+            final_message = reformat_exception(base_message, err)
         except Exception as msg_err:
             raise RuntimeError(f"Failed while formatting message: {repr(msg_err)}")
 
@@ -335,7 +345,7 @@ def handle_errors(
         do_except(
             DoExceptParams(
                 err=err,
-                base_message=message,
+                base_message=base_message,
                 final_message=final_message,
                 trace=trace,
             )
@@ -347,6 +357,7 @@ def handle_errors(
                     message=final_message,
                     raise_args=raise_args or [],
                     raise_kwargs=raise_kwargs or {},
+                    base_message=base_message,
                 )
             ).with_traceback(trace) from err
     else:
@@ -357,7 +368,7 @@ def handle_errors(
 
 @contextlib.asynccontextmanager
 async def handle_errors_async(
-    message: str,
+    base_message: str,
     raise_exc_class: type[Exception] | None = Exception,
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
@@ -372,7 +383,8 @@ async def handle_errors_async(
     Provide an async context manager that will intercept exceptions and repackage them with a message attached:
 
     Args:
-        message:           The message to attach to the raised exception.
+        base_message:      The base message to attach to the raised exception. Will be included in `ExcBuilderParams`
+                           passed to `exc_builder`.
         raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
                            managed context. If ``None`` is passed, no new exception will be raised and only the
                            ``do_except``, ``do_else``, and ``do_finally`` functions will be called.
@@ -428,7 +440,7 @@ async def handle_errors_async(
         raise
     except handle_exc_class as err:
         try:
-            final_message = reformat_exception(message, err)
+            final_message = reformat_exception(base_message, err)
         except Exception as msg_err:
             raise RuntimeError(f"Failed while formatting message: {repr(msg_err)}")
 
@@ -438,17 +450,16 @@ async def handle_errors_async(
             await do_except(
                 DoExceptParams(
                     err=err,
-                    base_message=message,
+                    base_message=base_message,
                     final_message=final_message,
                     trace=trace,
                 )
             )
         else:
-            # Assigning to `_` shuts basedpyright up
-            _ = do_except(
+            do_except(
                 DoExceptParams(
                     err=err,
-                    base_message=message,
+                    base_message=base_message,
                     final_message=final_message,
                     trace=trace,
                 )
@@ -461,17 +472,16 @@ async def handle_errors_async(
                     message=final_message,
                     raise_args=raise_args or [],
                     raise_kwargs=raise_kwargs or {},
+                    base_message=base_message,
                 )
             ).with_traceback(trace) from err
     else:
         if iscoroutinefunction(do_else):
             await do_else()
         else:
-            # Assigning to `_` shuts basedpyright up
-            _ = do_else()
+            do_else()
     finally:
         if iscoroutinefunction(do_finally):
             await do_finally()
         else:
-            # Assigning to `_` shuts basedpyright up
-            _ = do_finally()
+            do_finally()

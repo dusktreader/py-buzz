@@ -7,9 +7,10 @@ PACKAGE_NAME:=src/buzz
 test:
 	uv run pytest
 
-.PHONY: mypy
+.PHONY: types
 types:
 	uv run mypy ${PACKAGE_NAME} --pretty
+	uv run basedpyright ${PACKAGE_NAME}
 
 .PHONY: lint
 lint:
@@ -25,11 +26,11 @@ format:
 
 .PHONY: docs
 docs:
-	cd docs/ && uv run mkdocs build
+	uv run mkdocs build --config-file=docs/mkdox.yaml
 
 .PHONY: docs-serve
 docs-serve:
-	cd docs/ && uv run mkdocs serve
+	uv run mkdocs serve --config-file=docs/mkdocs.yaml --dev-addr=localhost:10000
 
 .PHONY: clean
 clean:

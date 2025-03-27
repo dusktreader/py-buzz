@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from traceback import format_tb
 from types import TracebackType
+from typing import Any
 
 import pytest
 
@@ -24,22 +25,27 @@ class DummyException(Exception):
 
 
 class DummyArgsException(Exception):
-    def __init__(self, message, dummy_arg, dummy_kwarg=None):
-        self.dummy_arg = dummy_arg
-        self.dummy_kwarg = dummy_kwarg
+    def __init__(self, message: str, dummy_arg: Any, dummy_kwarg: Any | None = None, base_message: str | None = ""):
+        super().__init__(message)
+        self.dummy_arg: Any = dummy_arg
+        self.dummy_kwarg: Any = dummy_kwarg
+        self.base_message: str | None = base_message
 
 
 class DummyWeirdArgsException(Exception):
-    def __init__(self, dummy_arg, detail="", dummy_kwarg=None):
-        self.dummy_arg = dummy_arg
-        self.dummy_kwarg = dummy_kwarg
-        self.detail = detail
+    def __init__(self, dummy_arg: Any, detail: str = "", dummy_kwarg: Any | None = None, base_message: str | None = ""):
+        super().__init__()
+        self.dummy_arg: Any = dummy_arg
+        self.dummy_kwarg: Any = dummy_kwarg
+        self.detail: str = detail
+        self.base_message: str | Any = base_message
 
 
 def alt_builder(params: ExcBuilderParams) -> Exception:
     return params.raise_exc_class(
         *params.raise_args,
-        detail=params.message,
+        detail=params.message,  # pyright: ignore[reportCallIssue]
+        base_message=params.base_message,  # pyright: ignore[reportCallIssue]
         **params.raise_kwargs,
     )
 
@@ -103,7 +109,8 @@ def test_enforce_defined__specific_raise_exc_class():
         raise_args=["dummy arg"],
         raise_kwargs=dict(dummy_kwarg="dummy_kwarg"),
     )
-    with pytest.raises(Exception, match="fail message") as err_info:
+
+    with pytest.raises(DummyArgsException, match="fail message") as err_info:
         some_val = None
         enforce_defined(
             some_val,
@@ -112,12 +119,13 @@ def test_enforce_defined__specific_raise_exc_class():
             raise_args=["dummy arg"],
             raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
         )
-        assert err_info.value.dummy_arg == "dummy arg"
-        assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+    assert err_info.value.dummy_arg == "dummy arg"
+    assert err_info.value.dummy_kwarg == "dummy kwarg"
 
 
 def test_enforce_defined__using_alternative_exception_builder():
-    with pytest.raises(Exception) as err_info:
+    with pytest.raises(DummyWeirdArgsException) as err_info:
         some_val = None
         enforce_defined(
             some_val,
@@ -193,10 +201,11 @@ def test_handle_errors____using_alternative_exception_builder():
     assert err_info.value.dummy_kwarg == "dummy kwarg"
     assert "there was a problem" in err_info.value.detail
     assert "intercepted exception" in err_info.value.detail
+    assert err_info.value.base_message == "intercepted exception"
 
 
 def test_handle_errors__with_do_else():
-    check_list = []
+    check_list: list[int] = []
     with handle_errors(
         "no errors should happen here, but do_else should be called",
         do_else=lambda: check_list.append(1),
@@ -207,7 +216,7 @@ def test_handle_errors__with_do_else():
 
 
 def test_handle_errors__with_do_finally():
-    check_list = []
+    check_list: list[int] = []
     with handle_errors(
         "no errors should happen here, but do_finally should be called",
         do_finally=lambda: check_list.append(1),
@@ -227,7 +236,7 @@ def test_handle_errors__with_do_finally():
 
 
 def test_handle_errors__with_do_except():
-    check_list = []
+    check_list: list[DoExceptParams] = []
     with handle_errors(
         "no errors should happen here, so do_except should not be called",
         do_except=lambda p: check_list.append(p),
@@ -255,7 +264,7 @@ def test_handle_errors__with_do_except():
 
 
 def test_handle_errors__does_not_raise_when_raise_exc_class_is_None():
-    check_list = []
+    check_list: list[DoExceptParams] = []
     with handle_errors(
         "intercepted exception",
         raise_exc_class=None,
@@ -301,7 +310,7 @@ def test_handle_errors__only_catches_exceptions_matching_handle_exc_class():
 
 def test_handle_errors__as_decorator_no_exceptions():
     @handle_errors("no errors should happen here")
-    def do_stuff(arg, kwarg="default"):
+    def do_stuff(arg: str, kwarg: str = "default"):
         return f"stuff: arg={arg}, kwarg={kwarg}"
 
     assert do_stuff("blah", kwarg="barf") == "stuff: arg=blah, kwarg=barf"
@@ -330,12 +339,14 @@ def test_handle_errors__ignores_errors_matching_ignore_exc_class():
         ):
             raise RuntimeError("Boom!")
 
+
 @pytest.mark.asyncio
 async def test_handle_errors_async__with_do_else():
     async def _anoop():
         pass
 
-    check_list = []
+    check_list: list[int] = []
+
     async def _add_to_list():
         check_list.append(1)
 
@@ -353,7 +364,8 @@ async def test_handle_errors_async__with_do_finally():
     async def _anoop():
         pass
 
-    check_list = []
+    check_list: list[int] = []
+
     async def _add_to_list():
         check_list.append(1)
 
@@ -380,7 +392,8 @@ async def test_handle_errors_async__with_do_except():
     async def _anoop():
         pass
 
-    check_list = []
+    check_list: list[DoExceptParams] = []
+
     async def _add_to_list(p: DoExceptParams):
         check_list.append(p)
 
@@ -471,6 +484,7 @@ def test_check_expressions____using_alternative_exception_builder():
     assert err_info.value.dummy_kwarg == "dummy kwarg"
     assert "there will be errors" in err_info.value.detail
     assert "1st expression failed" in err_info.value.detail
+    assert err_info.value.base_message == "there will be errors"
 
 
 def test_reformat_exception():

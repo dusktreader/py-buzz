@@ -1,24 +1,33 @@
+from __future__ import annotations
+
+from typing import Any
 import pytest
 
 from buzz.base import Buzz
+from buzz.tools import ExcBuilderParams
 
 
 class MiraNova(Buzz):
-    def __init__(self, message, extra_arg, extra_kwarg=None):
-        self.extra_arg = extra_arg
-        self.extra_kwarg = extra_kwarg
+    def __init__(self, message: str, extra_arg: Any, extra_kwarg: Any | None = None):
         super().__init__(message)
+        self.extra_arg: Any = extra_arg
+        self.extra_kwarg: Any = extra_kwarg
 
 
 class WarpDarkmatter(Buzz):
-    def __init__(self, extra_arg, detail="", extra_kwarg=None):
-        self.extra_arg = extra_arg
-        self.extra_kwarg = extra_kwarg
-        self.detail = detail
+    def __init__(self, extra_arg: Any, detail: str = "", extra_kwarg: Any | None = None):
+        super().__init__("warp!")
+        self.extra_arg: Any = extra_arg
+        self.extra_kwarg: Any = extra_kwarg
+        self.detail: str = detail
 
 
-def warp_builder(params):
-    return params.raise_exc_class(*params.raise_args, detail=params.message, **params.raise_kwargs)
+def warp_builder(params: ExcBuilderParams) -> Exception:
+    return params.raise_exc_class(
+        *params.raise_args,
+        detail=params.message,  # pyright: ignore[reportCallIssue]
+        **params.raise_kwargs,
+    )
 
 
 def test_derived_require_condition():

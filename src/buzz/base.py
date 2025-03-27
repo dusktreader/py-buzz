@@ -4,15 +4,22 @@ This module defines the Buzz base class.
 
 from __future__ import annotations
 
-import sys
+from collections.abc import Callable, Iterable, Mapping
 import textwrap
 from typing import TypeVar, Any
-if sys.version_info >= (3, 12):
-    from typing import override
-else:
-    from typing_extensions import override
+from typing_extensions import override
 
-from buzz import tools
+from buzz.tools import (
+    DoExceptParams,
+    ExcBuilderParams,
+    default_exc_builder,
+    noop,
+    require_condition,
+    enforce_defined,
+    check_expressions,
+    handle_errors,
+    get_traceback,
+)
 
 TNonNull = TypeVar("TNonNull")
 
@@ -49,48 +56,189 @@ class Buzz(Exception):
             raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods.")
 
     @classmethod
-    def require_condition(cls, *args: Any, **kwargs: Any):
+    def require_condition(
+        cls,
+        expr: Any,
+        message: str,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    ):
         """
-        Call the `require_condition()` function with this class as the `raise_exc_class` kwarg.
+        Assert that an expression is truty. If the assertion fails, raise an exception (instance of this class) with the
+        supplied message.
+
+        Args:
+
+            message:         The failure message to attach to the raised Exception
+            expr:            The value that is checked for truthiness (usually an evaluated expression)
+            raise_args:      Additional positional args (after the constructed message) that will passed when raising
+                             an instance of the ``raise_exc_class``.
+            raise_kwargs:    Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+            exc_builder:     A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                             exception classes that do not take a message as the first positional argument.
         """
-        cls._check_kwargs(**kwargs)
-        # Type checking ignored  because https://github.com/python/mypy/issues/6799
-        return tools.require_condition(*args, raise_exc_class=cls, **kwargs) # type: ignore
+        return require_condition(
+            expr,
+            message,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=exc_builder,
+        )
 
     @classmethod
-    def enforce_defined(cls, value: TNonNull | None, *args: Any, **kwargs: Any) -> TNonNull:
+    def enforce_defined(
+        cls,
+        value: TNonNull | None,
+        message: str = "Value was not defined (None)",
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    ) -> TNonNull:
         """
-        Call the `enforce_defined()` function with this class as the `raise_exc_class` kwarg.
+        Assert that a value is not None. If the assertion fails, raise an exception (instance of this class) with the
+        supplied message.
+
+        Args:
+
+            value:            The value that is checked to be non-null
+            message:          The failure message to attach to the raised Exception
+            expr:             The value that is checked for truthiness (usually an evaluated expression)
+            raise_args:       Additional positional args (after the constructed message) that will passed when raising
+                              an instance of the ``raise_exc_class``.
+            raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+            exc_builder:      A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                              exception classes that do not take a message as the first positional argument.
         """
-        cls._check_kwargs(**kwargs)
-        # Type checking ignored  because https://github.com/python/mypy/issues/6799
-        return tools.enforce_defined(value, *args, raise_exc_class=cls, **kwargs) # type: ignore
+        return enforce_defined(
+            value,
+            message,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=exc_builder,
+        )
 
     @classmethod
-    def check_expressions(cls, *args: Any, **kwargs: Any):
+    def check_expressions(
+        cls,
+        base_message: str,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    ):
         """
-        Call the `check_expressions()` context manager with this class as the `raise_exc_class` kwarg.
+        Check a series of expressions inside of a context manager. If any fail an exception (instance of this class) is
+        raised that contains a main message and a description of each failing expression.
+
+        Args:
+            base_message:      The base failure message to include in the constructed message that is passed to the
+                               raised Exception. Will be included in `ExcBuilderParams` passed to `exc_builder`.
+            raise_args:        Additional positional args (after the constructed message) that will passed when raising
+                               an instance of the ``raise_exc_class``.
+            raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+            exc_builder:       A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                               exception classes that do not take a message as the first positional argument.
+
+        Example:
+
+            The following is an example usage::
+
+                with Buzz.check_expressions("Something wasn't right") as check:
+                    check(a is not None)
+                    check(a > b, "a must be greater than b")
+                    check(a != 1, "a must not equal 1")
+                    check(b >= 0, "b must not be negative")
+
+            This would render output like::
+
+                Checked expressions failed: Something wasn't right:
+                  1: first expressoin failed
+                  3: a must not equal 1
         """
-        cls._check_kwargs(**kwargs)
-        # Type checking ignored  because https://github.com/python/mypy/issues/6799
-        return tools.check_expressions(*args, raise_exc_class=cls, **kwargs) # type: ignore
+        return check_expressions(
+            base_message,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=exc_builder,
+        )
 
     @classmethod
-    def handle_errors(cls, *args: Any, re_raise: bool = True, **kwargs: Any):
+    def handle_errors(
+        cls,
+        base_message: str,
+        re_raise: bool = True,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
+        ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
+        do_finally: Callable[[], None] = noop,
+        do_except: Callable[[DoExceptParams], None] = noop,
+        do_else: Callable[[], None] = noop,
+        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    ):
         """
-        Call the `handle_errors()` context manager with this class as the `raise_exc_class` kwarg.
+        Provide a context manager that will intercept exceptions and repackage them in a new exception (instance of this
+        class) with a message attached that combines the base message along with the message from the handled exception:
 
-        Note:
+        Args:
+            base_message:      The base message to attach to the raised exception. Will be included in `ExcBuilderParams`
+                               passed to `exc_builder`.
+            re_raise:          If True (the default), then a exception (instance of this class) will be raised after
+                               handling any caught exceptoins. If False, no exception will be raised after handling any
+                               exceptions. This will effectively swallow the expression. Note that the `do_` methods
+                               will still be executed.
+            raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
+                               managed context. If ``None`` is passed, no new exception will be raised and only the
+                               ``do_except``, ``do_else``, and ``do_finally`` functions will be called.
+            raise_args:        Additional positional args (after the constructed message) that will passed when raising
+                               an instance of the ``raise_exc_class``.
+            raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+            handle_exc_class:  Limits the class of exceptions that will be intercepted
+                               Any other exception types will not be caught and re-packaged.
+                               Defaults to Exception (will handle all exceptions). May also be provided as a tuple
+                               of multiple exception types to handle.
+            ignore_exc_class:  Defines an exception or set of exception types that should not be handled at all.
+                               Any matching exception types will be immediately re-raised. They will not be handled by
+                               the `handle_errors` context manager at all. This is useful if you want a specific variant
+                               of your `handle_exc_class` to not be handled by `handle_errors`. For example, if you want
+                               to use `handle_exc_class=Exception` but you do not want `handle_errors` to handle
+                               `RuntimeError`.
+                               Then, you would set `ignore_exc_class=RuntimeError`.
+            do_finally:        A function that should always be called at the end of the block.
+                               Should take no parameters.
+            do_except:         A function that should be called only if there was an exception. Must accept one
+                               parameter that is an instance of the ``DoExceptParams`` dataclass.
+                               Note that the ``do_except`` method is passed the *original exception*.
+            do_else:           A function that should be called only if there were no exceptions encountered.
+            exc_builder:       A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                               exception classes that do not take a message as the first positional argument.
 
-            If `re_raise` is not True, `None` will be passed as the `raise_exc_class` kwarg.
+        Example:
+
+            The following is an example usage:
+
+                with Buzz.handle_errors("It didn't work"):
+                    some_code_that_might_raise_an_exception()
         """
-        cls._check_kwargs(**kwargs)
-        # Type checking ignored  because https://github.com/python/mypy/issues/6799
-        return tools.handle_errors(*args, raise_exc_class=cls if re_raise else None, **kwargs) # type: ignore
+        return handle_errors(
+            base_message,
+            raise_exc_class=cls if re_raise else None,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            handle_exc_class=handle_exc_class,
+            ignore_exc_class=ignore_exc_class,
+            do_finally=do_finally,
+            do_except=do_except,
+            do_else=do_else,
+            exc_builder=exc_builder,
+        )
 
     @classmethod
     def get_traceback(cls, *args: Any, **kwargs: Any):
         """
         Call the `get_traceback()` function.
         """
-        return tools.get_traceback(*args, **kwargs)
+        return get_traceback(*args, **kwargs)

@@ -1,6 +1,6 @@
 [project]
 name = "py-buzz"
-version = "6.0.3"
+version = "6.1.0"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
 authors = [
     {name = "Tucker Beck", email ="tucker.beck@gmail.com"},
@@ -20,6 +20,7 @@ package = true
 
 [dependency-groups]
 dev = [
+    "basedpyright>=1.28.4",
     "ipython>=8.18.1",
     "mkdocs-material>=9.6.9",
     "mkdocstrings-python>=1.16.7",
@@ -48,6 +49,11 @@ line-length = 120
 [[tool.mypy.overrides]]
 module = []
 ignore_missing_imports = true
+
+[tool.basedpyright]
+reportAny = false
+reportExplicitAny = false
+reportUnusedCallResult = false
 
 [tool.hatch.build]
 include = [

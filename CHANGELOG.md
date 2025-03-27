@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v6.1.0 - 2025-03-27
+* Added `base_message` to `ExcBuilderParams`
+* Improved typing
+* Improved function signatures and docstrings in base.py
+* Added basedpyright to type checking
+* Added and updated unit tests.
+
 ## v6.0.3 - 2025-03-24
 * Restored py.typed that was accidentally excluded
 
