@@ -4,30 +4,13 @@ from typing import Any
 import pytest
 
 from buzz.base import Buzz
-from buzz.tools import ExcBuilderParams
 
 
 class MiraNova(Buzz):
-    def __init__(self, message: str, extra_arg: Any, extra_kwarg: Any | None = None):
-        super().__init__(message)
+    def __init__(self, message: str, extra_arg: Any, *args: Any, extra_kwarg: Any | None = None, **kwargs: Any):
         self.extra_arg: Any = extra_arg
         self.extra_kwarg: Any = extra_kwarg
-
-
-class WarpDarkmatter(Buzz):
-    def __init__(self, extra_arg: Any, detail: str = "", extra_kwarg: Any | None = None):
-        super().__init__("warp!")
-        self.extra_arg: Any = extra_arg
-        self.extra_kwarg: Any = extra_kwarg
-        self.detail: str = detail
-
-
-def warp_builder(params: ExcBuilderParams) -> Exception:
-    return params.raise_exc_class(
-        *params.raise_args,
-        detail=params.message,  # pyright: ignore[reportCallIssue]
-        **params.raise_kwargs,
-    )
+        super().__init__(message, *args, **kwargs)
 
 
 def test_derived_require_condition():
@@ -41,19 +24,6 @@ def test_derived_require_condition():
 
     assert err_info.value.extra_arg == "extra arg"
     assert err_info.value.extra_kwarg == "extra kwarg"
-
-    with pytest.raises(WarpDarkmatter) as err_info:
-        WarpDarkmatter.require_condition(
-            False,
-            "fail message",
-            raise_args=["extra arg"],
-            raise_kwargs=dict(extra_kwarg="extra kwarg"),
-            exc_builder=warp_builder,
-        )
-
-    assert err_info.value.extra_arg == "extra arg"
-    assert err_info.value.extra_kwarg == "extra kwarg"
-    assert err_info.value.detail == "fail message"
 
 
 def test_derived_check_expressions():
@@ -79,28 +49,6 @@ def test_derived_check_expressions():
     assert err_info.value.extra_arg == "extra arg"
     assert err_info.value.extra_kwarg == "extra kwarg"
 
-    with pytest.raises(WarpDarkmatter) as err_info:
-        with WarpDarkmatter.check_expressions(
-            "there will be errors",
-            raise_args=["extra arg"],
-            raise_kwargs=dict(extra_kwarg="extra kwarg"),
-            exc_builder=warp_builder,
-        ) as check:
-            check(True)
-            check(False)
-            check(1 == 2, "one is not two")
-            check("cooooooool", "not a problem")
-            check(0, "zero is still zero")
-
-    assert err_info.value.extra_arg == "extra arg"
-    assert err_info.value.extra_kwarg == "extra kwarg"
-    assert "there will be errors" in err_info.value.detail
-    assert "1st expression failed" not in err_info.value.detail
-    assert "2nd expression failed" in err_info.value.detail
-    assert "one is not two" in err_info.value.detail
-    assert "not a problem" not in err_info.value.detail
-    assert "zero is still zero" in err_info.value.detail
-
 
 def test_derived_handle_errors():
     with pytest.raises(MiraNova) as err_info:
@@ -116,18 +64,3 @@ def test_derived_handle_errors():
 
     assert err_info.value.extra_arg == "extra arg"
     assert err_info.value.extra_kwarg == "extra kwarg"
-
-    with pytest.raises(WarpDarkmatter) as err_info:
-        with WarpDarkmatter.handle_errors(
-            "intercepted exception",
-            raise_args=["extra arg"],
-            raise_kwargs=dict(extra_kwarg="extra kwarg"),
-            exc_builder=warp_builder,
-        ):
-            raise ValueError("there was a problem")
-
-    assert err_info.value.extra_arg == "extra arg"
-    assert err_info.value.extra_kwarg == "extra kwarg"
-    assert "there was a problem" in err_info.value.detail
-    assert "intercepted exception" in err_info.value.detail
-    assert "ValueError" in err_info.value.detail

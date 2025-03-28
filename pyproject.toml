@@ -1,6 +1,6 @@
 [project]
 name = "py-buzz"
-version = "6.1.0"
+version = "7.0.0"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
 authors = [
     {name = "Tucker Beck", email ="tucker.beck@gmail.com"},
@@ -8,12 +8,22 @@ authors = [
 readme = "README.md"
 license-files = ["LICENSE.md"]
 requires-python = ">=3.9"
-dependencies = []
 
 [project.urls]
 homepage = "https://dusktreader.github.io/py-buzz/"
 source = "https://github.com/dusktreader/py-buzz"
 changelog = "https://github.com/dusktreader/py-buzz/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+demo = [
+    "auto-name-enum>=2.0.0",
+    "rich>=13.9.4",
+    "snick>=1.4.1",
+    "typer>=0.15.2",
+]
+
+[project.scripts]
+py-buzz-demo = "demo.main:main[cli]"
 
 [tool.uv]
 package = true
@@ -39,8 +49,10 @@ minversion = "7.4.0"
 addopts = [
     "--cov=src/buzz",
     "--cov-report=term-missing",
-    "--cov-report=json",
     "--cov-fail-under=90",
+    "--cov-report=xml:.coverage.xml",
+    "--junitxml=.junit.xml",
+    "--override-ini=junit_family=legacy",
 ]
 
 [tool.ruff]
@@ -54,15 +66,13 @@ ignore_missing_imports = true
 reportAny = false
 reportExplicitAny = false
 reportUnusedCallResult = false
-
-[tool.hatch.build]
-include = [
-    "src/buzz/**/*.py",
-    "src/buzz/py.typed",
-]
+reportDeprecated = false
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/buzz"]
+packages = [
+    "src/buzz",
+    "src/demo",
+]
 
 [build-system]
 requires = ["hatchling"]

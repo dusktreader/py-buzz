@@ -13,12 +13,10 @@ py-buzz is fully equipped with a suite of exception tools that will save you
 from writing the same code over and over again in your python projects. These
 include:
 
-* checking conditions and raising errors on failure (`require_conditon`)
-* checking that values are defined and raising errors if not (`enforce_defined`)
-* catching exceptions wrapping them in clearer exception types with better error
-  messages (`handle_errors`)
-* checking many conditions and reporting which ones failed
-  (`check_expressions`)
+* checking many conditions and reporting which ones failed (`check_expressions()`)
+* catching exceptions wrapping them in clearer exception types with better error messages (`handle_errors()`)
+* checking that values are defined and raising errors if not (`enforce_defined()`)
+* checking conditions and raising errors on failure (`require_condition()`)
 
 py-buzz also provides an exception class, Buzz, that can be used  as a base class
 for custom exceptions within a project.
@@ -27,7 +25,7 @@ for custom exceptions within a project.
 
 * Only requires Python 3.9 or later
 * Installed with pip (`$ pip install py-buzz`)
-* Each feature demonstrated in [examples](https://github.com/dusktreader/py-buzz/tree/main/examples)
+* Each feature demonstrated in an executable demo "extra"
 
 ## Documentation
 

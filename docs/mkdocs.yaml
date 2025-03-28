@@ -9,7 +9,8 @@ theme:
   logo: images/buzz-logo-light.png
   features:
     - navigation.expand
-  pallete:
+    - content.code.copy
+  palette:
     - scheme: default
       toggle:
         icon: material/weather-night
@@ -21,6 +22,7 @@ theme:
 nav:
   - Home: index.md
   - Features: features.md
+  - Demo: demo.md
   - Reference: reference.md
   - Changelog: changelog.md
 watch:

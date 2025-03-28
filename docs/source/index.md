@@ -14,11 +14,10 @@ handling in your python projects? I certainly did. In fact, I found that I often
 needed to re-implement the same patterns in almost every project. These patterns
 included:
 
+* checking many conditions and reporting which ones failed
+* catching exceptions and wrapping them in clearer exception types with better error messages
 * checking conditions and raising errors on failure
 * checking that values are defined and raising errors if they are not
-* catching exceptions and wrapping them in clearer exception types with better error
-  messages
-* checking many conditions and reporting which ones failed
 
 This led me to create an exception toolkit called `py-buzz` that provides powerful
 helper tools for each of the cases listed above. The `py-buzz` package intends to
@@ -31,19 +30,20 @@ that you can use in any project with very little overhead.
 allows you to focus on clear and concise error handling in your project without
 a lot of repetitive code:
 
+
 ### Helper Functions
 
-This set of functions can be used with any exception types. So, if you already
+This set of functions can be used with any exception type. So, if you already
 have a set of custom exceptions or simply wish to use existing exceptions, you can
 import the py-buzz functions like `require_condition`, `handle_errors`, `enforce_defined`,
 and use them in your code immediately.
+
 
 ### `Buzz` base class
 
 This class is meant to be used as a base class for custom exceptions that you can use
 in your project. `Buzz` includes all of the helper functions as class methods that will
 use your custom exception type.
-
 
 
 ## Quickstart

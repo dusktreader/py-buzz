@@ -253,7 +253,7 @@ class DoExceptParams:
     Attributes:
 
         err:           The exception instance itself
-        base_message:  The base message parameter that was passed to the `handle_errors()` function
+        base_message:  The base message parameter that was passed to the `jandle_errors()` function
         final_message: The final, combined message including the base message and string formatted exception
         trace:         A traceback of the exception
     """

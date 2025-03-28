@@ -23,10 +23,22 @@ jobs:
     - name: Install python
       run:  uv python install ${{ matrix.python-version }}
 
+    - name: Sync with demo
+      run:  uv sync --extra=demo
+
     - name: Check Quality
       run: make qa
 
     - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v3
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      uses: codecov/codecov-action@v5
+      with:
+        files: ./.coverage.xml
+        token: ${{ secrets.CODECOV_TOKEN }}
+      if: ${{ !cancelled() }}
+
+    - name: Upload test results to Codecov
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ./.junit.xml
+      if: ${{ !cancelled() }}

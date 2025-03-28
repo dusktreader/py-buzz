@@ -1,6 +1,5 @@
 # Features
 
-
 ## Main Features
 
 There are a few main features of `py-buzz` that are noteworthy:
@@ -93,7 +92,6 @@ require_condition(
 )
 ```
 
-
 If the condition fails, `require_condition` will rais a `MyProjectError` initialized
 with keyword arguments `init_kwarg1 == "foo"` and `init_kwarg2 == "bar"`.
 
@@ -117,18 +115,19 @@ that accepts a single parameter of type `ExcBuilderParams` that can be imported 
 
 ```python
 class WeirdArgsError(Exception):
-    def __init__(self, weird_arg, detail=""):
-        self.weird_arg = weird_arg
+    def __init__(self, *args, detail="", **kwargs):
         self.detail = detail
+        super().__init__(*args, **kwargs)
 
 def weird_builder(params):
-    return exc_class(*params.raise_args, detail=params.message)
+    return exc_class(*params.raise_args, detail=params.message, **params.raise_kwargs)
 
 require_condition(
     some_condition(),
     "some_condition failed",
     raise_exc_class=WeirdArgsError,
-    raise_args=["weird"],
+    raise_args=["jawa"],
+    raise_kwargs=dict("ewok"="hutt")
     exc_builder=weird_builder,
 )
 ```
@@ -143,18 +142,18 @@ method on the object.
 
 ```python
     # Vanilla python
-    def vanilla(val: Optional[str]):
+    def vanilla(val: Optional[str]) -> str:
         if val is None:
             raise Exception("Received an undefined value!")
         return val.upper()
 
     # With py-buzz
-    def buzzy(val: Optional[str]):
+    def buzzy(val: Optional[str]) -> str:
         val = enforce_defined(val)
         return val.upper()
 ```
 
-This is also mostly just syntactic sugar, but it save you a few lines of code and is
+This is also mostly just syntactic sugar, but it can save you a few lines of code and is
 still very expressive. It might also be useful if you need to supply some more context
 in your error:
 
@@ -164,14 +163,14 @@ def neopolitan(val: Optional[str]):
         val,
         "Received an undefined value!"
         raise_exc_class=MyProjectError,
-        raise_args=["foo", "bar"],
-        raise_kwargs=dict(baz="QUX"),
+        raise_args=["jawa", "ewok"],
+        raise_kwargs=dict(hutt="pyke"),
     )
     return val
 ```
 
-In this case, a `MyProjectError` with be raised with positional arguments of `"foo"` and
-`"bar"` and a keyword argument of `baz="QUX"` if the value passed in is not defined.
+In this case, a `MyProjectError` with be raised with positional arguments of `"jawa"` and
+`"ewok"` and a keyword argument of `hutt="pyke"` if the value passed in is not defined.
 
 By default, `enforce_defined()` raises an exception with a basic message saying that the
 value was not defined. However, you may pass in a custom message with the `message`
@@ -205,7 +204,7 @@ Functions the same as `require_condition`.
 
 The `py-buzz` package also provides a context manager that catches any exceptions that
 might be raised while executing a bit of code. The caught exceptions are re-packaged and
-raised as another exception type. The message attahed to the new expression captures the
+raised as another exception type. The message attached to the new expression captures the
 initial exception's message:
 
 ```python
@@ -264,7 +263,7 @@ category of exceptions and let the others rise up un-altered:
 
 ```python
 with handle_errors("Something went wrong", handle_exc_class=MyProjectError):
-   some_function_that_could_raise_mine_or_other_errors()
+    some_function_that_could_raise_mine_or_other_errors()
 ```
 
 Exception instances that do not fall within the inheritance tree of the
@@ -295,6 +294,7 @@ that accepts a parameter of type `DoExceptParams` that can be imported from ``bu
 This `dataclass` has three attributes:
 
 * err: The caught exception itself
+* base_message: The message provided as the first argument to `handle_errors`
 * final_message: A message describing the error (This will be the formatted error message)
 * trace: A stack trace
 
@@ -344,9 +344,6 @@ with handle_errors("Something went wrong", do_finally=close_resource):
 Functions the same as `require_condition`.
 
 
-## Additional Features
--------------------
-
 ### check_expressions
 
 The `check_expressions` context manager is used to check multiple expressions inside of
@@ -394,6 +391,8 @@ Functions the same as `require_condition`.
 
 Functions the same as `require_condition`.
 
+
+## Additional Features
 
 ### reformat_exception
 
@@ -443,4 +442,8 @@ expression was falsey.
 The `Buzz` base class provides the same sort of access for `handle_errors`,
 `enforce_defined`, and `check_expressions`.
 
-Check out the examples for more.
+
+## Demo
+
+The `py-buzz-demo` executable (only available when installed with the `demo` extra) shows
+the features described here in action. See the [Demo](./demo.md) page for more info.

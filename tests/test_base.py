@@ -5,8 +5,9 @@ from buzz.base import Buzz
 
 def test_Buzz_require_condition__basic():
     Buzz.require_condition(True, "should not fail")
-    with pytest.raises(Buzz, match="fail message"):
+    with pytest.raises(Buzz, match="fail message") as err_info:
         Buzz.require_condition(False, "fail message")
+    assert err_info.value.base_message is None
 
 
 def test_Buzz_enforce_defined__basic():
@@ -23,6 +24,7 @@ def test_Buzz_handle_errors__basic():
     assert "there was a problem" in str(err_info.value)
     assert "intercepted exception" in str(err_info.value)
     assert "ValueError" in str(err_info.value)
+    assert err_info.value.base_message == "intercepted exception"
 
 
 def test_Buzz_handle_errors__false_re_raise_absorbs_errors():
@@ -45,3 +47,4 @@ def test_Buzz_check_expressions__basic():
     assert "one is not two" in err_msg
     assert "not a problem" not in err_msg
     assert "zero is still zero" in err_msg
+    assert err_info.value.base_message == "there will be errors"

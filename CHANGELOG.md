@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v7.0.0 - 2025-03-28
+* Removed `exc_builder` option from `Buzz`
+* Added `exc_builder` classmethod for `Buzz`
+* Added rich demo
+* Added demo page to docs
+* Removed examples folder (see `src/demo` instead)
+* Updated the README
+* Minor docs updates
+* Updated tests
+
+
 ## v6.1.0 - 2025-03-27
 * Added `base_message` to `ExcBuilderParams`
 * Improved typing

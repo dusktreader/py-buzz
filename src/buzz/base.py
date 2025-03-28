@@ -7,12 +7,11 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable, Mapping
 import textwrap
 from typing import TypeVar, Any
-from typing_extensions import override
+from typing_extensions import Self, override
 
 from buzz.tools import (
     DoExceptParams,
     ExcBuilderParams,
-    default_exc_builder,
     noop,
     require_condition,
     enforce_defined,
@@ -29,15 +28,15 @@ class Buzz(Exception):
     This provides a specialized exception class that wraps up all the buzz utility functions.
     """
 
-    def __init__(self, message: str):
+    def __init__(self, message: str, *args: Any, base_message: str | None = None, **kwargs: Any):
         """
         Initialize the exception with a message.
 
         Also, dedent the supplied message.
         """
-
         self.message: str = textwrap.dedent(message).strip()
-        super().__init__(self.message)
+        self.base_message: str | None = base_message
+        super().__init__(self.message, *args, **kwargs)
 
     @override
     def __str__(self):
@@ -56,13 +55,30 @@ class Buzz(Exception):
             raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods.")
 
     @classmethod
+    def exc_builder(cls, params: ExcBuilderParams) -> Self:
+        """
+        Build an instance of this Buzz exception.
+
+        This method is used by the other methods to construct the exception. Binds attributes from ExcBuilderParams
+        including the base_message.
+        """
+        if params.raise_exc_class is not cls:
+            raise RuntimeError("Buzz.exc_builder() included non-matching `raise_exc_class`!")
+
+        return cls(
+            params.message,
+            *params.raise_args,
+            base_message=params.base_message,
+            **params.raise_kwargs,
+        )
+
+    @classmethod
     def require_condition(
         cls,
         expr: Any,
         message: str,
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
-        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
     ):
         """
         Assert that an expression is truty. If the assertion fails, raise an exception (instance of this class) with the
@@ -75,8 +91,6 @@ class Buzz(Exception):
             raise_args:      Additional positional args (after the constructed message) that will passed when raising
                              an instance of the ``raise_exc_class``.
             raise_kwargs:    Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-            exc_builder:     A function that should be called to construct the raised ``raise_exc_class``. Useful for
-                             exception classes that do not take a message as the first positional argument.
         """
         return require_condition(
             expr,
@@ -84,7 +98,7 @@ class Buzz(Exception):
             raise_exc_class=cls,
             raise_args=raise_args,
             raise_kwargs=raise_kwargs,
-            exc_builder=exc_builder,
+            exc_builder=cls.exc_builder,
         )
 
     @classmethod
@@ -94,7 +108,6 @@ class Buzz(Exception):
         message: str = "Value was not defined (None)",
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
-        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
     ) -> TNonNull:
         """
         Assert that a value is not None. If the assertion fails, raise an exception (instance of this class) with the
@@ -108,8 +121,6 @@ class Buzz(Exception):
             raise_args:       Additional positional args (after the constructed message) that will passed when raising
                               an instance of the ``raise_exc_class``.
             raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-            exc_builder:      A function that should be called to construct the raised ``raise_exc_class``. Useful for
-                              exception classes that do not take a message as the first positional argument.
         """
         return enforce_defined(
             value,
@@ -117,7 +128,7 @@ class Buzz(Exception):
             raise_exc_class=cls,
             raise_args=raise_args,
             raise_kwargs=raise_kwargs,
-            exc_builder=exc_builder,
+            exc_builder=cls.exc_builder,
         )
 
     @classmethod
@@ -126,7 +137,6 @@ class Buzz(Exception):
         base_message: str,
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
-        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
     ):
         """
         Check a series of expressions inside of a context manager. If any fail an exception (instance of this class) is
@@ -138,8 +148,6 @@ class Buzz(Exception):
             raise_args:        Additional positional args (after the constructed message) that will passed when raising
                                an instance of the ``raise_exc_class``.
             raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-            exc_builder:       A function that should be called to construct the raised ``raise_exc_class``. Useful for
-                               exception classes that do not take a message as the first positional argument.
 
         Example:
 
@@ -162,7 +170,7 @@ class Buzz(Exception):
             raise_exc_class=cls,
             raise_args=raise_args,
             raise_kwargs=raise_kwargs,
-            exc_builder=exc_builder,
+            exc_builder=cls.exc_builder,
         )
 
     @classmethod
@@ -177,7 +185,6 @@ class Buzz(Exception):
         do_finally: Callable[[], None] = noop,
         do_except: Callable[[DoExceptParams], None] = noop,
         do_else: Callable[[], None] = noop,
-        exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
     ):
         """
         Provide a context manager that will intercept exceptions and repackage them in a new exception (instance of this
@@ -213,8 +220,6 @@ class Buzz(Exception):
                                parameter that is an instance of the ``DoExceptParams`` dataclass.
                                Note that the ``do_except`` method is passed the *original exception*.
             do_else:           A function that should be called only if there were no exceptions encountered.
-            exc_builder:       A function that should be called to construct the raised ``raise_exc_class``. Useful for
-                               exception classes that do not take a message as the first positional argument.
 
         Example:
 
@@ -233,7 +238,7 @@ class Buzz(Exception):
             do_finally=do_finally,
             do_except=do_except,
             do_else=do_else,
-            exc_builder=exc_builder,
+            exc_builder=cls.exc_builder,
         )
 
     @classmethod
