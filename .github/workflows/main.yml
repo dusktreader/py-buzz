@@ -27,7 +27,7 @@ jobs:
       run:  uv sync --extra=demo
 
     - name: Check Quality
-      run: make qa
+      run: make qa/full
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5

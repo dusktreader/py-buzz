@@ -24,7 +24,7 @@ jobs:
 
     - name: Build Documentation
       run: |
-        make docs
+        make docs/build
 
     - name: Deploy documentation
       uses: peaceiris/actions-gh-pages@v3
