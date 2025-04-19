@@ -13,10 +13,6 @@ from asyncio import iscoroutinefunction
 from typing import Any, Callable, TypeVar
 
 
-def noop(*_: Any, **__: Any):  # pyright: ignore[reportUnusedParameter]
-    pass
-
-
 TNonNull = TypeVar("TNonNull")
 
 
@@ -64,6 +60,8 @@ def require_condition(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    do_except: Callable[[Exception], None] | None = None,
+    do_else: Callable[[], None] | None = None,
 ):
     """
     Assert that an expression is truthy. If the assertion fails, raise an exception with the supplied message.
@@ -76,14 +74,19 @@ def require_condition(
                          Defaults to Exception.
                          May not be None.
         raise_args:      Additional positional args (after the constructed message) that will passed when raising
-                         an instance of the ``raise_exc_class``.
-        raise_kwargs:    Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-        exc_builder:     A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                         an instance of the `raise_exc_class`.
+        raise_kwargs:    Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+        exc_builder:     A function that should be called to construct the raised `raise_exc_class`. Useful for
                          exception classes that do not take a message as the first positional argument.
+        do_except:       A function that should be called only if the condition fails.
+                         Must accept one parameter that is the exception that will be raised.
+                         If not provided, nothing will be done.
+        do_else:         A function that should be called if the condition passes.
+                         If not provided, nothing will be done.
     """
 
     if not expr:
-        raise exc_builder(
+        exc: Exception = exc_builder(
             ExcBuilderParams(
                 raise_exc_class=raise_exc_class,
                 message=message,
@@ -91,6 +94,11 @@ def require_condition(
                 raise_kwargs=raise_kwargs or {},
             )
         )
+        if do_except:
+            do_except(exc)
+        raise exc
+    elif do_else:
+        do_else()
 
 
 def enforce_defined(
@@ -100,6 +108,8 @@ def enforce_defined(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    do_except: Callable[[Exception], None] | None = None,
+    do_else: Callable[[], None] | None = None,
 ) -> TNonNull:
     """
     Assert that a value is not None. If the assertion fails, raise an exception with the supplied message.
@@ -115,15 +125,22 @@ def enforce_defined(
                           May not be None.
 
         raise_args:       Additional positional args (after the constructed message) that will passed when raising
-                          an instance of the ``raise_exc_class``.
-        raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-        exc_builder:      A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                          an instance of the `raise_exc_class`.
+        raise_kwargs:     Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+        exc_builder:      A function that should be called to construct the raised `raise_exc_class`. Useful for
                           exception classes that do not take a message as the first positional argument.
+        do_except:        A function that should be called only if value is not defined.
+                          Must accept one parameter that is the exception that will be raised.
+                          If not provided, nothing will be done.
+        do_else:          A function that should be called if the value is defined.
+                          If not provided, nothing will be done.
     """
     if value is not None:
+        if do_else:
+            do_else()
         return value
     else:
-        raise exc_builder(
+        exc: Exception = exc_builder(
             ExcBuilderParams(
                 raise_exc_class=raise_exc_class,
                 message=message,
@@ -131,11 +148,13 @@ def enforce_defined(
                 raise_kwargs=raise_kwargs or {},
             )
         )
-
+        if do_except:
+            do_except(exc)
+        raise exc
 
 class _ExpressionChecker:
     """
-    A utility class to be used with the ``check_expressions`` context manager.
+    A utility class to be used with the `check_expressions` context manager.
     """
 
     problems: list[str]
@@ -174,6 +193,8 @@ def check_expressions(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    do_except: Callable[[Exception], None] | None = None,
+    do_else: Callable[[], None] | None = None,
 ):
     """
     Check a series of expressions inside of a context manager. If any fail an exception is raised that contains a
@@ -182,16 +203,21 @@ def check_expressions(
     Args:
         base_message:      The base failure message to include in the constructed message that is passed to the
                            raised Exception. Will be included in `ExcBuilderParams` passed to `exc_builder`.
-        raise_exc_class:   The exception type to raise with the constructed message if the expression is falsey.
+        raise_exc_class:   The exception type to raise with the assembled message if any of the expressions are falsey.
 
                            Defaults to Exception.
 
                            May not be None.
-        raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                           an instance of the ``raise_exc_class``.
-        raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
-        exc_builder:       A function that should be called to construct the raised ``raise_exc_class``. Useful for
+        raise_args:        Additional positional args (after the assembled message) that will passed when raising
+                           an instance of the `raise_exc_class`.
+        raise_kwargs:      Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+        exc_builder:       A function that should be called to construct the raised `raise_exc_class`. Useful for
                            exception classes that do not take a message as the first positional argument.
+        do_except:         A function that should be called only if the any of the expressions are falsey.
+                           Must accept one parameter that is the exception that will be raised.
+                           If not provided, nothing will be done.
+        do_else:           A function that should be called if none of the the expressions are falsey.
+                           If not provided, nothing will be done.
 
     Example:
 
@@ -220,7 +246,7 @@ def check_expressions(
     )
 
     if len(checker.problems) > 0:
-        raise exc_builder(
+        exc: Exception = exc_builder(
             ExcBuilderParams(
                 raise_exc_class=raise_exc_class,
                 message=message,
@@ -229,6 +255,11 @@ def check_expressions(
                 base_message=base_message,
             )
         )
+        if do_except:
+            do_except(exc)
+        raise exc
+    elif do_else:
+        do_else()
 
 
 def reformat_exception(message: str, err: Exception) -> str:
@@ -272,9 +303,9 @@ def handle_errors(
     raise_kwargs: Mapping[str, Any] | None = None,
     handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
     ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
-    do_finally: Callable[[], None] = noop,
-    do_except: Callable[[DoExceptParams], None] = noop,
-    do_else: Callable[[], None] = noop,
+    do_finally: Callable[[], None] | None = None,
+    do_except: Callable[[DoExceptParams], None] | None = None,
+    do_else: Callable[[], None] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
 ) -> Iterator[None]:
     """
@@ -285,11 +316,11 @@ def handle_errors(
         base_message:      The base message to attach to the raised exception. Will be included in `ExcBuilderParams`
                            passed to `exc_builder`.
         raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
-                           managed context. If ``None`` is passed, no new exception will be raised and only the
-                           ``do_except``, ``do_else``, and ``do_finally`` functions will be called.
+                           managed context. If `None` is passed, no new exception will be raised and only the
+                           `do_except`, `do_else`, and `do_finally` functions will be called.
         raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                           an instance of the ``raise_exc_class``.
-        raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                           an instance of the `raise_exc_class`.
+        raise_kwargs:      Keyword args that will be passed when raising an instance of the `raise_exc_class`.
         handle_exc_class:  Limits the class of exceptions that will be intercepted
                            Any other exception types will not be caught and re-packaged.
                            Defaults to Exception (will handle all exceptions). May also be provided as a tuple
@@ -302,11 +333,14 @@ def handle_errors(
                            Then, you would set `ignore_exc_class=RuntimeError`.
         do_finally:        A function that should always be called at the end of the block.
                            Should take no parameters.
+                           If not provided, nothing will be done.
         do_except:         A function that should be called only if there was an exception. Must accept one
-                           parameter that is an instance of the ``DoExceptParams`` dataclass.
-                           Note that the ``do_except`` method is passed the *original exception*.
+                           parameter that is an instance of the `DoExceptParams` dataclass.
+                           Note that the `do_except` method is passed the *original exception*.
+                           If not provided, nothing will be done.
         do_else:           A function that should be called only if there were no exceptions encountered.
-        exc_builder:       A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                           If not provided, nothing will be done.
+        exc_builder:       A function that should be called to construct the raised `raise_exc_class`. Useful for
                            exception classes that do not take a message as the first positional argument.
 
     Example:
@@ -342,14 +376,15 @@ def handle_errors(
 
         trace = get_traceback()
 
-        do_except(
-            DoExceptParams(
-                err=err,
-                base_message=base_message,
-                final_message=final_message,
-                trace=trace,
+        if do_except:
+            do_except(
+                DoExceptParams(
+                    err=err,
+                    base_message=base_message,
+                    final_message=final_message,
+                    trace=trace,
+                )
             )
-        )
         if raise_exc_class is not None:
             raise exc_builder(
                 ExcBuilderParams(
@@ -361,9 +396,11 @@ def handle_errors(
                 )
             ).with_traceback(trace) from err
     else:
-        do_else()
+        if do_else:
+            do_else()
     finally:
-        do_finally()
+        if do_finally:
+            do_finally()
 
 
 @contextlib.asynccontextmanager
@@ -374,9 +411,9 @@ async def handle_errors_async(
     raise_kwargs: Mapping[str, Any] | None = None,
     handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
     ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
-    do_finally: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] = noop,
-    do_except: Callable[[DoExceptParams], None] | Callable[[DoExceptParams], Coroutine[Any, Any, None]] = noop,
-    do_else: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] = noop,
+    do_finally: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] | None = None,
+    do_except: Callable[[DoExceptParams], None] | Callable[[DoExceptParams], Coroutine[Any, Any, None]] | None = None,
+    do_else: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
 ) -> AsyncIterator[None]:
     """
@@ -386,11 +423,11 @@ async def handle_errors_async(
         base_message:      The base message to attach to the raised exception. Will be included in `ExcBuilderParams`
                            passed to `exc_builder`.
         raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
-                           managed context. If ``None`` is passed, no new exception will be raised and only the
-                           ``do_except``, ``do_else``, and ``do_finally`` functions will be called.
+                           managed context. If `None` is passed, no new exception will be raised and only the
+                           `do_except`, `do_else`, and `do_finally` functions will be called.
         raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                           an instance of the ``raise_exc_class``.
-        raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                           an instance of the `raise_exc_class`.
+        raise_kwargs:      Keyword args that will be passed when raising an instance of the `raise_exc_class`.
         handle_exc_class:  Limits the class of exceptions that will be intercepted
                            Any other exception types will not be caught and re-packaged.
                            Defaults to Exception (will handle all exceptions). May also be provided as a tuple
@@ -404,13 +441,16 @@ async def handle_errors_async(
         do_finally:        A function that should always be called at the end of the block.
                            Should take no parameters.
                            May be an async function.
+                           If not provided, nothing will be done.
         do_except:         A function that should be called only if there was an exception. Must accept one
-                           parameter that is an instance of the ``DoExceptParams`` dataclass.
+                           parameter that is an instance of the `DoExceptParams` dataclass.
                            May be an async function.
-                           Note that the ``do_except`` method is passed the *original exception*.
+                           Note that the `do_except` method is passed the *original exception*.
+                           If not provided, nothing will be done.
         do_else:           A function that should be called only if there were no exceptions encountered.
                            May be an async function.
-        exc_builder:       A function that should be called to construct the raised ``raise_exc_class``. Useful for
+                           If not provided, nothing will be done.
+        exc_builder:       A function that should be called to construct the raised `raise_exc_class`. Useful for
                            exception classes that do not take a message as the first positional argument.
 
     Example:
@@ -456,14 +496,15 @@ async def handle_errors_async(
                 )
             )
         else:
-            do_except(
-                DoExceptParams(
-                    err=err,
-                    base_message=base_message,
-                    final_message=final_message,
-                    trace=trace,
+            if do_except:
+                do_except(
+                    DoExceptParams(
+                        err=err,
+                        base_message=base_message,
+                        final_message=final_message,
+                        trace=trace,
+                    )
                 )
-            )
 
         if raise_exc_class is not None:
             raise exc_builder(
@@ -476,12 +517,14 @@ async def handle_errors_async(
                 )
             ).with_traceback(trace) from err
     else:
-        if iscoroutinefunction(do_else):
-            await do_else()
-        else:
-            do_else()
+        if do_else:
+            if iscoroutinefunction(do_else):
+                await do_else()
+            else:
+                do_else()
     finally:
-        if iscoroutinefunction(do_finally):
-            await do_finally()
-        else:
-            do_finally()
+        if do_finally:
+            if iscoroutinefunction(do_finally):
+                await do_finally()
+            else:
+                do_finally()

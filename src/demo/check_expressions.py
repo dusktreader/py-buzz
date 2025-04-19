@@ -30,6 +30,7 @@ def demo_2__complex():
     * Applying multiple checks
     * Applying all checks provided, even if one fails early in the process.
     * Raising a specific exception type on failure
+    * Calling a `do_except()` function
     """
     def is_int(n: float | int):
         return int(n) == n
@@ -47,7 +48,11 @@ def demo_2__complex():
         return is_int(n) and is_positive(n) and n > 1 and all(n % i for i in range(2, int(n**0.5) + 1))
 
     n = 8
-    with check_expressions(f"Some checks failed for {n}", raise_exc_class=RuntimeError) as check:
+    with check_expressions(
+        f"Some checks failed for {n}",
+        raise_exc_class=RuntimeError,
+        do_except=lambda exc: print(f"do_except() was called: {exc}!"),
+    ) as check:
         check(is_int(n), "number must an integer")
         check(is_even(n), "number must be even")
         check(is_power_of_2(n), "number must be a power of 2")

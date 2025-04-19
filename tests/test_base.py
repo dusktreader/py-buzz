@@ -37,7 +37,7 @@ def test_Buzz_check_expressions__basic():
         with Buzz.check_expressions("there will be errors") as check:
             check(True)
             check(False)
-            check(1 == 2, "one is not two")
+            check(1 == 2, "one is not two")  # pyright: ignore[reportUnnecessaryComparison]
             check("cooooooool", "not a problem")
             check(0, "zero is still zero")
     err_msg = err_info.value.message

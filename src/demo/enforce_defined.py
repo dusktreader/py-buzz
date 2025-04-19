@@ -57,6 +57,7 @@ def demo_3__complex():
     * Using a custom failure message
     * Raising a specific exception types on failure
     * Passing specific args and kwargs to the exception when it is raised.
+    * Calling a `do_except()` function
     """
     class DemoException(Exception):
         def __init__(self, message: str, demo_arg: Any, demo_kwarg: Any | None = None):
@@ -82,5 +83,6 @@ def demo_3__complex():
         raise_exc_class=DemoException,
         raise_args=["jawa"],
         raise_kwargs=dict(demo_kwarg="ewok"),
+        do_except=lambda exc: print(f"do_except() was called: {exc}!"),
     )
     val.upper()

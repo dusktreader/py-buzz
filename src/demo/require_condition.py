@@ -31,6 +31,7 @@ def demo_2__complex():
 
     * Raising a specific exception class
     * Binding extra arguments to the raised exception
+    * Calling a `do_except()` function
     """
     class DemoException(Exception):
         def __init__(self, message: str, demo_arg: Any, demo_kwarg: Any | None = None):
@@ -48,4 +49,5 @@ def demo_2__complex():
         raise_exc_class=DemoException,
         raise_args=["jawa"],
         raise_kwargs=dict(demo_kwarg="ewok"),
+        do_except=lambda exc: print(f"do_except() was called: {exc}!"),
     )

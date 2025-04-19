@@ -12,7 +12,6 @@ from typing_extensions import Self, override
 from buzz.tools import (
     DoExceptParams,
     ExcBuilderParams,
-    noop,
     require_condition,
     enforce_defined,
     check_expressions,
@@ -79,6 +78,8 @@ class Buzz(Exception):
         message: str,
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
+        do_except: Callable[[Exception], None] | None = None,
+        do_else: Callable[[], None] | None = None,
     ):
         """
         Assert that an expression is truty. If the assertion fails, raise an exception (instance of this class) with the
@@ -89,8 +90,13 @@ class Buzz(Exception):
             message:         The failure message to attach to the raised Exception
             expr:            The value that is checked for truthiness (usually an evaluated expression)
             raise_args:      Additional positional args (after the constructed message) that will passed when raising
-                             an instance of the ``raise_exc_class``.
-            raise_kwargs:    Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                             an instance of the `raise_exc_class`.
+            raise_kwargs:    Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+            do_except:       A function that should be called only if the condition fails.
+                             Must accept one parameter that is the exception that will be raised.
+                             If not provided, nothing will be done.
+            do_else:         A function that should be called if the condition passes.
+                             If not provided, nothing will be done.
         """
         return require_condition(
             expr,
@@ -99,6 +105,8 @@ class Buzz(Exception):
             raise_args=raise_args,
             raise_kwargs=raise_kwargs,
             exc_builder=cls.exc_builder,
+            do_except=do_except,
+            do_else=do_else,
         )
 
     @classmethod
@@ -108,6 +116,8 @@ class Buzz(Exception):
         message: str = "Value was not defined (None)",
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
+        do_except: Callable[[Exception], None] | None = None,
+        do_else: Callable[[], None] | None = None,
     ) -> TNonNull:
         """
         Assert that a value is not None. If the assertion fails, raise an exception (instance of this class) with the
@@ -119,8 +129,13 @@ class Buzz(Exception):
             message:          The failure message to attach to the raised Exception
             expr:             The value that is checked for truthiness (usually an evaluated expression)
             raise_args:       Additional positional args (after the constructed message) that will passed when raising
-                              an instance of the ``raise_exc_class``.
-            raise_kwargs:     Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                              an instance of the `raise_exc_class`.
+            raise_kwargs:     Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+            do_except:        A function that should be called only if value is not defined.
+                              Must accept one parameter that is the exception that will be raised.
+                              If not provided, nothing will be done.
+            do_else:          A function that should be called if the value is defined.
+                              If not provided, nothing will be done.
         """
         return enforce_defined(
             value,
@@ -129,6 +144,8 @@ class Buzz(Exception):
             raise_args=raise_args,
             raise_kwargs=raise_kwargs,
             exc_builder=cls.exc_builder,
+            do_except=do_except,
+            do_else=do_else,
         )
 
     @classmethod
@@ -137,6 +154,8 @@ class Buzz(Exception):
         base_message: str,
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
+        do_except: Callable[[Exception], None] | None = None,
+        do_else: Callable[[], None] | None = None,
     ):
         """
         Check a series of expressions inside of a context manager. If any fail an exception (instance of this class) is
@@ -146,8 +165,13 @@ class Buzz(Exception):
             base_message:      The base failure message to include in the constructed message that is passed to the
                                raised Exception. Will be included in `ExcBuilderParams` passed to `exc_builder`.
             raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                               an instance of the ``raise_exc_class``.
-            raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                               an instance of the `raise_exc_class`.
+            raise_kwargs:      Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+            do_except:         A function that should be called only if the any of the expressions are falsey.
+                               Must accept one parameter that is the exception that will be raised.
+                               If not provided, nothing will be done.
+            do_else:           A function that should be called if none of the the expressions are falsey.
+                               If not provided, nothing will be done.
 
         Example:
 
@@ -171,6 +195,8 @@ class Buzz(Exception):
             raise_args=raise_args,
             raise_kwargs=raise_kwargs,
             exc_builder=cls.exc_builder,
+            do_except=do_except,
+            do_else=do_else,
         )
 
     @classmethod
@@ -182,9 +208,9 @@ class Buzz(Exception):
         raise_kwargs: Mapping[str, Any] | None = None,
         handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
         ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
-        do_finally: Callable[[], None] = noop,
-        do_except: Callable[[DoExceptParams], None] = noop,
-        do_else: Callable[[], None] = noop,
+        do_finally: Callable[[], None] | None = None,
+        do_except: Callable[[DoExceptParams], None] | None = None,
+        do_else: Callable[[], None] | None = None,
     ):
         """
         Provide a context manager that will intercept exceptions and repackage them in a new exception (instance of this
@@ -198,11 +224,11 @@ class Buzz(Exception):
                                exceptions. This will effectively swallow the expression. Note that the `do_` methods
                                will still be executed.
             raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
-                               managed context. If ``None`` is passed, no new exception will be raised and only the
-                               ``do_except``, ``do_else``, and ``do_finally`` functions will be called.
+                               managed context. If `None` is passed, no new exception will be raised and only the
+                               `do_except`, `do_else`, and `do_finally` functions will be called.
             raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                               an instance of the ``raise_exc_class``.
-            raise_kwargs:      Keyword args that will be passed when raising an instance of the ``raise_exc_class``.
+                               an instance of the `raise_exc_class`.
+            raise_kwargs:      Keyword args that will be passed when raising an instance of the `raise_exc_class`.
             handle_exc_class:  Limits the class of exceptions that will be intercepted
                                Any other exception types will not be caught and re-packaged.
                                Defaults to Exception (will handle all exceptions). May also be provided as a tuple
@@ -216,10 +242,13 @@ class Buzz(Exception):
                                Then, you would set `ignore_exc_class=RuntimeError`.
             do_finally:        A function that should always be called at the end of the block.
                                Should take no parameters.
+                               If not provided, nothing will be done.
             do_except:         A function that should be called only if there was an exception. Must accept one
-                               parameter that is an instance of the ``DoExceptParams`` dataclass.
-                               Note that the ``do_except`` method is passed the *original exception*.
+                               parameter that is an instance of the `DoExceptParams` dataclass.
+                               Note that the `do_except` method is passed the *original exception*.
+                               If not provided, nothing will be done.
             do_else:           A function that should be called only if there were no exceptions encountered.
+                               If not provided, nothing will be done.
 
         Example:
 

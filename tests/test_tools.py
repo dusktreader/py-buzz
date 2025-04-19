@@ -44,8 +44,8 @@ class DummyWeirdArgsException(Exception):
 def alt_builder(params: ExcBuilderParams) -> Exception:
     return params.raise_exc_class(
         *params.raise_args,
-        detail=params.message,  # pyright: ignore[reportCallIssue]
-        base_message=params.base_message,  # pyright: ignore[reportCallIssue]
+        detail=params.message,  # type: ignore[call-arg]  # pyright: ignore[reportCallIssue]
+        base_message=params.base_message,  # type: ignore[call-arg]  # pyright: ignore[reportCallIssue]
         **params.raise_kwargs,
     )
 
@@ -90,6 +90,20 @@ def test_require_condition__using_alternative_exception_builder():
     assert err_info.value.dummy_arg == "dummy arg"
     assert err_info.value.detail == "fail message"
     assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+
+def test_require_condition__with_do_else():
+    check_list: list[int] = []
+    require_condition(True, "should not fail", do_else=lambda: check_list.append(1))
+    assert check_list == [1]
+
+
+def test_require_condition__with_do_except():
+    check_list: list[Exception] = []
+    with pytest.raises(Exception, match="fail message"):
+        require_condition(False, "fail message", do_except=lambda e: check_list.append(e))
+    assert len(check_list) == 1
+    assert "fail message" in str(check_list[0])
 
 
 def test_enforce_defined__basic():
@@ -139,6 +153,22 @@ def test_enforce_defined__using_alternative_exception_builder():
     assert err_info.value.dummy_arg == "dummy arg"
     assert err_info.value.dummy_kwarg == "dummy kwarg"
     assert err_info.value.detail == "fail message"
+
+
+def test_enforce_defined__with_do_else():
+    check_list: list[int] = []
+    some_val: str | None = "boo"
+    some_val = enforce_defined(some_val, "should not fail", do_else=lambda: check_list.append(1))
+    assert check_list == [1]
+
+
+def test_enforce_defined__with_do_except():
+    check_list: list[Exception] = []
+    some_val = None
+    with pytest.raises(Exception, match="fail message"):
+        enforce_defined(some_val, "fail message", do_except=lambda e: check_list.append(e))
+    assert len(check_list) == 1
+    assert "fail message" in str(check_list[0])
 
 
 def test_handle_errors__no_exceptions():
@@ -272,7 +302,7 @@ def test_handle_errors__does_not_raise_when_raise_exc_class_is_None():
     ):
         raise Exception("there was a problem")
 
-    (problem, *remains) = check_list
+    (problem, *remains) = check_list  # pyright: ignore[reportUnreachable]
     assert remains == []
     assert "there was a problem" in problem.final_message
     assert isinstance(problem.err, Exception)
@@ -318,8 +348,8 @@ def test_handle_errors__as_decorator_no_exceptions():
 
 def test_handle_errors__as_decorator_basic_handling():
     @handle_errors("intercepted exception")
-    def do_stuff(arg, kwarg="default"):
-        raise ValueError("there was a problem")
+    def do_stuff(arg: str, kwarg: str = "default"):
+        raise ValueError(f"there was a problem: {arg=}, {kwarg=}")
 
     with pytest.raises(Exception) as err_info:
         do_stuff("blah", kwarg="barf")
@@ -428,7 +458,7 @@ def test_check_expressions__basic():
         with check_expressions("there will be errors") as check:
             check(True)
             check(False)
-            check(1 == 2, "one is not two")
+            check(1 == 2, "one is not two")  # pyright: ignore[reportUnnecessaryComparison]
             check("cooooooool", "not a problem")
             check(0, "zero is still zero")
 
@@ -485,6 +515,22 @@ def test_check_expressions____using_alternative_exception_builder():
     assert "there will be errors" in err_info.value.detail
     assert "1st expression failed" in err_info.value.detail
     assert err_info.value.base_message == "there will be errors"
+
+
+def test_check_expressions__with_do_else():
+    check_list: list[int] = []
+    with check_expressions("there will be errors", do_else=lambda: check_list.append(1)) as check:
+        check(True)
+    assert check_list == [1]
+
+
+def test_check_expressions__with_do_except():
+    check_list: list[Exception] = []
+    with pytest.raises(Exception, match="there will be errors"):
+        with check_expressions("there will be errors", do_except=lambda e: check_list.append(e)) as check:
+            check(False)
+    assert len(check_list) == 1
+    assert "there will be errors" in str(check_list[0])
 
 
 def test_reformat_exception():

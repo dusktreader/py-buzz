@@ -38,7 +38,7 @@ def demo_2__handle_errors():
 def demo_3__enforce_defined():
     """
     This function demonstrates the basic use of the `enforce_defined()`
-    function from `Buzz`. Notice how the riased exception is an instance of `Buzz`
+    function from `Buzz`. Notice how the raised exception is an instance of `Buzz`
     without the need to set the `raise_exc_class`.
     """
     val: str | None = "test-value"

@@ -42,13 +42,13 @@ There are a few special keyword argument parameters for the `require_condition()
 function:
 
 
-#### raise_exc_class
+#### `raise_exc_class`
 
 This just specifies the type of exception to raise if the condition fails.
 It defaults to `Exception`.
 
 
-#### raise_args
+#### `raise_args`
 
 With this parameter, you can specify any positional arguments that should be passed
 to the raised exception _after the message_. Here is an example:
@@ -72,7 +72,7 @@ If the condition fails, `require_condition` will rais a `MyProjectError` initial
 with positional args `init_arg1 == "foo"` and `init_arg2 == "bar"`.
 
 
-#### raise_kwargs
+#### `raise_kwargs`
 
 Like the `raise_args` parameter, this one passes along a dictionary of keyword arguments
 to the newly raised exception:
@@ -96,7 +96,7 @@ If the condition fails, `require_condition` will rais a `MyProjectError` initial
 with keyword arguments `init_kwarg1 == "foo"` and `init_kwarg2 == "bar"`.
 
 
-#### exc_builder
+#### `exc_builder`
 
 If the exception to be raised with the `raise_exc_class` option is a non-standard
 exception type that does not take a string message as its first argument, you will need
@@ -110,7 +110,7 @@ passed as a keyword argument named `details`.
 In this case, you need to define a builder function to construct the exception and pass
 it to the `exc_builder` option. The `exc_builder` option should be a callable function
 that accepts a single parameter of type `ExcBuilderParams` that can be imported from
-``buzz``.
+`buzz`.
 
 
 ```python
@@ -129,6 +129,45 @@ require_condition(
     raise_args=["jawa"],
     raise_kwargs=dict("ewok"="hutt")
     exc_builder=weird_builder,
+)
+```
+
+
+#### `do_except`
+
+Sometimes, it is useful to do some particular things when a condition is not met. A
+good example would be to log that the condition failed. The `do_except` optional argument
+provides the ability to do this. The `do_except` option should be a callable function
+that accepts a single parameter that is the exception that will be raised.
+
+This option might be invoked something like this:
+
+```python
+def log_error(exc: Exception):
+    logger.error(f"The condition failed: {exc}")
+
+require_condition(
+    some_condition(),
+    "some_condition failed",
+    do_except=log_error,
+)
+```
+
+
+#### `do_else`
+
+This option describes some action that should happen if the condition passes.
+This option is less useful than `do_except` but it may useful in some circumstances.
+This option should be a callable that takes no arguments:
+
+```python
+def log_yay():
+    logger.info("it's all good!")
+
+require_condition(
+    some_condition(),
+    "some_condition failed",
+    do_else=log_yay,
 )
 ```
 
@@ -179,25 +218,34 @@ keyword argument.
 The `enforce_defined()` function also accepts some keyword arguments:
 
 
-#### raise_exc_class
+#### `raise_exc_class`
 
 Functions the same as `require_condition`.
 
 
-#### raise_args
+#### `raise_args`
 
 Functions the same as `require_condition`.
 
 
-#### raise_kwargs
+#### `raise_kwargs`
 
 Functions the same as `require_condition`.
 
 
-#### exc_builder
+#### `exc_builder`
 
 Functions the same as `require_condition`.
 
+
+#### `do_except`
+
+Functions the same as `require_condition`.
+
+
+#### `do_else`
+
+Functions the same as `require_condition`.
 
 
 ### Exception handling context manager
@@ -230,7 +278,7 @@ catch block. However, there are some extra bells and whistles on `handle_errors`
 can be used by passing additional keyword arguments to the function.
 
 
-#### raise_exc_class
+#### `raise_exc_class`
 
 This parameter is the same as for `require_condition()`. However, if you pass `None` it
 _will not raise a new exception_. Instead, `handle_errors` will process the `do_except`,
@@ -239,22 +287,22 @@ exceptions that occur in the context. However *the context is immediately exited
 the first raised exception*.
 
 
-#### raise_args
+#### `raise_args`
 
 Functions the same as `require_condition`.
 
 
-#### raise_kwargs
+#### `raise_kwargs`
 
 Functions the same as `require_condition`.
 
 
-#### exc_builder
+#### `exc_builder`
 
 Functions the same as `require_condition`.
 
 
-#### handle_exc_class
+#### `handle_exc_class`
 
 This option describes the type of exception that will be handled by this context
 manager. Any instance of the option's exception (or any of its derived exception
@@ -272,7 +320,7 @@ Exception instances that do not fall within the inheritance tree of the
 the `do_else` and `do_finally` tasks will be executed normally.
 
 
-#### ignore_exc_class
+#### `ignore_exc_class`
 
 This option describes a type of exception that should _not_ be handled by this
 context manager. Any instance of the option's exception (or any of its derived
@@ -285,12 +333,12 @@ be handled by `handle_errors`. For example, if you want to use
 `RuntimeError`, then, you would set `ignore_exc_class=RuntimeError`.
 
 
-#### do_except
+#### `do_except`
 
 Often, it is useful to do some particular things when an exception is caught.  Most
 frequently this includes logging the exception. The `do_except` optional argument
 provides the ability to do this. The `do_except` option should be a callable function
-that accepts a parameter of type `DoExceptParams` that can be imported from ``buzz``.
+that accepts a parameter of type `DoExceptParams` that can be imported from `buzz`.
 This `dataclass` has three attributes:
 
 * err: The caught exception itself
@@ -310,7 +358,7 @@ with handle_errors("Something went wrong", do_except=log_error):
 ```
 
 
-#### do_else
+#### `do_else`
 
 This option describes some action that should happen if no exceptions are encountered.
 This option is less useful than `do_except` but it may useful in some circumstances.
@@ -325,7 +373,7 @@ This option should be a callable that takes no arguments:
 ```
 
 
-#### do_finally
+#### `do_finally`
 
 This option describes some action that should happen at the end of the context
 regardless to whether an exception occurred or not. This is a useful feature if you need
@@ -339,12 +387,12 @@ with handle_errors("Something went wrong", do_finally=close_resource):
     some_dangerous_function_that_uses_resource(resource)
 ```
 
-#### exc_builder
+#### `exc_builder`
 
 Functions the same as `require_condition`.
 
 
-### check_expressions
+### `check_expressions`
 
 The `check_expressions` context manager is used to check multiple expressions inside of
 a context manager. Each expression is checked and each failing expression is reported at
@@ -372,29 +420,39 @@ Exception: Checked expressions failed: there will be errors
 The `check_expressions()` context manager also accepts some keyword arguments:
 
 
-#### raise_exc_class
+#### `raise_exc_class`
 
 Functions the same as `require_condition`.
 
 
-#### raise_args
+#### `raise_args`
 
 Functions the same as `require_condition`.
 
 
-#### raise_kwargs
+#### `raise_kwargs`
 
 Functions the same as `require_condition`.
 
 
-#### exc_builder
+#### `exc_builder`
+
+Functions the same as `require_condition`.
+
+
+#### `do_except`
+
+Functions the same as `require_condition`.
+
+
+#### `do_else`
 
 Functions the same as `require_condition`.
 
 
 ## Additional Features
 
-### reformat_exception
+### `reformat_exception`
 
 This method is used internally by the `handle_errors` context manager.  However, it is
 sometimes useful in other circumstances. It simply allows you to wrap an exception
@@ -414,7 +472,7 @@ The above block would result in output like:
 ```
 
 
-### get_traceback
+### `get_traceback`
 
 This function is just a tool to fetch the traceback for the current function. It does
 this by fetching it out of `sys.exc_info`. It is used internally with Buzz but could
