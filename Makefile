@@ -36,13 +36,13 @@ qa/test:  ## Run the tests
 
 .PHONY: qa/types
 qa/types:  ## Run static type checks
-	uv run mypy ${PACKAGE_TARGET} tests src/demo --pretty
-	uv run basedpyright ${PACKAGE_TARGET} tests src/demo
+	uv run mypy ${PACKAGE_TARGET} tests src/buzz_demo --pretty
+	uv run basedpyright ${PACKAGE_TARGET} tests src/buzz_demo
 
 .PHONY: qa/lint
 qa/lint:  ## Run linters
-	uv run ruff check ${PACKAGE_TARGET} tests src/demo
-	uv run typos ${PACKAGE_TARGET} tests src/demo
+	uv run ruff check ${PACKAGE_TARGET} tests src/buzz_demo
+	uv run typos ${PACKAGE_TARGET} tests src/buzz_demo
 
 .PHONY: qa/full
 qa/full: qa/test qa/lint qa/types  ## Run the full set of quality checks
@@ -50,7 +50,7 @@ qa/full: qa/test qa/lint qa/types  ## Run the full set of quality checks
 
 .PHONY: qa/format
 qa/format:  ## RUn code formatter
-	uv run ruff format ${PACKAGE_TARGET} tests src/demo
+	uv run ruff format ${PACKAGE_TARGET} tests src/buzz_demo
 
 
 # ==== Documentation ===================================================================================================

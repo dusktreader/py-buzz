@@ -1,6 +1,6 @@
 [project]
 name = "py-buzz"
-version = "7.1.0"
+version = "7.2.0"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
 authors = [
     {name = "Tucker Beck", email ="tucker.beck@gmail.com"},
@@ -23,7 +23,7 @@ demo = [
 ]
 
 [project.scripts]
-py-buzz-demo = "demo.main:main[cli]"
+py-buzz-demo = "buzz_demo.main:main[cli]"
 
 [tool.uv]
 package = true
@@ -80,7 +80,7 @@ extend-ignore-re = [
 [tool.hatch.build.targets.wheel]
 packages = [
     "src/buzz",
-    "src/demo",
+    "src/buzz_demo",
 ]
 
 [build-system]

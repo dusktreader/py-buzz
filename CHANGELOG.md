@@ -5,10 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v7.2.0 - 2025-04-19
+* Renamed the `demo` package to `buzz_demo` to avoid name collision
+
+
 ## v7.1.0 - 2025-04-19
 * Added `do_except` and `do_else` to `require_condition`, `enforce_defined`, and `check_expressions`
 * Added unit tests for new functionality
 * Added new functionality to the demos
+
 
 ## v7.0.0 - 2025-03-28
 * Removed `exc_builder` option from `Buzz`

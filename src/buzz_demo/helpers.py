@@ -40,7 +40,7 @@ BlankLine = Rule(characters=" ")
 
 def get_demo_functions(module_name: str) -> list[Callable[..., None]]:
     demo_functions: list[Callable[..., None]] = []
-    module = import_module(f"demo.{module_name}")
+    module = import_module(f"buzz_demo.{module_name}")
     for _, obj in inspect.getmembers(module):
         if inspect.isfunction(obj) and obj.__name__.startswith("demo"):
             demo_functions.append(obj)

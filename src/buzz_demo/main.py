@@ -12,7 +12,7 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.prompt import Confirm
 
-from demo.helpers import run_demo, get_demo_functions
+from buzz_demo.helpers import run_demo, get_demo_functions
 
 
 class Feature(AutoNameEnum):
