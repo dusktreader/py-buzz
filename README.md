@@ -16,6 +16,7 @@ include:
 * checking many conditions and reporting which ones failed (`check_expressions()`)
 * catching exceptions wrapping them in clearer exception types with better error messages (`handle_errors()`)
 * checking that values are defined and raising errors if not (`enforce_defined()`)
+* checking that values are a certain type and raising errors if not (`ensure_type()`)
 * checking conditions and raising errors on failure (`require_condition()`)
 
 py-buzz also provides an exception class, Buzz, that can be used  as a base class

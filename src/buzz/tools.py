@@ -118,8 +118,7 @@ def enforce_defined(
 
         value:            The value that is checked to be non-null
         message:          The failure message to attach to the raised Exception
-        expr:             The value that is checked for truthiness (usually an evaluated expression)
-        raise_exc_class:  The exception type to raise with the constructed message if the expression is falsey.
+        raise_exc_class:  The exception type to raise with the constructed message if the expression is None.
 
                           Defaults to Exception.
                           May not be None.
@@ -151,6 +150,65 @@ def enforce_defined(
         if do_except:
             do_except(exc)
         raise exc
+
+
+EnsuredType = TypeVar("EnsuredType")
+
+def ensure_type(
+    value: Any,
+    type_: type[EnsuredType],
+    message: str | None = None,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
+    exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    do_except: Callable[[Exception], None] | None = None,
+    do_else: Callable[[], None] | None = None,
+) -> EnsuredType:
+    """
+    Assert that a value is of a specific type. If the assertion fails, raise an exception with the supplied message.
+
+    Args:
+
+        value:            The value that is to be checked
+        type_:            The type that the value must be of
+        message:          The failure message to attach to the raised Exception
+        raise_exc_class:  The exception type to raise with the constructed message if the type does not match
+
+                          Defaults to Exception
+                          May not be None
+
+        raise_args:       Additional positional args (after the constructed message) that will passed when raising
+                          an instance of the `raise_exc_class`.
+        raise_kwargs:     Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+        exc_builder:      A function that should be called to construct the raised `raise_exc_class`. Useful for
+                          exception classes that do not take a message as the first positional argument.
+        do_except:        A function that should be called only if value is of the wrong type.
+                          Must accept one parameter that is the exception that will be raised.
+                          If not provided, nothing will be done.
+        do_else:          A function that should be called if the value is of the wrong type.
+                          If not provided, nothing will be done.
+    """
+    if not message:
+        message = f"Value was not of type {type_}"
+
+    if isinstance(value, type_):
+        if do_else:
+            do_else()
+        return value
+    else:
+        exc: Exception = exc_builder(
+            ExcBuilderParams(
+                raise_exc_class=raise_exc_class,
+                message=message,
+                raise_args=raise_args or [],
+                raise_kwargs=raise_kwargs or {},
+            )
+        )
+        if do_except:
+            do_except(exc)
+        raise exc
+
 
 class _ExpressionChecker:
     """

@@ -39,7 +39,7 @@ If you want to run the demo but not include its dependencies in your system pyth
 or an activated virtual environment, you can execute the demo with uv:
 
 ```bash
-uv run --with=py-buzz[demo] py-buzz-demo
+uvx --from=py-buzz[demo] py-buzz-demo
 ```
 
 
@@ -47,4 +47,4 @@ uv run --with=py-buzz[demo] py-buzz-demo
 
 You can also examine the demo source to examine how `py-buzz` is used.
 
-Check out the [source code on Github](https://github.com/dusktreader/py-buzz/tree/main/src/demo).
+Check out the [source code on Github](https://github.com/dusktreader/py-buzz/tree/main/src/buzz_demo).

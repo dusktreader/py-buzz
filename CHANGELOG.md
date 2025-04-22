@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v7.3.0 - 2025-04-21
+* Added the `ensure_type()` function
+* Some docs updates
+
 ## v7.2.0 - 2025-04-19
 * Renamed the `demo` package to `buzz_demo` to avoid name collision
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from buzz.base import Buzz
@@ -14,6 +16,14 @@ def test_Buzz_enforce_defined__basic():
     Buzz.enforce_defined("dummy", "should not fail")
     with pytest.raises(Buzz, match="fail message"):
         Buzz.enforce_defined(None, "fail message")
+
+
+def test_Buzz_ensure_type__basic():
+    val: str | int = "dummy"
+    Buzz.ensure_type(val, str, "should not fail")
+    with pytest.raises(Buzz, match="fail message"):
+        val = 13
+        Buzz.ensure_type(val, str, "fail message")
 
 
 def test_Buzz_handle_errors__basic():
