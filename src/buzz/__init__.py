@@ -3,6 +3,7 @@ from buzz.tools import (
     DoExceptParams,
     check_expressions,
     enforce_defined,
+    ensure_type,
     get_traceback,
     handle_errors,
     handle_errors_async,
@@ -13,12 +14,13 @@ from buzz.tools import (
 
 __all__ = [
     "Buzz",
+    "DoExceptParams",
     "check_expressions",
+    "enforce_defined",
+    "ensure_type",
+    "get_traceback",
     "handle_errors",
     "handle_errors_async",
-    "require_condition",
-    "enforce_defined",
     "reformat_exception",
-    "get_traceback",
-    "DoExceptParams",
+    "require_condition",
 ]

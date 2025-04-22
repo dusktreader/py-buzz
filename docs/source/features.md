@@ -7,10 +7,10 @@ There are a few main features of `py-buzz` that are noteworthy:
 
 ### Raise exception on condition failure
 
-The `py-buzz` package provides a function that checks a condition and raises
-an exception if it fails. This is nice, because you often find your self writing
-a lot of `if <whatever>: raise Exception(<message>)` throughout your code
-base. It's just a little easier with `py-buzz`:
+The `py-buzz` package provides the `require_condition()` function that checks a
+condition and raises an exception if it fails. This is nice, because you often
+find your self writing a lot of `if <whatever>: raise Exception(<message>)`
+throughout your code base. It's just a little easier with `py-buzz`:
 
 ```python
 # Vanilla python
@@ -56,7 +56,7 @@ to the raised exception _after the message_. Here is an example:
 ```python
 
 class MyProjectError(Exception):
-    def __init__(self, message, init_arg1, init_arg2):
+    def __init__(self, message, init_arg1: str, init_arg2: str):
         self.init_arg1 = init_arg1
         self.init_arg2 = init_arg2
 
@@ -68,7 +68,7 @@ require_condition(
 )
 ```
 
-If the condition fails, `require_condition` will rais a `MyProjectError` initialized
+If the condition fails, `require_condition()` will rais a `MyProjectError` initialized
 with positional args `init_arg1 == "foo"` and `init_arg2 == "bar"`.
 
 
@@ -80,7 +80,7 @@ to the newly raised exception:
 
 ```python
 class MyProjectError(Exception):
-    def __init__(self, message, init_kwarg1=None, init_kwarg2=None):
+    def __init__(self, message, init_kwarg1: str | None = None, init_kwarg2: str | None = None):
         self.init_kwarg1 = init_kwarg1
         self.init_kwarg2 = init_kwarg2
 
@@ -92,7 +92,7 @@ require_condition(
 )
 ```
 
-If the condition fails, `require_condition` will rais a `MyProjectError` initialized
+If the condition fails, `require_condition()` will rais a `MyProjectError` initialized
 with keyword arguments `init_kwarg1 == "foo"` and `init_kwarg2 == "bar"`.
 
 
@@ -115,7 +115,7 @@ that accepts a single parameter of type `ExcBuilderParams` that can be imported 
 
 ```python
 class WeirdArgsError(Exception):
-    def __init__(self, *args, detail="", **kwargs):
+    def __init__(self, *args, detail: str = "", **kwargs):
         self.detail = detail
         super().__init__(*args, **kwargs)
 
@@ -174,22 +174,21 @@ require_condition(
 
 ### Raise exception if value is not defined
 
-The `py-buzz` package provides a function that checks a value and raises an exception if
-it is not defined. This is especially useful for both checking if a variable passed to a
-function is defined and also to satisfy static type checkers when you want to call a
-method on the object.
+The `py-buzz` package provides the `enforce_defined()` function that checks a
+value and raises an exception if it is not defined. This is especially useful
+for both checking if a variable passed to a function is defined and also to
+satisfy static type checkers when you want to call a method on the object.
 
 ```python
     # Vanilla python
-    def vanilla(val: Optional[str]) -> str:
+    def vanilla(val: str | None) -> str:
         if val is None:
             raise Exception("Received an undefined value!")
         return val.upper()
 
     # With py-buzz
-    def buzzy(val: Optional[str]) -> str:
-        val = enforce_defined(val)
-        return val.upper()
+    def buzzy(val: str | None) -> str:
+        return enforce_defined(val).upper()
 ```
 
 This is also mostly just syntactic sugar, but it can save you a few lines of code and is
@@ -197,15 +196,14 @@ still very expressive. It might also be useful if you need to supply some more c
 in your error:
 
 ```python
-def neopolitan(val: Optional[str]):
-    val = enforce_defined(
+def neopolitan(val: str | None):
+    return enforce_defined(
         val,
         "Received an undefined value!"
         raise_exc_class=MyProjectError,
         raise_args=["jawa", "ewok"],
         raise_kwargs=dict(hutt="pyke"),
     )
-    return val
 ```
 
 In this case, a `MyProjectError` with be raised with positional arguments of `"jawa"` and
@@ -220,40 +218,119 @@ The `enforce_defined()` function also accepts some keyword arguments:
 
 #### `raise_exc_class`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `raise_args`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `raise_kwargs`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `exc_builder`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `do_except`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `do_else`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
+
+
+### Raise exception if value is wrong type
+
+The `py-buzz` package also provides the `ensure_type()` function that checks a
+value and raises an exception if it is not of the expected type. This function
+serves a dual purpose: it will raise an error if your value is the wrong type,
+and it will also narrow the type for you to make your type-check happy.
+
+```python
+    # Vanilla python
+    def vanilla(val: str | int) -> str:
+        if not isinstance(val, str):
+            raise Exception("Received a non-string value!")
+        return val.upper()
+
+    # With py-buzz
+    def buzzy(val: str | int) -> str:
+        return ensure_type(val, str).upper()
+```
+
+Though this could be called syntactic sugar as well, it saves some keystrokes
+and is an elegant way to narrow your type. At the same time, it is a nice
+approach to applying
+[negativ-space-programming](https://double-trouble.dev/post/negativ-space-programming/)
+because it doesn't just "cast" the type, it raises an exception if the type
+doesn't match. It can also need to supply some more context in your error:
+
+```python
+def neopolitan(val: str | int):
+    return ensure_type(
+        val,
+        str,
+        "Received a non-string value!"
+        raise_exc_class=MyProjectError,
+        raise_args=["jawa", "ewok"],
+        raise_kwargs=dict(hutt="pyke"),
+    )
+```
+
+In this case, a `MyProjectError` with be raised with positional arguments of `"jawa"` and
+`"ewok"` and a keyword argument of `hutt="pyke"` if the value passed in is not `str`.
+
+By default, `ensure_type()` raises an exception with a basic message saying that the
+value was the wrong type. However, you may pass in a custom message with the `message`
+keyword argument.
+
+The `ensure_type()` function also accepts some keyword arguments:
+
+
+#### `raise_exc_class`
+
+Functions the same as `require_condition()`.
+
+
+#### `raise_args`
+
+Functions the same as `require_condition()`.
+
+
+#### `raise_kwargs`
+
+Functions the same as `require_condition()`.
+
+
+#### `exc_builder`
+
+Functions the same as `require_condition()`.
+
+
+#### `do_except`
+
+Functions the same as `require_condition()`.
+
+
+#### `do_else`
+
+Functions the same as `require_condition()`.
 
 
 ### Exception handling context manager
 
-The `py-buzz` package also provides a context manager that catches any exceptions that
-might be raised while executing a bit of code. The caught exceptions are re-packaged and
-raised as another exception type. The message attached to the new expression captures the
-initial exception's message:
+The `py-buzz` package provides the `handle_errors()` context manager that
+catches any exceptions that might be raised while executing a bit of code. The
+caught exceptions are re-packaged and raised as another exception type. The
+message attached to the new expression captures the initial exception's
+message:
 
 ```python
 # Vanilla python
@@ -274,7 +351,7 @@ with handle_errors("Something didn't work", raise_exc_class=RuntimeError):
 This actually can save a bit of code and makes things a bit cleaner. It is also a
 implements pattern that tends to get repeated over and over again. If you need to do
 very complicated things while handling an exception, you should use a standard try-
-catch block. However, there are some extra bells and whistles on `handle_errors` that
+catch block. However, there are some extra bells and whistles on `handle_errors()` that
 can be used by passing additional keyword arguments to the function.
 
 
@@ -289,17 +366,17 @@ the first raised exception*.
 
 #### `raise_args`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `raise_kwargs`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `exc_builder`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `handle_exc_class`
@@ -341,10 +418,10 @@ provides the ability to do this. The `do_except` option should be a callable fun
 that accepts a parameter of type `DoExceptParams` that can be imported from `buzz`.
 This `dataclass` has three attributes:
 
-* err: The caught exception itself
-* base_message: The message provided as the first argument to `handle_errors`
-* final_message: A message describing the error (This will be the formatted error message)
-* trace: A stack trace
+* `err`: The caught exception itself
+* `base_message`: The message provided as the first argument to `handle_errors()`
+* `final_message`: A message describing the error (This will be the formatted error message)
+* `trace`: A stack trace
 
 This option might be invoked something like this:
 
@@ -389,15 +466,15 @@ with handle_errors("Something went wrong", do_finally=close_resource):
 
 #### `exc_builder`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
-### `check_expressions`
+### Expression checking context manager
 
-The `check_expressions` context manager is used to check multiple expressions inside of
-a context manager. Each expression is checked and each failing expression is reported at
-the end in a raised exception. If no expressions fail in the block, no exception is
-raised.
+The `check_expressions()` context manager is used to check multiple expressions
+inside of a context manager. Each expression is checked and each failing
+expression is reported at the end in a raised exception. If no expressions fail
+in the block, no exception is raised.
 
 ```python
 with check_expressions(main_message='there will be errors') as check:
@@ -422,39 +499,39 @@ The `check_expressions()` context manager also accepts some keyword arguments:
 
 #### `raise_exc_class`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `raise_args`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `raise_kwargs`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `exc_builder`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `do_except`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 #### `do_else`
 
-Functions the same as `require_condition`.
+Functions the same as `require_condition()`.
 
 
 ## Additional Features
 
 ### `reformat_exception`
 
-This method is used internally by the `handle_errors` context manager.  However, it is
+This method is used internally by the `handle_errors()` context manager.  However, it is
 sometimes useful in other circumstances. It simply allows you to wrap an exception
 message in a more informative block of text:
 
@@ -497,8 +574,12 @@ MyProjectError.require_condition(check_vals(), "Value check failed!")
 The code above would raise a `MyProjectError` with the supplied message if the condition
 expression was falsey.
 
-The `Buzz` base class provides the same sort of access for `handle_errors`,
-`enforce_defined`, and `check_expressions`.
+The `Buzz` base class provides the same sort of access for:
+
+- `enforce_defined()`
+- `ensure-type()`
+- `handle_errors()`
+- `check_expressions()`
 
 
 ## Demo

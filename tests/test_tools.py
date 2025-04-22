@@ -8,6 +8,7 @@ import pytest
 
 
 from buzz.tools import (
+    ensure_type,
     require_condition,
     enforce_defined,
     check_expressions,
@@ -19,6 +20,8 @@ from buzz.tools import (
     ExcBuilderParams,
 )
 
+
+# ==== helpers =========================================================================================================
 
 class DummyException(Exception):
     pass
@@ -49,6 +52,8 @@ def alt_builder(params: ExcBuilderParams) -> Exception:
         **params.raise_kwargs,
     )
 
+
+# ==== require_condition tests =========================================================================================
 
 def test_require_condition__basic():
     require_condition(True, "should not fail")
@@ -105,6 +110,8 @@ def test_require_condition__with_do_except():
     assert len(check_list) == 1
     assert "fail message" in str(check_list[0])
 
+
+# ==== enforce_defined tests ===========================================================================================
 
 def test_enforce_defined__basic():
     some_val: str | None = "boo"
@@ -170,6 +177,80 @@ def test_enforce_defined__with_do_except():
     assert len(check_list) == 1
     assert "fail message" in str(check_list[0])
 
+
+# ==== ensure_type tests ===============================================================================================
+
+def test_ensure_type__basic():
+    some_val: str | int = "boo"
+    some_val = ensure_type(some_val, str, "should not fail")
+    assert isinstance(some_val, str)
+
+    with pytest.raises(Exception, match="fail message"):
+        some_val = 13
+        ensure_type(some_val, str, "fail message")
+
+
+def test_ensure_type__specific_raise_exc_class():
+    some_val: str | int = "boo"
+    some_val = ensure_type(
+        some_val,
+        str,
+        "should not fail",
+        raise_exc_class=DummyArgsException,
+        raise_args=["dummy arg"],
+        raise_kwargs=dict(dummy_kwarg="dummy_kwarg"),
+    )
+
+    with pytest.raises(DummyArgsException, match="fail message") as err_info:
+        some_val = 13
+        ensure_type(
+            some_val,
+            str,
+            "fail message",
+            raise_exc_class=DummyArgsException,
+            raise_args=["dummy arg"],
+            raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
+        )
+
+    assert err_info.value.dummy_arg == "dummy arg"
+    assert err_info.value.dummy_kwarg == "dummy kwarg"
+
+
+def test_ensure_type__using_alternative_exception_builder():
+    with pytest.raises(DummyWeirdArgsException) as err_info:
+        some_val: str | int = 13
+        ensure_type(
+            some_val,
+            str,
+            "fail message",
+            raise_exc_class=DummyWeirdArgsException,
+            raise_args=["dummy arg"],
+            raise_kwargs=dict(dummy_kwarg="dummy kwarg"),
+            exc_builder=alt_builder,
+        )
+
+    assert err_info.value.dummy_arg == "dummy arg"
+    assert err_info.value.dummy_kwarg == "dummy kwarg"
+    assert err_info.value.detail == "fail message"
+
+
+def test_ensure_type__with_do_else():
+    check_list: list[int] = []
+    some_val: str | int = "boo"
+    some_val = ensure_type(some_val, str, "should not fail", do_else=lambda: check_list.append(1))
+    assert check_list == [1]
+
+
+def test_ensure_type__with_do_except():
+    check_list: list[Exception] = []
+    some_val: str | int = 13
+    with pytest.raises(Exception, match="fail message"):
+        ensure_type(some_val, str, "fail message", do_except=lambda e: check_list.append(e))
+    assert len(check_list) == 1
+    assert "fail message" in str(check_list[0])
+
+
+# ==== handle_errors tests =============================================================================================
 
 def test_handle_errors__no_exceptions():
     with handle_errors("no errors should happen here"):
@@ -370,6 +451,8 @@ def test_handle_errors__ignores_errors_matching_ignore_exc_class():
             raise RuntimeError("Boom!")
 
 
+# ==== handle_errors_async tests =======================================================================================
+
 @pytest.mark.asyncio
 async def test_handle_errors_async__with_do_else():
     async def _anoop():
@@ -453,6 +536,8 @@ async def test_handle_errors_async__with_do_except():
     assert isinstance(problem.trace, TracebackType)
 
 
+# ==== check_expressions tests =========================================================================================
+
 def test_check_expressions__basic():
     with pytest.raises(Exception) as err_info:
         with check_expressions("there will be errors") as check:
@@ -532,6 +617,8 @@ def test_check_expressions__with_do_except():
     assert len(check_list) == 1
     assert "there will be errors" in str(check_list[0])
 
+
+# ==== other tests =====================================================================================================
 
 def test_reformat_exception():
     final_message = reformat_exception(

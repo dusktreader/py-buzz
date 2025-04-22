@@ -12,6 +12,7 @@ from typing_extensions import Self, override
 from buzz.tools import (
     DoExceptParams,
     ExcBuilderParams,
+    ensure_type,
     require_condition,
     enforce_defined,
     check_expressions,
@@ -20,6 +21,7 @@ from buzz.tools import (
 )
 
 TNonNull = TypeVar("TNonNull")
+EnsuredType = TypeVar("EnsuredType")
 
 
 class Buzz(Exception):
@@ -140,6 +142,47 @@ class Buzz(Exception):
         return enforce_defined(
             value,
             message,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=cls.exc_builder,
+            do_except=do_except,
+            do_else=do_else,
+        )
+
+    @classmethod
+    def ensure_type(
+        cls,
+        value: Any,
+        type_: type[EnsuredType],
+        message: str = "Value was not of type {type_}",
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        do_except: Callable[[Exception], None] | None = None,
+        do_else: Callable[[], None] | None = None,
+    ) -> EnsuredType:
+        """
+        Assert that a value is of a specific type. If the assertion fails, raise an exception (instance of this class)
+        with the supplied message.
+
+        Args:
+
+            value:            The value that is to be checked
+            type_:            The type that the value must be of
+            message:          The failure message to attach to the raised Exception
+            raise_args:       Additional positional args (after the constructed message) that will passed when raising
+                              an instance of the `raise_exc_class`.
+            raise_kwargs:     Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+            do_except:        A function that should be called only if value is of the wrong type.
+                              Must accept one parameter that is the exception that will be raised.
+                              If not provided, nothing will be done.
+            do_else:          A function that should be called if the value is of the wrong type.
+                              If not provided, nothing will be done.
+        """
+        return ensure_type(
+            value,
+            type_,
+            message=message,
             raise_exc_class=cls,
             raise_args=raise_args,
             raise_kwargs=raise_kwargs,

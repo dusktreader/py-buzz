@@ -26,6 +26,34 @@ def test_derived_require_condition():
     assert err_info.value.extra_kwarg == "extra kwarg"
 
 
+def test_derived_enforce_defined():
+    with pytest.raises(MiraNova, match="fail message") as err_info:
+        MiraNova.enforce_defined(
+            None,
+            "fail message",
+            raise_args=["extra arg"],
+            raise_kwargs=dict(extra_kwarg="extra kwarg"),
+        )
+
+    assert err_info.value.extra_arg == "extra arg"
+    assert err_info.value.extra_kwarg == "extra kwarg"
+
+
+def test_derived_ensure_type():
+    with pytest.raises(MiraNova, match="fail message") as err_info:
+        val: str | int = 13
+        MiraNova.ensure_type(
+            val,
+            str,
+            "fail message",
+            raise_args=["extra arg"],
+            raise_kwargs=dict(extra_kwarg="extra kwarg"),
+        )
+
+    assert err_info.value.extra_arg == "extra arg"
+    assert err_info.value.extra_kwarg == "extra kwarg"
+
+
 def test_derived_check_expressions():
     with pytest.raises(MiraNova) as err_info:
         with MiraNova.check_expressions(
