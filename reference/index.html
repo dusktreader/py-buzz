@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="http://py-buzz.readthedocs.io/en/latest/reference/">
+        <link rel="canonical" href="https://dusktreader.github.io/py-buzz/reference/">
       
       
         <link rel="prev" href="../demo/">
@@ -419,6 +419,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#buzz.tools.ensure_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      ensure_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#buzz.tools.get_traceback" class="md-nav__link">
     <span class="md-ellipsis">
       get_traceback
@@ -510,6 +519,15 @@
   <a href="#buzz.base.Buzz.enforce_defined" class="md-nav__link">
     <span class="md-ellipsis">
       enforce_defined
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz.base.Buzz.ensure_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      ensure_type
     </span>
   </a>
   
@@ -672,6 +690,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#buzz.tools.ensure_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      ensure_type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#buzz.tools.get_traceback" class="md-nav__link">
     <span class="md-ellipsis">
       get_traceback
@@ -763,6 +790,15 @@
   <a href="#buzz.base.Buzz.enforce_defined" class="md-nav__link">
     <span class="md-ellipsis">
       enforce_defined
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz.base.Buzz.ensure_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      ensure_type
     </span>
   </a>
   
@@ -993,6 +1029,8 @@
     <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
         <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -1020,7 +1058,7 @@ main message and a description of each failing expression.</p>
 )
           –
           <div class="doc-md-description">
-            <p>The exception type to raise with the constructed message if the expression is falsey.</p>
+            <p>The exception type to raise with the assembled message if any of the expressions are falsey.</p>
 <div class="codehilite"><pre><span></span><code>           Defaults to Exception.
 
            May not be None.
@@ -1034,7 +1072,7 @@ main message and a description of each failing expression.</p>
 )
           –
           <div class="doc-md-description">
-            <p>Additional positional args (after the constructed message) that will passed when raising
+            <p>Additional positional args (after the assembled message) that will passed when raising
                an instance of the <code>raise_exc_class</code>.</p>
           </div>
         </li>
@@ -1062,6 +1100,29 @@ main message and a description of each failing expression.</p>
           <div class="doc-md-description">
             <p>A function that should be called to construct the raised <code>raise_exc_class</code>. Useful for
                exception classes that do not take a message as the first positional argument.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>do_except</code></b>
+              (<code><span title="typing.Callable">Callable</span>[[<span title="Exception">Exception</span>], None] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A function that should be called only if the any of the expressions are falsey.
+               Must accept one parameter that is the exception that will be raised.
+               If not provided, nothing will be done.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>do_else</code></b>
+              (<code><span title="typing.Callable">Callable</span>[[], None] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A function that should be called if none of the the expressions are falsey.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
     </ul>
@@ -1125,6 +1186,8 @@ they will need a different exception builder.</p>
     <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
         <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TNonNull</span>
 </code></pre></div>
 
@@ -1134,17 +1197,73 @@ they will need a different exception builder.</p>
 <p>Args:</p>
 <div class="codehilite"><pre><span></span><code><span class="k">value</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">checked</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">non</span><span class="o">-</span><span class="no">null</span>
 <span class="n">message</span><span class="o">:</span><span class="w">          </span><span class="n">The</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">attach</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n">Exception</span>
-<span class="n">expr</span><span class="o">:</span><span class="w">             </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">checked</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">truthiness</span><span class="w"> </span><span class="p">(</span><span class="n">usually</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">evaluated</span><span class="w"> </span><span class="n">expression</span><span class="p">)</span>
-<span class="n">raise_exc_class</span><span class="o">:</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">expression</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">falsey</span><span class="p">.</span>
+<span class="n">raise_exc_class</span><span class="o">:</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">expression</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">None</span><span class="p">.</span>
 
 <span class="w">                  </span><span class="n">Defaults</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Exception</span><span class="p">.</span>
 <span class="w">                  </span><span class="n">May</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">None</span><span class="p">.</span>
 
 <span class="n">raise_args</span><span class="o">:</span><span class="w">       </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
-<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
-<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
-<span class="n">exc_builder</span><span class="o">:</span><span class="w">      </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">construct</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span><span class="w"> </span><span class="n">Useful</span><span class="w"> </span><span class="k">for</span>
+<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">exc_builder</span><span class="o">:</span><span class="w">      </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">construct</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span><span class="w"> </span><span class="n">Useful</span><span class="w"> </span><span class="k">for</span>
 <span class="w">                  </span><span class="n">exception</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">take</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">first</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">argument</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">defined</span><span class="p">.</span>
+<span class="w">                  </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">defined</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="buzz.tools.ensure_type" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">ensure_type</span>
+
+
+</h4>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">ensure_type</span><span class="p">(</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EnsuredType</span><span class="p">],</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+        <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EnsuredType</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Assert that a value is of a specific type. If the assertion fails, raise an exception with the supplied message.</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">value</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">checked</span>
+<span class="n">type_</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">of</span>
+<span class="n">message</span><span class="o">:</span><span class="w">          </span><span class="n">The</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">attach</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n">Exception</span>
+<span class="n">raise_exc_class</span><span class="o">:</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="n">does</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">match</span>
+
+<span class="w">                  </span><span class="n">Defaults</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Exception</span>
+<span class="w">                  </span><span class="n">May</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">None</span>
+
+<span class="n">raise_args</span><span class="o">:</span><span class="w">       </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
+<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">exc_builder</span><span class="o">:</span><span class="w">      </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">construct</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span><span class="w"> </span><span class="n">Useful</span><span class="w"> </span><span class="k">for</span>
+<span class="w">                  </span><span class="n">exception</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">take</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">first</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">argument</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">wrong</span><span class="w"> </span><span class="k">type</span><span class="p">.</span>
+<span class="w">                  </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">wrong</span><span class="w"> </span><span class="k">type</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
 </code></pre></div>
 
 
@@ -1190,9 +1309,10 @@ they will need a different exception builder.</p>
     <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
     <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
     <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
-    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
-    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
+    <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
         <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
@@ -1279,13 +1399,14 @@ attached that combines the base message along with the message from the handled 
         </li>
         <li class="doc-section-item field-body">
             <b><code>do_finally</code></b>
-              (<code><span title="typing.Callable">Callable</span>[[], None]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+              (<code><span title="typing.Callable">Callable</span>[[], None] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>A function that should always be called at the end of the block.
-               Should take no parameters.</p>
+               Should take no parameters.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -1295,24 +1416,26 @@ attached that combines the base message along with the message from the handled 
 
   
       dataclass
-   (buzz.tools.DoExceptParams)" href="#buzz.tools.DoExceptParams">DoExceptParams</a>], None]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+   (buzz.tools.DoExceptParams)" href="#buzz.tools.DoExceptParams">DoExceptParams</a>], None] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>A function that should be called only if there was an exception. Must accept one
                parameter that is an instance of the <code>DoExceptParams</code> dataclass.
-               Note that the <code>do_except</code> method is passed the <em>original exception</em>.</p>
+               Note that the <code>do_except</code> method is passed the <em>original exception</em>.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
             <b><code>do_else</code></b>
-              (<code><span title="typing.Callable">Callable</span>[[], None]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+              (<code><span title="typing.Callable">Callable</span>[[], None] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
-            <p>A function that should be called only if there were no exceptions encountered.</p>
+            <p>A function that should be called only if there were no exceptions encountered.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -1367,13 +1490,14 @@ attached that combines the base message along with the message from the handled 
     <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
     <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="o">|</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
+    <span class="o">|</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="o">|</span> <span class="n">Callable</span><span class="p">[</span>
-        <span class="p">[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
+    <span class="o">|</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="o">|</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
+    <span class="o">|</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">Coroutine</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
         <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
@@ -1459,14 +1583,15 @@ attached that combines the base message along with the message from the handled 
         </li>
         <li class="doc-section-item field-body">
             <b><code>do_finally</code></b>
-              (<code><span title="typing.Callable">Callable</span>[[], None] | <span title="typing.Callable">Callable</span>[[], <span title="collections.abc.Coroutine">Coroutine</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>, None]]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+              (<code><span title="typing.Callable">Callable</span>[[], None] | <span title="typing.Callable">Callable</span>[[], <span title="collections.abc.Coroutine">Coroutine</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>, None]] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>A function that should always be called at the end of the block.
                Should take no parameters.
-               May be an async function.</p>
+               May be an async function.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -1481,26 +1606,28 @@ attached that combines the base message along with the message from the handled 
 
   
       dataclass
-   (buzz.tools.DoExceptParams)" href="#buzz.tools.DoExceptParams">DoExceptParams</a>], <span title="collections.abc.Coroutine">Coroutine</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>, None]]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+   (buzz.tools.DoExceptParams)" href="#buzz.tools.DoExceptParams">DoExceptParams</a>], <span title="collections.abc.Coroutine">Coroutine</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>, None]] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>A function that should be called only if there was an exception. Must accept one
                parameter that is an instance of the <code>DoExceptParams</code> dataclass.
                May be an async function.
-               Note that the <code>do_except</code> method is passed the <em>original exception</em>.</p>
+               Note that the <code>do_except</code> method is passed the <em>original exception</em>.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
             <b><code>do_else</code></b>
-              (<code><span title="typing.Callable">Callable</span>[[], None] | <span title="typing.Callable">Callable</span>[[], <span title="collections.abc.Coroutine">Coroutine</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>, None]]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+              (<code><span title="typing.Callable">Callable</span>[[], None] | <span title="typing.Callable">Callable</span>[[], <span title="collections.abc.Coroutine">Coroutine</span>[<span title="typing.Any">Any</span>, <span title="typing.Any">Any</span>, None]] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>A function that should be called only if there were no exceptions encountered.
-               May be an async function.</p>
+               May be an async function.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -1569,6 +1696,8 @@ attached that combines the base message along with the message from the handled 
     <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
         <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
     <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -1582,10 +1711,15 @@ attached that combines the base message along with the message from the handled 
 <span class="w">                 </span><span class="n">Defaults</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Exception</span><span class="p">.</span>
 <span class="w">                 </span><span class="n">May</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">None</span><span class="p">.</span>
 <span class="n">raise_args</span><span class="o">:</span><span class="w">      </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
-<span class="w">                 </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
-<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">    </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
-<span class="n">exc_builder</span><span class="o">:</span><span class="w">     </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">construct</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span><span class="w"> </span><span class="n">Useful</span><span class="w"> </span><span class="k">for</span>
+<span class="w">                 </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">    </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">exc_builder</span><span class="o">:</span><span class="w">     </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">construct</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span><span class="w"> </span><span class="n">Useful</span><span class="w"> </span><span class="k">for</span>
 <span class="w">                 </span><span class="n">exception</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">take</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">first</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">argument</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">       </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">condition</span><span class="w"> </span><span class="n">fails</span><span class="p">.</span>
+<span class="w">                 </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                 </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">         </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">condition</span><span class="w"> </span><span class="n">passes</span><span class="p">.</span>
+<span class="w">                 </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
 </code></pre></div>
 
 
@@ -1711,6 +1845,8 @@ attached that combines the base message along with the message from the handled 
     <span class="n">base_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -1752,6 +1888,29 @@ raised that contains a main message and a description of each failing expression
             <p>Keyword args that will be passed when raising an instance of the <code>raise_exc_class</code>.</p>
           </div>
         </li>
+        <li class="doc-section-item field-body">
+            <b><code>do_except</code></b>
+              (<code><span title="collections.abc.Callable">Callable</span>[[<span title="Exception">Exception</span>], None] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A function that should be called only if the any of the expressions are falsey.
+               Must accept one parameter that is the exception that will be raised.
+               If not provided, nothing will be done.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>do_else</code></b>
+              (<code><span title="collections.abc.Callable">Callable</span>[[], None] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A function that should be called if none of the the expressions are falsey.
+               If not provided, nothing will be done.</p>
+          </div>
+        </li>
     </ul>
         <p>Example:</p>
 <div class="codehilite"><pre><span></span><code>The following is an example usage::
@@ -1791,6 +1950,8 @@ This would render output like::
     <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Value was not defined (None)&quot;</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TNonNull</span>
 </code></pre></div>
 
@@ -1803,8 +1964,59 @@ supplied message.</p>
 <span class="n">message</span><span class="o">:</span><span class="w">          </span><span class="n">The</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">attach</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n">Exception</span>
 <span class="n">expr</span><span class="o">:</span><span class="w">             </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">checked</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">truthiness</span><span class="w"> </span><span class="p">(</span><span class="n">usually</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">evaluated</span><span class="w"> </span><span class="n">expression</span><span class="p">)</span>
 <span class="n">raise_args</span><span class="o">:</span><span class="w">       </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
-<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
-<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
+<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">defined</span><span class="p">.</span>
+<span class="w">                  </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">defined</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+</code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="buzz.base.Buzz.ensure_type" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">ensure_type</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h5>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">ensure_type</span><span class="p">(</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">type_</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">EnsuredType</span><span class="p">],</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Value was not of type </span><span class="si">{type_}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EnsuredType</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Assert that a value is of a specific type. If the assertion fails, raise an exception (instance of this class)
+with the supplied message.</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">value</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">checked</span>
+<span class="n">type_</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">of</span>
+<span class="n">message</span><span class="o">:</span><span class="w">          </span><span class="n">The</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">attach</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n">Exception</span>
+<span class="n">raise_args</span><span class="o">:</span><span class="w">       </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
+<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">wrong</span><span class="w"> </span><span class="k">type</span><span class="p">.</span>
+<span class="w">                  </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">wrong</span><span class="w"> </span><span class="k">type</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
 </code></pre></div>
 
 
@@ -1884,9 +2096,10 @@ including the base_message.</p>
     <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
     <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
     <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
-    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
-    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">noop</span><span class="p">,</span>
+    <span class="n">do_finally</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">DoExceptParams</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -1981,13 +2194,14 @@ class) with a message attached that combines the base message along with the mes
         </li>
         <li class="doc-section-item field-body">
             <b><code>do_finally</code></b>
-              (<code><span title="collections.abc.Callable">Callable</span>[[], None]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+              (<code><span title="collections.abc.Callable">Callable</span>[[], None] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>A function that should always be called at the end of the block.
-               Should take no parameters.</p>
+               Should take no parameters.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -1997,24 +2211,26 @@ class) with a message attached that combines the base message along with the mes
 
   
       dataclass
-   (buzz.tools.DoExceptParams)" href="#buzz.tools.DoExceptParams">DoExceptParams</a>], None]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+   (buzz.tools.DoExceptParams)" href="#buzz.tools.DoExceptParams">DoExceptParams</a>], None] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>A function that should be called only if there was an exception. Must accept one
                parameter that is an instance of the <code>DoExceptParams</code> dataclass.
-               Note that the <code>do_except</code> method is passed the <em>original exception</em>.</p>
+               Note that the <code>do_except</code> method is passed the <em>original exception</em>.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
             <b><code>do_else</code></b>
-              (<code><span title="collections.abc.Callable">Callable</span>[[], None]</code>, default:
-                  <code><span title="buzz.tools.noop">noop</span></code>
+              (<code><span title="collections.abc.Callable">Callable</span>[[], None] | None</code>, default:
+                  <code>None</code>
 )
           –
           <div class="doc-md-description">
-            <p>A function that should be called only if there were no exceptions encountered.</p>
+            <p>A function that should be called only if there were no exceptions encountered.
+               If not provided, nothing will be done.</p>
           </div>
         </li>
     </ul>
@@ -2047,6 +2263,8 @@ class) with a message attached that combines the base message along with the mes
     <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="ne">Exception</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 
@@ -2058,8 +2276,13 @@ supplied message.</p>
 <div class="codehilite"><pre><span></span><code><span class="n">message</span><span class="o">:</span><span class="w">         </span><span class="n">The</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">attach</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n">Exception</span>
 <span class="n">expr</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">checked</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">truthiness</span><span class="w"> </span><span class="p">(</span><span class="n">usually</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">evaluated</span><span class="w"> </span><span class="n">expression</span><span class="p">)</span>
 <span class="n">raise_args</span><span class="o">:</span><span class="w">      </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
-<span class="w">                 </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
-<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">    </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="n">raise_exc_class</span><span class="n n-Quoted">``</span><span class="p">.</span>
+<span class="w">                 </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">    </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">       </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">condition</span><span class="w"> </span><span class="n">fails</span><span class="p">.</span>
+<span class="w">                 </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                 </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">         </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">condition</span><span class="w"> </span><span class="n">passes</span><span class="p">.</span>
+<span class="w">                 </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
 </code></pre></div>
 
 

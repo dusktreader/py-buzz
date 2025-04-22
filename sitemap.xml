@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>http://py-buzz.readthedocs.io/en/latest/</loc>
-         <lastmod>2025-03-28</lastmod>
+         <loc>https://dusktreader.github.io/py-buzz/</loc>
+         <lastmod>2025-04-22</lastmod>
     </url>
     <url>
-         <loc>http://py-buzz.readthedocs.io/en/latest/changelog/</loc>
-         <lastmod>2025-03-28</lastmod>
+         <loc>https://dusktreader.github.io/py-buzz/changelog/</loc>
+         <lastmod>2025-04-22</lastmod>
     </url>
     <url>
-         <loc>http://py-buzz.readthedocs.io/en/latest/demo/</loc>
-         <lastmod>2025-03-28</lastmod>
+         <loc>https://dusktreader.github.io/py-buzz/demo/</loc>
+         <lastmod>2025-04-22</lastmod>
     </url>
     <url>
-         <loc>http://py-buzz.readthedocs.io/en/latest/features/</loc>
-         <lastmod>2025-03-28</lastmod>
+         <loc>https://dusktreader.github.io/py-buzz/features/</loc>
+         <lastmod>2025-04-22</lastmod>
     </url>
     <url>
-         <loc>http://py-buzz.readthedocs.io/en/latest/reference/</loc>
-         <lastmod>2025-03-28</lastmod>
+         <loc>https://dusktreader.github.io/py-buzz/reference/</loc>
+         <lastmod>2025-04-22</lastmod>
     </url>
 </urlset>
