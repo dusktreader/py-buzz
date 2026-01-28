@@ -8,12 +8,14 @@ non-standard signatures. This is needed, for example, with FastAPI's
 `HTTPException` where the first positional argument is not a message
 but a status_code.
 """
+
 from __future__ import annotations
 
 from typing import Any
-from typing_extensions import Self, override
-from buzz import handle_errors
 
+from typing_extensions import Self, override
+
+from buzz import handle_errors
 from buzz.base import Buzz
 from buzz.tools import ExcBuilderParams
 
@@ -31,6 +33,7 @@ def demo_1__exc_builder():
     FastAPI's `HTTPException` which has status_code as the first positional
     argument instead of a message.
     """
+
     class WeirdArgsException(Exception):
         def __init__(self, demo_arg: Any, demo_kwarg: Any | None = None, detail: str = "unset detail"):
             self.demo_arg: Any = demo_arg
@@ -69,6 +72,7 @@ def demo_2__buzz_class():
     somewhat contrived, but shows how a derived `Buzz` class can take
     control of how it is initialized.
     """
+
     class WeirdBuzz(Buzz):
         def __init__(self, *args: Any, detail: str = "unset detail", **kwargs: Any):
             self.detail: str = detail

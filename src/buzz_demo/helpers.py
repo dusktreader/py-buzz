@@ -1,24 +1,25 @@
 """
 This module provides helpers for the main demo executable.
 """
+
 from __future__ import annotations
 
-import io
 import inspect
+import io
 import re
 import sys
 import textwrap
-from importlib import import_module
-from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass
+from importlib import import_module
+from typing import Any
 
 import snick
 from rich import box
 from rich.console import Console, Group, RenderableType
+from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.prompt import Confirm
-from rich.markdown import Markdown
 from rich.rule import Rule
 
 
@@ -35,6 +36,7 @@ class Captured:
     error: Exception | None = None
     output: str | None = None
 
+
 BlankLine = Rule(characters=" ")
 
 
@@ -45,7 +47,6 @@ def get_demo_functions(module_name: str) -> list[Callable[..., None]]:
         if inspect.isfunction(obj) and obj.__name__.startswith("demo"):
             demo_functions.append(obj)
     return sorted(demo_functions, key=lambda f: f.__name__)
-
 
 
 def decompose(func: Callable[..., Any]) -> Decomposed:
@@ -73,9 +74,9 @@ def decompose(func: Callable[..., Any]) -> Decomposed:
                 break
     if code_start_index == 0:
         raise RuntimeError("Failed to strip function declaration and docstring!")
-    source_lines = [re.sub(r'\s+# pyright.*', '', sl) for sl in source_lines]
-    source_lines = [re.sub(r'\s+# type.*', '', sl) for sl in source_lines]
-    source = textwrap.dedent("".join(source_lines[code_start_index+1:]))
+    source_lines = [re.sub(r"\s+# pyright.*", "", sl) for sl in source_lines]
+    source_lines = [re.sub(r"\s+# type.*", "", sl) for sl in source_lines]
+    source = textwrap.dedent("".join(source_lines[code_start_index + 1 :]))
 
     return Decomposed(module=module, name=name, docstring=docstring, source=source)
 
@@ -113,11 +114,13 @@ def run_demo(demo: Callable[..., None], console: Console, override_label: str | 
         BlankLine,
         Panel(
             Markdown(
-                "\n".join([
-                    "```python",
-                    decomposed.source,
-                    "```",
-                ])
+                "\n".join(
+                    [
+                        "```python",
+                        decomposed.source,
+                        "```",
+                    ]
+                )
             ),
             title=f"Here is the source code for [yellow]{decomposed.name}()[/yellow]",
             title_align="left",
@@ -128,38 +131,38 @@ def run_demo(demo: Callable[..., None], console: Console, override_label: str | 
     ]
 
     if cap.output:
-        parts.extend([
-            BlankLine,
-            BlankLine,
-            Panel(
-                Markdown(
-                    snick.conjoin(
-                        "```text",
-                        cap.output,
-                        "```"
+        parts.extend(
+            [
+                BlankLine,
+                BlankLine,
+                Panel(
+                    Markdown(
+                        snick.conjoin("```text", cap.output, "```"),
                     ),
+                    title=f"Here is the output captured from [yellow]{decomposed.name}()[/yellow]",
+                    title_align="left",
+                    padding=1,
+                    expand=False,
+                    box=box.SIMPLE,
                 ),
-                title=f"Here is the output captured from [yellow]{decomposed.name}()[/yellow]",
-                title_align="left",
-                padding=1,
-                expand=False,
-                box=box.SIMPLE,
-            ),
-        ])
+            ]
+        )
 
     if cap.error:
-        parts.extend([
-            BlankLine,
-            BlankLine,
-            Panel(
-                f"[red]{cap.error.__class__.__name__}[/red]: [yellow]{str(cap.error)}[/yellow]",
-                title=f"Here is the uncaught exception from [yellow]{decomposed.name}()[/yellow]",
-                title_align="left",
-                padding=1,
-                expand=False,
-                box=box.SIMPLE,
-            )
-        ])
+        parts.extend(
+            [
+                BlankLine,
+                BlankLine,
+                Panel(
+                    f"[red]{cap.error.__class__.__name__}[/red]: [yellow]{str(cap.error)}[/yellow]",
+                    title=f"Here is the uncaught exception from [yellow]{decomposed.name}()[/yellow]",
+                    title_align="left",
+                    padding=1,
+                    expand=False,
+                    box=box.SIMPLE,
+                ),
+            ]
+        )
 
     label = override_label if override_label else f"{decomposed.module}()"
     console.print(

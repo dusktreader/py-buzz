@@ -15,9 +15,11 @@ annoying pattern to have to repeat all over the place. The `ensure_type()`
 function an be used practically to guarantee that the variable is of the
 and narrow its type.
 """
+
 from __future__ import annotations
 
 from typing import Any
+
 from typing_extensions import override
 
 from buzz import ensure_type
@@ -62,6 +64,7 @@ def demo_3__complex():
     * Passing specific args and kwargs to the exception when it is raised.
     * Calling a `do_except()` function
     """
+
     class DemoException(Exception):
         def __init__(self, message: str, demo_arg: Any, demo_kwarg: Any | None = None):
             super().__init__(message)

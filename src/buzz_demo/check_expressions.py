@@ -5,6 +5,7 @@ This context manager is intended to be a tool that can check many conditions
 and provide a report of which failed inside of a single exception. If all the
 conditions pass, no exception is raised.
 """
+
 from __future__ import annotations
 
 from buzz import check_expressions
@@ -32,6 +33,7 @@ def demo_2__complex():
     * Raising a specific exception type on failure
     * Calling a `do_except()` function
     """
+
     def is_int(n: float | int):
         return int(n) == n
 

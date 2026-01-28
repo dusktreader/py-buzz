@@ -149,3 +149,5 @@ dmypy.json
 
 # snapcraft
 /*.snap
+.mutmut-cache
+mutants/

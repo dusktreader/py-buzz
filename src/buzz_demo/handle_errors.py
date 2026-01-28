@@ -6,11 +6,12 @@ a try-except without having to explicitly declare them. Additionally, it wraps
 all caught exceptions from the block in custom error messages that include
 the original error text as well as a user supplied message.
 """
+
 from __future__ import annotations
 
 from typing import Any
 
-from buzz import handle_errors, DoExceptParams
+from buzz import DoExceptParams, handle_errors
 
 
 def demo_1__simple():
@@ -40,6 +41,7 @@ def demo_2__absorbing():
     * Absorbing exceptions by setting `raise_exc_class` to `None`
     * Branching with `do_except`, `do_else`, and `do_finally`
     """
+
     def _handler_function(dep: DoExceptParams):
         print("do_except() was called!")
         print(f"Handling exception: {dep.err}")
@@ -49,8 +51,8 @@ def demo_2__absorbing():
         "something went wrong (complex example)",
         raise_exc_class=None,
         do_except=_handler_function,
-        do_else=lambda: print('do_else() was called!'),
-        do_finally=lambda: print('do_finally() was called!'),
+        do_else=lambda: print("do_else() was called!"),
+        do_finally=lambda: print("do_finally() was called!"),
     ):
         print("here we are fine")
         raise ValueError("here we die")
@@ -70,6 +72,7 @@ def demo_3__multiple():
 
     Note that the final `TypeError` is _not_ handled!
     """
+
     def _handler_function(dep: DoExceptParams):
         """
         This function is a helper function for handling an exception from
@@ -91,7 +94,6 @@ def demo_3__multiple():
         print("we will only get here if the exception was handled")  # pyright: ignore[reportUnreachable]
 
 
-
 def demo_4__specific():
     """
     This function demonstrates how the `handle_errors()` context manager can be
@@ -101,6 +103,7 @@ def demo_4__specific():
     * Raising a specific exception instance using the `raise_exc_class` parameter
     * Passing along `raise_args` and `raise_kwargs` when raising the exception
     """
+
     class DerivedError(Exception):
         def __init__(self, message: str, init_arg: Any, init_kwarg: Any | None = None):
             self.init_arg: Any = init_arg

@@ -442,11 +442,11 @@ This option is less useful than `do_except` but it may useful in some circumstan
 This option should be a callable that takes no arguments:
 
 ```python
-    def log_yay():
-        logger.info("we did it!")
+def log_yay():
+    logger.info("we did it!")
 
-    with handle_errors("Something went wrong", do_else=log_yay):
-        some_not_dangerous_function()
+with handle_errors("Something went wrong", do_else=log_yay):
+    some_not_dangerous_function()
 ```
 
 
@@ -467,6 +467,135 @@ with handle_errors("Something went wrong", do_finally=close_resource):
 #### `exc_builder`
 
 Functions the same as `require_condition()`.
+
+
+### Retry decorator with exponential backoff
+
+The `py-buzz` package provides the `retry()` decorator that automatically retries
+a function when it raises specified exceptions. This is useful for handling transient
+failures in network operations, API calls, or other unreliable operations:
+
+```python
+# Vanilla python
+def fetch_data(url):
+    max_attempts = 3
+    for attempt in range(max_attempts):
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.json()
+        except (ConnectionError, TimeoutError) as e:
+            if attempt == max_attempts - 1:
+                raise
+            time.sleep(2 ** attempt)  # Exponential backoff
+
+# With py-buzz
+@retry("Failed to fetch data after {attempts} attempts", max_attempts=3, backoff=2.0, retry_on=(ConnectionError, TimeoutError))
+def fetch_data(url):
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
+```
+
+The `retry()` decorator implements exponential backoff with jitter by default, which
+helps prevent thundering herd problems when multiple clients retry simultaneously.
+
+The `retry()` decorator accepts a required message parameter followed by several keyword arguments:
+
+
+#### `message`
+
+The message for the exception raised after all retries are exhausted. This is a **required positional parameter**. Supports the `{attempts}` placeholder which will be replaced with the actual number of attempts.
+
+
+#### `max_attempts`
+
+The maximum number of attempts (including the initial attempt). Defaults to 3.
+Must be at least 1.
+
+
+#### `backoff`
+
+The exponential backoff multiplier. The delay between attempts is calculated as
+`backoff^attempt`. For example, with `backoff=2.0`, delays will be: 1s, 2s, 4s, 8s, etc.
+Defaults to 2.0.
+
+
+#### `max_delay`
+
+The maximum delay between retries in seconds. This caps the exponential backoff to
+prevent excessively long waits. Defaults to 60.0.
+
+
+#### `jitter`
+
+Whether to add random jitter to delays. When enabled, the actual delay will be a random
+value between 0 and the calculated delay. This helps prevent thundering herd problems.
+Defaults to `True`.
+
+
+#### `retry_on`
+
+The exception type(s) that should trigger a retry. Can be a single exception type or a
+tuple of exception types. Other exceptions will be raised immediately without retry.
+Defaults to `Exception` (retries all exceptions).
+
+```python
+@retry("Network operation failed after {attempts} attempts", max_attempts=5, retry_on=(ConnectionError, TimeoutError))
+def network_call():
+    # Will retry on ConnectionError or TimeoutError
+    # Will raise immediately on other exceptions
+    pass
+```
+
+
+#### `on_retry`
+
+An optional callback function that is invoked before each retry attempt. The callback
+receives two parameters: the attempt number (1-indexed) and the exception that triggered
+the retry. This is useful for logging or monitoring:
+
+```python
+def log_retry(attempt: int, exception: Exception):
+    logger.warning(f"Retry attempt {attempt} after error: {exception}")
+
+@retry("Unreliable operation failed after {attempts} attempts", max_attempts=5, on_retry=log_retry)
+def unreliable_operation():
+    pass
+```
+
+
+#### `raise_exc_class`
+
+Functions the same as `require_condition()`. The exception raised after all retries
+are exhausted will be of this type.
+
+
+#### `raise_args` and `raise_kwargs`
+
+Functions the same as `require_condition()`.
+
+
+#### `exc_builder`
+
+Functions the same as `require_condition()`.
+
+
+### Async retry decorator
+
+The `py-buzz` package also provides `retry_async()` for async functions. It works
+identically to `retry()` but uses `asyncio.sleep()` for delays:
+
+```python
+@retry_async("Failed to fetch data after {attempts} attempts", max_attempts=3, backoff=2.0, retry_on=(aiohttp.ClientError,))
+async def fetch_data_async(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            response.raise_for_status()
+            return await response.json()
+```
+
+All parameters work the same as `retry()`.
 
 
 ### Expression checking context manager
@@ -576,10 +705,12 @@ expression was falsey.
 
 The `Buzz` base class provides the same sort of access for:
 
+- `require_condition()`
 - `enforce_defined()`
-- `ensure-type()`
+- `ensure_type()`
 - `handle_errors()`
 - `check_expressions()`
+- `retry()` and `retry_async()`
 
 
 ## Demo

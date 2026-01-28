@@ -1,0 +1,13 @@
+# Pre-commit hooks for py-buzz
+# See https://pre-commit.com for more information
+
+repos:
+  # Run the full QA suite
+  - repo: local
+    hooks:
+      - id: qa-full
+        name: Run full QA suite
+        entry: make qa/full
+        language: system
+        pass_filenames: false
+        always_run: true

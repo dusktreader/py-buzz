@@ -2,26 +2,27 @@ from __future__ import annotations
 
 from traceback import format_tb
 from types import TracebackType
-from typing import Any
+from typing import Any, override
 
 import pytest
 
-
 from buzz.tools import (
-    ensure_type,
-    require_condition,
-    enforce_defined,
+    DoExceptParams,
+    ExcBuilderParams,
     check_expressions,
+    enforce_defined,
+    ensure_type,
+    get_traceback,
     handle_errors,
     handle_errors_async,
     reformat_exception,
-    get_traceback,
-    DoExceptParams,
-    ExcBuilderParams,
+    require_condition,
+    retry,
+    retry_async,
 )
 
-
 # ==== helpers =========================================================================================================
+
 
 class DummyException(Exception):
     pass
@@ -54,6 +55,7 @@ def alt_builder(params: ExcBuilderParams) -> Exception:
 
 
 # ==== require_condition tests =========================================================================================
+
 
 def test_require_condition__basic():
     require_condition(True, "should not fail")
@@ -112,6 +114,7 @@ def test_require_condition__with_do_except():
 
 
 # ==== enforce_defined tests ===========================================================================================
+
 
 def test_enforce_defined__basic():
     some_val: str | None = "boo"
@@ -179,6 +182,7 @@ def test_enforce_defined__with_do_except():
 
 
 # ==== ensure_type tests ===============================================================================================
+
 
 def test_ensure_type__basic():
     some_val: str | int = "boo"
@@ -250,7 +254,14 @@ def test_ensure_type__with_do_except():
     assert "fail message" in str(check_list[0])
 
 
+def test_ensure_type__uses_default_message():
+    """Verify default message formatting includes type name."""
+    with pytest.raises(Exception, match="Value was not of type <class 'str'>"):
+        ensure_type(42, str)  # No message provided
+
+
 # ==== handle_errors tests =============================================================================================
+
 
 def test_handle_errors__no_exceptions():
     with handle_errors("no errors should happen here"):
@@ -451,7 +462,21 @@ def test_handle_errors__ignores_errors_matching_ignore_exc_class():
             raise RuntimeError("Boom!")
 
 
+def test_handle_errors__handles_exception_formatting_failure():
+    """Ensure handle_errors is robust if exception string formatting fails."""
+
+    class BadException(Exception):
+        @override
+        def __str__(self):
+            raise RuntimeError("Cannot format this exception")
+
+    with pytest.raises(RuntimeError, match="Failed while formatting message"):
+        with handle_errors("base message"):
+            raise BadException("original message")
+
+
 # ==== handle_errors_async tests =======================================================================================
+
 
 @pytest.mark.asyncio
 async def test_handle_errors_async__with_do_else():
@@ -536,7 +561,122 @@ async def test_handle_errors_async__with_do_except():
     assert isinstance(problem.trace, TracebackType)
 
 
+@pytest.mark.asyncio
+async def test_handle_errors_async__with_async_do_except():
+    """Test async exception handler with async do_except callback."""
+    calls: list[tuple[str, Exception]] = []
+
+    async def async_do_except(params: DoExceptParams):
+        calls.append(("except", params.err))
+
+    with pytest.raises(Exception):
+        async with handle_errors_async("base message", do_except=async_do_except):
+            raise ValueError("test error")
+
+    assert len(calls) == 1
+    assert calls[0][0] == "except"
+    assert isinstance(calls[0][1], ValueError)
+
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__with_async_do_else():
+    """Test async exception handler with async do_else callback."""
+    calls: list[str] = []
+
+    async def async_do_else():
+        calls.append("else")
+
+    async with handle_errors_async("base message", do_else=async_do_else):
+        pass  # No exception
+
+    assert calls == ["else"]
+
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__with_async_do_finally():
+    """Test async exception handler with async do_finally callback."""
+    calls: list[str] = []
+
+    async def async_do_finally():
+        calls.append("finally")
+
+    async with handle_errors_async(
+        "base message",
+        do_finally=async_do_finally,
+        raise_exc_class=None,
+    ):
+        pass
+
+    assert calls == ["finally"]
+
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__with_sync_callbacks():
+    """Test async exception handler with sync (non-async) callbacks."""
+    calls: list[str] = []
+
+    def sync_do_except(_params: DoExceptParams):
+        calls.append("except")
+
+    def sync_do_else():
+        calls.append("else")
+
+    def sync_do_finally():
+        calls.append("finally")
+
+    # Test sync do_else
+    async with handle_errors_async(
+        "base message",
+        do_else=sync_do_else,
+        raise_exc_class=None,
+    ):
+        pass
+
+    assert "else" in calls
+
+    # Test sync do_except and do_finally
+    calls.clear()
+    async with handle_errors_async(
+        "base message",
+        do_except=sync_do_except,
+        do_finally=sync_do_finally,
+        raise_exc_class=None,
+    ):
+        raise ValueError("test error")
+
+    assert "except" in calls  # pyright: ignore[reportUnreachable]
+    assert "finally" in calls
+
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__handles_exception_formatting_failure():
+    """Ensure async handler is robust if exception string formatting fails."""
+
+    class BadException(Exception):
+        @override
+        def __str__(self):
+            raise RuntimeError("Cannot format this exception")
+
+    with pytest.raises(RuntimeError, match="Failed while formatting message"):
+        async with handle_errors_async("base message"):
+            raise BadException("original message")
+
+
+@pytest.mark.asyncio
+async def test_handle_errors_async__ignores_errors_matching_ignore_exc_class():
+    """Test that async handler re-raises ignored exceptions."""
+    with pytest.raises(RuntimeError):
+        async with handle_errors_async(
+            "there was a problem",
+            raise_exc_class=DummyException,
+            handle_exc_class=Exception,
+            ignore_exc_class=RuntimeError,
+        ):
+            raise RuntimeError("Boom!")
+
+
 # ==== check_expressions tests =========================================================================================
+
 
 def test_check_expressions__basic():
     with pytest.raises(Exception) as err_info:
@@ -618,7 +758,24 @@ def test_check_expressions__with_do_except():
     assert "there will be errors" in str(check_list[0])
 
 
+def test_check_expressions__ordinalize_teens():
+    """Verify special handling of 11th, 12th, 13th."""
+    with pytest.raises(Exception) as err_info:
+        with check_expressions("teen ordinals") as check:
+            for _ in range(10):
+                check(True)  # Fill up to 10
+            check(False)  # 11th
+            check(False)  # 12th
+            check(False)  # 13th
+
+    err_msg = str(err_info.value)
+    assert "11th expression failed" in err_msg
+    assert "12th expression failed" in err_msg
+    assert "13th expression failed" in err_msg
+
+
 # ==== other tests =====================================================================================================
+
 
 def test_reformat_exception():
     final_message = reformat_exception(
@@ -638,3 +795,355 @@ def test_get_traceback():
     assert "test_tools.py" in last_frame
     assert "test_get_traceback" in last_frame
     assert 'DummyException("Original Error")' in last_frame
+
+
+# ==== retry tests =========================================================================================================
+
+
+def test_retry__succeeds_on_first_attempt():
+    """Test that retry doesn't interfere when function succeeds immediately."""
+    call_count = 0
+
+    @retry("Operation failed after {attempts} attempts", max_attempts=3)
+    def successful_func():
+        nonlocal call_count
+        call_count += 1
+        return "success"
+
+    result = successful_func()
+    assert result == "success"
+    assert call_count == 1
+
+
+def test_retry__succeeds_after_retries():
+    """Test that retry keeps trying until function succeeds."""
+    call_count = 0
+
+    @retry("Operation failed after {attempts} attempts", max_attempts=3, backoff=0.01, jitter=False)
+    def flaky_func():
+        nonlocal call_count
+        call_count += 1
+        if call_count < 3:
+            raise ConnectionError("Failed")
+        return "success"
+
+    result = flaky_func()
+    assert result == "success"
+    assert call_count == 3
+
+
+def test_retry__raises_after_max_attempts():
+    """Test that retry raises exception after exhausting all attempts."""
+    call_count = 0
+
+    @retry("Failed after {attempts} tries", max_attempts=3, backoff=0.01, jitter=False)
+    def always_fails():
+        nonlocal call_count
+        call_count += 1
+        raise ConnectionError("Network error")
+
+    with pytest.raises(Exception) as err_info:
+        always_fails()
+
+    assert call_count == 3
+    assert "Failed after 3 tries" in str(err_info.value)
+    assert "Network error" in str(err_info.value)
+
+
+def test_retry__only_retries_specified_exceptions():
+    """Test that retry only catches specified exception types."""
+    call_count = 0
+
+    @retry(
+        "Operation failed after {attempts} attempts",
+        max_attempts=3,
+        backoff=0.01,
+        retry_on=(ConnectionError, TimeoutError),
+    )
+    def raises_value_error():
+        nonlocal call_count
+        call_count += 1
+        raise ValueError("Not a connection error")
+
+    with pytest.raises(ValueError, match="Not a connection error"):
+        raises_value_error()
+
+    # Should fail immediately, not retry
+    assert call_count == 1
+
+
+def test_retry__with_on_retry_callback():
+    """Test that on_retry callback is invoked on each retry."""
+    call_count = 0
+    retry_attempts: list[tuple[int, str]] = []
+
+    def record_retry(attempt: int, exception: Exception):
+        retry_attempts.append((attempt, str(exception)))
+
+    @retry(
+        "Operation failed after {attempts} attempts", max_attempts=4, backoff=0.01, jitter=False, on_retry=record_retry
+    )
+    def flaky_func():
+        nonlocal call_count
+        call_count += 1
+        if call_count < 3:
+            raise ConnectionError(f"Attempt {call_count}")
+        return "success"
+
+    result = flaky_func()
+    assert result == "success"
+    assert call_count == 3
+    # on_retry should be called twice (for attempts 1 and 2)
+    assert len(retry_attempts) == 2
+    assert retry_attempts[0] == (1, "Attempt 1")
+    assert retry_attempts[1] == (2, "Attempt 2")
+
+
+def test_retry__with_custom_exception_class():
+    """Test that retry can raise custom exception class."""
+
+    @retry(
+        "Operation failed after {attempts} attempts",
+        max_attempts=2,
+        backoff=0.01,
+        jitter=False,
+        raise_exc_class=DummyException,
+    )
+    def always_fails():
+        raise ConnectionError("Network error")
+
+    with pytest.raises(DummyException):
+        always_fails()
+
+
+def test_retry__with_raise_args_and_kwargs():
+    """Test that retry passes through raise_args and raise_kwargs."""
+
+    @retry(
+        "Operation failed after {attempts} attempts",
+        max_attempts=2,
+        backoff=0.01,
+        jitter=False,
+        raise_exc_class=DummyArgsException,
+        raise_args=["arg_value"],
+        raise_kwargs={"dummy_kwarg": "kwarg_value"},
+    )
+    def always_fails():
+        raise ConnectionError("Network error")
+
+    with pytest.raises(DummyArgsException) as err_info:
+        always_fails()
+
+    exc = err_info.value
+    assert exc.dummy_arg == "arg_value"
+    assert exc.dummy_kwarg == "kwarg_value"
+
+
+def test_retry__validates_max_attempts():
+    """Test that retry validates max_attempts >= 1."""
+    with pytest.raises(ValueError, match="max_attempts must be at least 1"):
+        retry("Operation failed after {attempts} attempts", max_attempts=0)
+
+
+def test_retry__with_jitter():
+    """Test that retry applies jitter when enabled."""
+    call_times: list[float] = []
+
+    @retry("Operation failed after {attempts} attempts", max_attempts=3, backoff=1.0, jitter=True, max_delay=1.0)
+    def always_fails():
+        import time
+
+        call_times.append(time.time())
+        raise ConnectionError("Network error")
+
+    with pytest.raises(Exception):
+        always_fails()
+
+    # With jitter, delays should be somewhat random but bounded
+    assert len(call_times) == 3
+    delay1 = call_times[1] - call_times[0]
+    delay2 = call_times[2] - call_times[1]
+    # Both delays should be between 0 and max_delay (1.0)
+    assert 0 <= delay1 <= 1.1  # Allow small timing variance
+    assert 0 <= delay2 <= 1.1
+
+
+def test_retry__exponential_backoff():
+    """Test that retry uses exponential backoff (basic timing check)."""
+    import time
+
+    call_times: list[float] = []
+
+    @retry("Operation failed after {attempts} attempts", max_attempts=3, backoff=2.0, jitter=False)
+    def always_fails():
+        call_times.append(time.time())
+        raise ConnectionError("Network error")
+
+    with pytest.raises(Exception):
+        always_fails()
+
+    # Check that delays are increasing (exponentially)
+    # delay = backoff^attempt, so with backoff=2.0: 2^0=1, 2^1=2, 2^2=4
+    assert len(call_times) == 3
+    delay1 = call_times[1] - call_times[0]
+    delay2 = call_times[2] - call_times[1]
+    # Delays should be increasing (exponential)
+    # delay1 should be ~1 second, delay2 should be ~2 seconds
+    assert delay1 >= 0.9  # Allow some timing variance
+    assert delay2 >= 1.9
+    assert delay2 > delay1
+
+
+def test_retry__max_delay_cap():
+    """Test that retry caps delay at max_delay."""
+    call_times: list[float] = []
+
+    @retry("Operation failed after {attempts} attempts", max_attempts=4, backoff=10.0, max_delay=0.05, jitter=False)
+    def always_fails():
+        import time
+
+        call_times.append(time.time())
+        raise ConnectionError("Network error")
+
+    with pytest.raises(Exception):
+        always_fails()
+
+    # With backoff=10, delays would be: 10^0=1, 10^1=10, 10^2=100
+    # But max_delay=0.05 should cap all delays
+    assert len(call_times) == 4
+    for i in range(1, len(call_times)):
+        delay = call_times[i] - call_times[i - 1]
+        # Should be close to max_delay (0.05) but allow some wiggle room
+        assert delay < 0.1  # Much less than uncapped delay
+
+
+@pytest.mark.asyncio
+async def test_retry_async__succeeds_on_first_attempt():
+    """Test that retry_async doesn't interfere when function succeeds immediately."""
+    call_count = 0
+
+    @retry_async("Operation failed after {attempts} attempts", max_attempts=3)
+    async def successful_func():
+        nonlocal call_count
+        call_count += 1
+        return "success"
+
+    result = await successful_func()
+    assert result == "success"
+    assert call_count == 1
+
+
+@pytest.mark.asyncio
+async def test_retry_async__succeeds_after_retries():
+    """Test that retry_async keeps trying until function succeeds."""
+    call_count = 0
+
+    @retry_async("Operation failed after {attempts} attempts", max_attempts=3, backoff=0.01, jitter=False)
+    async def flaky_func():
+        nonlocal call_count
+        call_count += 1
+        if call_count < 3:
+            raise ConnectionError("Failed")
+        return "success"
+
+    result = await flaky_func()
+    assert result == "success"
+    assert call_count == 3
+
+
+@pytest.mark.asyncio
+async def test_retry_async__raises_after_max_attempts():
+    """Test that retry_async raises exception after exhausting all attempts."""
+    call_count = 0
+
+    @retry_async("Failed after {attempts} tries", max_attempts=3, backoff=0.01, jitter=False)
+    async def always_fails():
+        nonlocal call_count
+        call_count += 1
+        raise ConnectionError("Network error")
+
+    with pytest.raises(Exception) as err_info:
+        await always_fails()
+
+    assert call_count == 3
+    assert "Failed after 3 tries" in str(err_info.value)
+    assert "Network error" in str(err_info.value)
+
+
+@pytest.mark.asyncio
+async def test_retry_async__only_retries_specified_exceptions():
+    """Test that retry_async only catches specified exception types."""
+    call_count = 0
+
+    @retry_async(
+        "Operation failed after {attempts} attempts",
+        max_attempts=3,
+        backoff=0.01,
+        retry_on=(ConnectionError, TimeoutError),
+    )
+    async def raises_value_error():
+        nonlocal call_count
+        call_count += 1
+        raise ValueError("Not a connection error")
+
+    with pytest.raises(ValueError, match="Not a connection error"):
+        await raises_value_error()
+
+    # Should fail immediately, not retry
+    assert call_count == 1
+
+
+@pytest.mark.asyncio
+async def test_retry_async__with_on_retry_callback():
+    """Test that on_retry callback is invoked on each retry in async."""
+    call_count = 0
+    retry_attempts: list[tuple[int, str]] = []
+
+    def record_retry(attempt: int, exception: Exception):
+        retry_attempts.append((attempt, str(exception)))
+
+    @retry_async(
+        "Operation failed after {attempts} attempts", max_attempts=4, backoff=0.01, jitter=False, on_retry=record_retry
+    )
+    async def flaky_func():
+        nonlocal call_count
+        call_count += 1
+        if call_count < 3:
+            raise ConnectionError(f"Attempt {call_count}")
+        return "success"
+
+    result = await flaky_func()
+    assert result == "success"
+    assert call_count == 3
+    assert len(retry_attempts) == 2
+    assert retry_attempts[0] == (1, "Attempt 1")
+    assert retry_attempts[1] == (2, "Attempt 2")
+
+
+@pytest.mark.asyncio
+async def test_retry_async__uses_asyncio_sleep():
+    """Test that retry_async uses asyncio.sleep for async compatibility."""
+    import time
+
+    call_times: list[float] = []
+
+    @retry_async("Operation failed after {attempts} attempts", max_attempts=3, backoff=0.05, jitter=False)
+    async def always_fails():
+        call_times.append(time.time())
+        raise ConnectionError("Network error")
+
+    with pytest.raises(Exception):
+        await always_fails()
+
+    # Verify delays occurred
+    assert len(call_times) == 3
+    delay1 = call_times[1] - call_times[0]
+    # Should have some delay (at least a few milliseconds)
+    assert delay1 > 0.01
+
+
+@pytest.mark.asyncio
+async def test_retry_async__validates_max_attempts():
+    """Test that retry_async validates max_attempts >= 1."""
+    with pytest.raises(ValueError, match="max_attempts must be at least 1"):
+        retry_async("Operation failed after {attempts} attempts", max_attempts=0)
