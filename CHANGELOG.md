@@ -5,11 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## v7.4.0 - 2026-01-28
+## v8.0.0 - 2026-01-28
+
+### BREAKING CHANGE
+
+All callback parameters now use Protocol types with position-only parameters. If you have custom type hints that
+reference the old callback signatures, you'll need to update them to use the new Protocol types.
+
 
 ### Added
+
 * Added `retry()` and `retry_async()` decorators with exponential backoff, jitter, and selective exception retry
-* Added Protocol types for all callback parameters (`ExceptionCallback`, `DoExceptParamsCallback`, `NoArgCallback`, `AsyncDoExceptParamsCallback`, `AsyncNoArgCallback`, `RetryCallback`)
+* Added Protocol types for all callback parameters
+  * `ExceptionCallback`
+  * `DoExceptParamsCallback`
+  * `NoArgCallback`
+  * `AsyncDoExceptParamsCallback`
+  * `AsyncNoArgCallback`
+  * `RetryCallback`
 * Added `Buzz.retry()` and `Buzz.retry_async()` class methods
 * Added pre-commit hooks configured to run `make qa/full`
 * Added YAML linting with yamllint (inline config in Makefile)
@@ -20,34 +33,45 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Added `publish` target to Makefile for tagging releases
 * Added import auto-sorting to `make qa/format`
 
+
 ### Changed
+
 * Made `message` parameter required positional (first parameter) in `retry()` and `retry_async()`
 * Updated all function signatures in `tools.py` and `base.py` to use Protocol types for callbacks
 * Used position-only parameters for Protocol callbacks to allow flexible parameter naming
 * Reformatted Makefile to match consistent project pattern
 
+
 ### Fixed
+
 * Fixed all basedpyright warnings in tests (added `override` decorators, type hints, renamed unused params)
 * Fixed YAML indentation issues in GitHub Actions workflows
 
+
 ### Removed
+
 * Removed dead `_check_kwargs()` method and its test (was never called)
 
+
 ## v7.3.0 - 2025-04-21
+
 * Added the `ensure_type()` function
 * Some docs updates
+
 
 ## v7.2.0 - 2025-04-19
 * Renamed the `demo` package to `buzz_demo` to avoid name collision
 
 
 ## v7.1.0 - 2025-04-19
+
 * Added `do_except` and `do_else` to `require_condition`, `enforce_defined`, and `check_expressions`
 * Added unit tests for new functionality
 * Added new functionality to the demos
 
 
 ## v7.0.0 - 2025-03-28
+
 * Removed `exc_builder` option from `Buzz`
 * Added `exc_builder` classmethod for `Buzz`
 * Added rich demo
@@ -59,36 +83,52 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
 ## v6.1.0 - 2025-03-27
+
 * Added `base_message` to `ExcBuilderParams`
 * Improved typing
 * Improved function signatures and docstrings in base.py
 * Added basedpyright to type checking
 * Added and updated unit tests.
 
+
 ## v6.0.3 - 2025-03-24
+
 * Restored py.typed that was accidentally excluded
 
+
 ## v6.0.2 - 2025-03-24
+
 * Fixed badges in README.md
 
+
 ## v6.0.1 - 2025-03-24
+
 * Fixed wrong version (3.8) mention in README.md
 * Fixed wrong version (3.8) mention in docs
 
+
 ## v6.0.0 - 2025-03-21
+
 * Converted to a uv project
 * Fixed typing issues
 
+
 ## v5.0.2 - 2025-01-29
+
 * Update docstrings and docs for `handle_errors_async`
 
+
 ## v5.0.1 - 2025-01-29
+
 * Added `handle_errors_async` to exported list from base package
 
+
 ## v5.0.0 - 2025-01-29
+
 * Dropped support for Python 3.8
 * Updated some dependencies
 * Added `handle_errors_async`
+
 
 ## v4.2.0 - 2024-10-08
 
@@ -96,9 +136,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Changed `exc_builder` option to expect a new `ExcBuilderParams` class.
 * Updated documentation.
 
+
 ## v4.1.0 - 2022-08-31
 
 * Added `ignore_exc_class` option to `handle_errors`.
+
 
 ## v4.0.0 - 2022-07-30
 
@@ -123,7 +165,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## v3.1.1 - 2022-04-05
 
-* Added `raise from` in handle_errors (how did I miss this for so long?)
+* Added `raise from` in `handle_errors` (how did I miss this for so long?)
 
 
 ## v3.1.0 - 2022-03-23
@@ -138,8 +180,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Changed `handle_errors` `exception_class` parameter to `handle_exc_class`
 * Changed `handle_errors` to send `DoExceptParams` as a single parameter
 * Removed `sanitize_err_string` as it should not be needed after 2.0.0
-* Removed `re_raise` parameter from handle_errors in tools.
-* Made passing `None` to raise_exc_class indicate no new excepton should be raised
+* Removed `re_raise` parameter from `handle_errors` in tools.
+* Made passing `None` to `raise_exc_class` indicate no new exception should be raised
 * Added a Makefile for running quality checks easier.
 * Updated and added examples.
 * Updated docs a lot.
@@ -148,7 +190,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## v2.1.1-3 - 2021-02-16
 
-* Fixed args in check_expressions
+* Fixed args in `check_expressions`
 
 
 ## v2.1.0 - 2021-02-10
@@ -161,8 +203,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Dropped support for python 3.5
 * Removed deprecated features (format args especially)
 * Added black & isort pre-commit hooks
-* Updated examples and doucmentation
+* Updated examples and documentation
 * Updated inflection dependency version
+
 
 ## v1.0.3 - 2019-06-05
 
@@ -229,6 +272,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## v0.3.1 - 2017-12-21
 
 * Version bump because pypi is complaining about version conflicts
+
 
 ## v0.3.0 - 2017-12-21
 

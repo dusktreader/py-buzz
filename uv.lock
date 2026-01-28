@@ -1070,7 +1070,7 @@ wheels = [
 
 [[package]]
 name = "py-buzz"
-version = "7.4.0"
+version = "8.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "typing-extensions" },
