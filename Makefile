@@ -11,8 +11,8 @@ qa/test:  ## Run the tests
 	@uv run pytest
 
 qa/types:  ## Run static type checks
-	@uv run mypy ${PACKAGE_TARGET} tests src/buzz_demo --pretty
-	@uv run basedpyright ${PACKAGE_TARGET} tests src/buzz_demo
+	@uv run mypy ${PACKAGE_TARGET} tests --pretty
+	@uv run basedpyright ${PACKAGE_TARGET} tests
 
 qa/lint:  ## Run linters
 	@uv run ruff check ${PACKAGE_TARGET} tests src/buzz_demo

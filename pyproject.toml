@@ -1,6 +1,39 @@
-[build-system]
-requires = ["uv_build>=0.9.27,<0.10.0"]
-build-backend = "uv_build"
+[project]
+name = "py-buzz"
+version = "7.4.0"
+description = "\"That's not flying, it's falling with style\": Exceptions with extras"
+authors = [
+  {name = "Tucker Beck", email = "tucker.beck@gmail.com"}
+]
+readme = "README.md"
+license-files = ["LICENSE.md"]
+requires-python = ">=3.10"
+dependencies = [
+  "typing-extensions>=4.0.0"
+]
+
+[project.urls]
+homepage = "https://dusktreader.github.io/py-buzz/"
+source = "https://github.com/dusktreader/py-buzz"
+changelog = "https://github.com/dusktreader/py-buzz/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+demo = [
+  "auto-name-enum>=3.0.0",
+  "rich>=14.3.1",
+  "snick>=3.0.0",
+  "typer>=0.21.1"
+]
+
+[project.scripts]
+py-buzz-demo = "buzz_demo.main:main[cli]"
+
+[tool.uv]
+package = true
+
+[tool.uv.build-backend]
+module-name = ["buzz", "buzz_demo"]
+module-root = "src"
 
 [dependency-groups]
 dev = [
@@ -22,32 +55,28 @@ dev = [
   "yamllint>=1.38.0"
 ]
 
-[project]
-name = "py-buzz"
-version = "7.4.0"
-description = "\"That's not flying, it's falling with style\": Exceptions with extras"
-authors = [
-  {name = "Tucker Beck", email = "tucker.beck@gmail.com"}
-]
-readme = "README.md"
-license-files = ["LICENSE.md"]
-requires-python = ">=3.10"
-
-[project.optional-dependencies]
-demo = [
-  "auto-name-enum>=3.0.0",
-  "rich>=14.3.1",
-  "snick>=3.0.0",
-  "typer>=0.21.1"
+[tool.pytest.ini_options]
+minversion = "7.4.0"
+addopts = [
+  "--cov=src/buzz",
+  "--cov-report=term-missing",
+  "--cov-fail-under=90",
+  "--cov-report=xml:.coverage.xml",
+  "--junitxml=.junit.xml",
+  "--override-ini=junit_family=legacy",
+  "--random-order"
 ]
 
-[project.scripts]
-py-buzz-demo = "buzz_demo.main:main[cli]"
+[tool.ruff]
+line-length = 120
 
-[project.urls]
-homepage = "https://dusktreader.github.io/py-buzz/"
-source = "https://github.com/dusktreader/py-buzz"
-changelog = "https://github.com/dusktreader/py-buzz/blob/main/CHANGELOG.md"
+[tool.mypy]
+check_untyped_defs = true
+exclude = ["src/buzz_demo/"]
+
+[[tool.mypy.overrides]]
+module = ["rich.*"]
+ignore_missing_imports = true
 
 [tool.basedpyright]
 reportAny = false
@@ -61,35 +90,11 @@ paths_to_mutate = ["src/buzz/"]
 pytest_add_cli_args = ["--no-cov"]
 pytest_add_cli_args_test_selection = ["tests/"]
 
-[tool.mypy]
-check_untyped_defs = true
-
-[[tool.mypy.overrides]]
-module = ["rich.*"]
-ignore_missing_imports = true
-
-[tool.pytest.ini_options]
-minversion = "7.4.0"
-addopts = [
-  "--cov=src/buzz",
-  "--cov-report=term-missing",
-  "--cov-fail-under=90",
-  "--cov-report=xml:.coverage.xml",
-  "--junitxml=.junit.xml",
-  "--override-ini=junit_family=legacy"
-]
-
-[tool.ruff]
-line-length = 120
-
 [tool.typos.default]
 extend-ignore-re = [
   "\\}nd"
 ]
 
-[tool.uv]
-package = true
-
-[tool.uv.build-backend]
-module-name = ["buzz", "buzz_demo"]
-module-root = "src"
+[build-system]
+requires = ["uv_build>=0.9.27,<0.10.0"]
+build-backend = "uv_build"

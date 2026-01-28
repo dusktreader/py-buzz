@@ -1072,6 +1072,9 @@ wheels = [
 name = "py-buzz"
 version = "7.4.0"
 source = { editable = "." }
+dependencies = [
+    { name = "typing-extensions" },
+]
 
 [package.optional-dependencies]
 demo = [
@@ -1108,6 +1111,7 @@ requires-dist = [
     { name = "rich", marker = "extra == 'demo'", specifier = ">=14.3.1" },
     { name = "snick", marker = "extra == 'demo'", specifier = ">=3.0.0" },
     { name = "typer", marker = "extra == 'demo'", specifier = ">=0.21.1" },
+    { name = "typing-extensions", specifier = ">=4.0.0" },
 ]
 provides-extras = ["demo"]
 
