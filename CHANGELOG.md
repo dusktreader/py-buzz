@@ -5,14 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## v7.4.0 - TBD
+## v7.4.0 - 2026-01-28
 
 ### Added
 * Added `retry()` and `retry_async()` decorators with exponential backoff, jitter, and selective exception retry
 * Added Protocol types for all callback parameters (`ExceptionCallback`, `DoExceptParamsCallback`, `NoArgCallback`, `AsyncDoExceptParamsCallback`, `AsyncNoArgCallback`, `RetryCallback`)
 * Added `Buzz.retry()` and `Buzz.retry_async()` class methods
 * Added pre-commit hooks configured to run `make qa/full`
-* Added TOML linting with toml-sort (config in `pyproject.toml`)
 * Added YAML linting with yamllint (inline config in Makefile)
 * Added mutation testing with mutmut via `make qa/mutate` (not part of regular QA)
 * Added `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`

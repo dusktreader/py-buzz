@@ -1,14 +1,10 @@
 from __future__ import annotations
 
-import sys
 from traceback import format_tb
 from types import TracebackType
-from typing import Any
+from typing import Any, cast
 
-if sys.version_info >= (3, 12):
-    from typing import override
-else:
-    from typing_extensions import override  # pyright: ignore[reportUnreachable]
+from typing_extensions import override
 
 import pytest
 
@@ -52,12 +48,13 @@ class DummyWeirdArgsException(Exception):
 
 
 def alt_builder(params: ExcBuilderParams) -> Exception:
-    return params.raise_exc_class(
-        *params.raise_args,
-        detail=params.message,  # type: ignore[call-arg]  # pyright: ignore[reportCallIssue]
-        base_message=params.base_message,  # type: ignore[call-arg]  # pyright: ignore[reportCallIssue]
+    exc_class = cast(type[DummyWeirdArgsException], params.raise_exc_class)
+    kwargs = {
         **params.raise_kwargs,
-    )
+        "detail": params.message,
+        "base_message": params.base_message,
+    }
+    return exc_class(*params.raise_args, **kwargs)
 
 
 # ==== require_condition tests =========================================================================================
@@ -780,29 +777,6 @@ def test_check_expressions__ordinalize_teens():
     assert "13th expression failed" in err_msg
 
 
-# ==== other tests =====================================================================================================
-
-
-def test_reformat_exception():
-    final_message = reformat_exception(
-        "I want this to be included",
-        Exception("Original Error"),
-    )
-    assert "I want this to be included" in final_message
-    assert "Original Error" in final_message
-
-
-def test_get_traceback():
-    try:
-        raise DummyException("Original Error")
-    except Exception:
-        trace = get_traceback()
-    last_frame = format_tb(trace)[-1]
-    assert "test_tools.py" in last_frame
-    assert "test_get_traceback" in last_frame
-    assert 'DummyException("Original Error")' in last_frame
-
-
 # ==== retry tests =========================================================================================================
 
 
@@ -1153,3 +1127,26 @@ async def test_retry_async__validates_max_attempts():
     """Test that retry_async validates max_attempts >= 1."""
     with pytest.raises(ValueError, match="max_attempts must be at least 1"):
         retry_async("Operation failed after {attempts} attempts", max_attempts=0)
+
+
+# ==== other tests =====================================================================================================
+
+
+def test_reformat_exception():
+    final_message = reformat_exception(
+        "I want this to be included",
+        Exception("Original Error"),
+    )
+    assert "I want this to be included" in final_message
+    assert "Original Error" in final_message
+
+
+def test_get_traceback():
+    try:
+        raise DummyException("Original Error")
+    except Exception:
+        trace = get_traceback()
+    last_frame = format_tb(trace)[-1]
+    assert "test_tools.py" in last_frame
+    assert "test_get_traceback" in last_frame
+    assert 'DummyException("Original Error")' in last_frame

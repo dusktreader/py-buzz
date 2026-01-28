@@ -17,7 +17,7 @@ patterns included:
 * catching exceptions and wrapping them in clearer exception types with better error messages
 * checking conditions and raising errors on failure
 * checking that values are defined and raising errors if they are not
-* checking that values aer of a specific type and raising errors if they are not
+* checking that values are of a specific type and raising errors if they are not
 
 This led me to create an exception toolkit called `py-buzz` that provides powerful helper tools for each of the cases
 listed above. The `py-buzz` package intends to make your error handling easy, expressive, and robust.
