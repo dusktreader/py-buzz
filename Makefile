@@ -63,6 +63,9 @@ publish: _confirm  ## Publish the package by pushing a tag with the current vers
 
 ## ==== Helpers ========================================================================================================
 
+hooks:  ## Install/update pre-commit hooks
+	@uv run pre-commit install --hook-type=pre-commit --hook-type=pre-push
+
 clean:  ## Clean up build artifacts and other junk
 	@rm -rf .venv
 	@uv run pyclean . --debris
@@ -87,7 +90,7 @@ SHELL:=/bin/bash
 	docs docs/build docs/serve \
 	demo demo/run demo/debug \
 	publish \
-	clean help
+	hooks clean help
 
 
 # ..... Color table for pretty printing ................................................................................
