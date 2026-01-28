@@ -14,31 +14,31 @@ jobs:
         python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
 
-    - name: Install python
-      run:  uv python install ${{ matrix.python-version }}
+      - name: Install python
+        run:  uv python install ${{ matrix.python-version }}
 
-    - name: Sync with demo
-      run:  uv sync --extra=demo
+      - name: Sync with demo
+        run:  uv sync --extra=demo
 
-    - name: Check Quality
-      run: make qa/full
+      - name: Check Quality
+        run: make qa/full
 
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v5
-      with:
-        files: ./.coverage.xml
-        token: ${{ secrets.CODECOV_TOKEN }}
-      if: ${{ !cancelled() }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./.coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+        if: ${{ !cancelled() }}
 
-    - name: Upload test results to Codecov
-      uses: codecov/test-results-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./.junit.xml
-      if: ${{ !cancelled() }}
+      - name: Upload test results to Codecov
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./.junit.xml
+        if: ${{ !cancelled() }}

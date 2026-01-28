@@ -11,7 +11,6 @@ from buzz.tools import (
     require_condition,
 )
 
-
 __all__ = [
     "Buzz",
     "DoExceptParams",

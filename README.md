@@ -15,6 +15,7 @@ include:
 
 * checking many conditions and reporting which ones failed (`check_expressions()`)
 * catching exceptions wrapping them in clearer exception types with better error messages (`handle_errors()`)
+* retrying operations with exponential backoff until they succeed (`retry()`)
 * checking that values are defined and raising errors if not (`enforce_defined()`)
 * checking that values are a certain type and raising errors if not (`ensure_type()`)
 * checking conditions and raising errors on failure (`require_condition()`)
@@ -24,7 +25,7 @@ for custom exceptions within a project.
 
 ## Super-quick Start
 
-* Only requires Python 3.9 or later
+* Only requires Python 3.10 or later
 * Installed with pip (`$ pip install py-buzz`)
 * Each feature demonstrated in an executable demo "extra"
 

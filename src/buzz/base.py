@@ -4,20 +4,26 @@ This module defines the Buzz base class.
 
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Mapping
 import textwrap
-from typing import TypeVar, Any
+from collections.abc import Iterable, Mapping
+from typing import Any, TypeVar
+
 from typing_extensions import Self, override
 
 from buzz.tools import (
-    DoExceptParams,
+    DoExceptParamsCallback,
     ExcBuilderParams,
-    ensure_type,
-    require_condition,
-    enforce_defined,
+    ExceptionCallback,
+    NoArgCallback,
+    RetryCallback,
     check_expressions,
-    handle_errors,
+    enforce_defined,
+    ensure_type,
     get_traceback,
+    handle_errors,
+    require_condition,
+    retry,
+    retry_async,
 )
 
 TNonNull = TypeVar("TNonNull")
@@ -47,14 +53,6 @@ class Buzz(Exception):
     def __repr__(self):
         return self.__class__.__name__
 
-    @staticmethod
-    def _check_kwargs(**kwargs: Any):
-        """
-        Ensure that `raise_exc_class()` was not passed as a keyword-argument.
-        """
-        if "raise_exc_class" in kwargs:
-            raise ValueError("You may not pass the 'raise_exc_class' to Buzz-derived exception methods.")
-
     @classmethod
     def exc_builder(cls, params: ExcBuilderParams) -> Self:
         """
@@ -80,8 +78,8 @@ class Buzz(Exception):
         message: str,
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
-        do_except: Callable[[Exception], None] | None = None,
-        do_else: Callable[[], None] | None = None,
+        do_except: ExceptionCallback | None = None,
+        do_else: NoArgCallback | None = None,
     ):
         """
         Assert that an expression is truty. If the assertion fails, raise an exception (instance of this class) with the
@@ -118,8 +116,8 @@ class Buzz(Exception):
         message: str = "Value was not defined (None)",
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
-        do_except: Callable[[Exception], None] | None = None,
-        do_else: Callable[[], None] | None = None,
+        do_except: ExceptionCallback | None = None,
+        do_else: NoArgCallback | None = None,
     ) -> TNonNull:
         """
         Assert that a value is not None. If the assertion fails, raise an exception (instance of this class) with the
@@ -158,8 +156,8 @@ class Buzz(Exception):
         message: str = "Value was not of type {type_}",
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
-        do_except: Callable[[Exception], None] | None = None,
-        do_else: Callable[[], None] | None = None,
+        do_except: ExceptionCallback | None = None,
+        do_else: NoArgCallback | None = None,
     ) -> EnsuredType:
         """
         Assert that a value is of a specific type. If the assertion fails, raise an exception (instance of this class)
@@ -197,8 +195,8 @@ class Buzz(Exception):
         base_message: str,
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
-        do_except: Callable[[Exception], None] | None = None,
-        do_else: Callable[[], None] | None = None,
+        do_except: ExceptionCallback | None = None,
+        do_else: NoArgCallback | None = None,
     ):
         """
         Check a series of expressions inside of a context manager. If any fail an exception (instance of this class) is
@@ -251,9 +249,9 @@ class Buzz(Exception):
         raise_kwargs: Mapping[str, Any] | None = None,
         handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
         ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
-        do_finally: Callable[[], None] | None = None,
-        do_except: Callable[[DoExceptParams], None] | None = None,
-        do_else: Callable[[], None] | None = None,
+        do_finally: NoArgCallback | None = None,
+        do_except: DoExceptParamsCallback | None = None,
+        do_else: NoArgCallback | None = None,
     ):
         """
         Provide a context manager that will intercept exceptions and repackage them in a new exception (instance of this
@@ -263,7 +261,7 @@ class Buzz(Exception):
             base_message:      The base message to attach to the raised exception. Will be included in `ExcBuilderParams`
                                passed to `exc_builder`.
             re_raise:          If True (the default), then a exception (instance of this class) will be raised after
-                               handling any caught exceptoins. If False, no exception will be raised after handling any
+                               handling any caught exceptions. If False, no exception will be raised after handling any
                                exceptions. This will effectively swallow the expression. Note that the `do_` methods
                                will still be executed.
             raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
@@ -319,3 +317,105 @@ class Buzz(Exception):
         Call the `get_traceback()` function.
         """
         return get_traceback(*args, **kwargs)
+
+    @classmethod
+    def retry(
+        cls,
+        message: str,
+        max_attempts: int = 3,
+        backoff: float = 2.0,
+        max_delay: float = 60.0,
+        jitter: bool = True,
+        retry_on: type[Exception] | tuple[type[Exception], ...] = Exception,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        on_retry: RetryCallback | None = None,
+    ):
+        """
+        Decorator that retries a function on failure with exponential backoff.
+
+        Args:
+            message:          Message for final exception. Supports {attempts} placeholder.
+            max_attempts:     Maximum number of attempts (including initial attempt). Must be >= 1.
+            backoff:          Exponential backoff multiplier. Delay = backoff^attempt.
+            max_delay:        Maximum delay between retries in seconds.
+            jitter:           Add random jitter to prevent thundering herd.
+            retry_on:         Exception type(s) to retry. Other exceptions will be raised immediately.
+            raise_args:       Additional positional args for the raised exception.
+            raise_kwargs:     Keyword args for the raised exception.
+            on_retry:         Optional callback invoked on each retry with (attempt, exception).
+
+        Returns:
+            Decorated function that retries on failure.
+
+        Example:
+            @Buzz.retry("Failed to fetch data after {attempts} attempts", max_attempts=3, backoff=2.0, retry_on=(ConnectionError, TimeoutError))
+            def fetch_data(url):
+                response = requests.get(url)
+                response.raise_for_status()
+                return response.json()
+        """
+        return retry(
+            message=message,
+            max_attempts=max_attempts,
+            backoff=backoff,
+            max_delay=max_delay,
+            jitter=jitter,
+            retry_on=retry_on,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=cls.exc_builder,
+            on_retry=on_retry,
+        )
+
+    @classmethod
+    def retry_async(
+        cls,
+        message: str,
+        max_attempts: int = 3,
+        backoff: float = 2.0,
+        max_delay: float = 60.0,
+        jitter: bool = True,
+        retry_on: type[Exception] | tuple[type[Exception], ...] = Exception,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        on_retry: RetryCallback | None = None,
+    ):
+        """
+        Decorator that retries an async function on failure with exponential backoff.
+
+        Args:
+            message:          Message for final exception. Supports {attempts} placeholder.
+            max_attempts:     Maximum number of attempts (including initial attempt). Must be >= 1.
+            backoff:          Exponential backoff multiplier. Delay = backoff^attempt.
+            max_delay:        Maximum delay between retries in seconds.
+            jitter:           Add random jitter to prevent thundering herd.
+            retry_on:         Exception type(s) to retry. Other exceptions will be raised immediately.
+            raise_args:       Additional positional args for the raised exception.
+            raise_kwargs:     Keyword args for the raised exception.
+            on_retry:         Optional callback invoked on each retry with (attempt, exception).
+
+        Returns:
+            Decorated async function that retries on failure.
+
+        Example:
+            @Buzz.retry_async("Failed to fetch data after {attempts} attempts", max_attempts=3, backoff=2.0, retry_on=(ConnectionError, TimeoutError))
+            async def fetch_data(url):
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url) as response:
+                        return await response.json()
+        """
+        return retry_async(
+            message=message,
+            max_attempts=max_attempts,
+            backoff=backoff,
+            max_delay=max_delay,
+            jitter=jitter,
+            retry_on=retry_on,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=cls.exc_builder,
+            on_retry=on_retry,
+        )

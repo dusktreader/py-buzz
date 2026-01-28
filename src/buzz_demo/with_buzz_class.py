@@ -6,6 +6,7 @@ use a custom class derived from `Buzz` to use as a base exception class for a
 project. In this way, you can define several custom exception types that all
 include the features of `Buzz`.
 """
+
 from __future__ import annotations
 
 from buzz import Buzz
@@ -54,10 +55,10 @@ def demo_4__require_condition():
     function from `Buzz`. Notice how the raised exception is an instance of `Buzz`
     without th eneed to set the `raise_exc_class`.
     """
-    Buzz.require_condition(True, 'This condition should always pass')
+    Buzz.require_condition(True, "This condition should always pass")
     print("I got past the first condition")
 
-    Buzz.require_condition(False, 'This condition should always fail')
+    Buzz.require_condition(False, "This condition should always fail")
     print("I won't get past the second condition")
 
 
@@ -75,6 +76,7 @@ def demo_5__derived_classes():
     * Not handling non-`Buzz` errors
     * Absorbing exceptions by setting the `re_raise` flag
     """
+
     class JawaError(Buzz):
         pass
 
@@ -87,7 +89,7 @@ def demo_5__derived_classes():
                 "something went wrong (derived example)",
                 handle_exc_class=Buzz,
                 ignore_exc_class=EwokError,
-                re_raise=False
+                re_raise=False,
             ):
                 print(f"trying out {exception_class}")
                 print("here we are fine")

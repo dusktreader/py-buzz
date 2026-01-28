@@ -14,9 +14,11 @@ variable to a non-null type or add an assertion that the value is not
 be used practically to guarantee that the variable is set and narrow its
 type.
 """
+
 from __future__ import annotations
 
 from typing import Any
+
 from typing_extensions import override
 
 from buzz import enforce_defined
@@ -35,6 +37,7 @@ def demo_1__simple():
     print("I should be able to safely access the `upper()` method of `val` now.")
     print("There should also be no type errors because `val` is now guaranteed to be a string.")
     val.upper()
+
 
 def demo_2__failing():
     """
@@ -59,6 +62,7 @@ def demo_3__complex():
     * Passing specific args and kwargs to the exception when it is raised.
     * Calling a `do_except()` function
     """
+
     class DemoException(Exception):
         def __init__(self, message: str, demo_arg: Any, demo_kwarg: Any | None = None):
             super().__init__(message)

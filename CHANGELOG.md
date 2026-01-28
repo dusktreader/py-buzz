@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## v7.4.0 - 2026-01-28
+
+### Added
+* Added `retry()` and `retry_async()` decorators with exponential backoff, jitter, and selective exception retry
+* Added Protocol types for all callback parameters (`ExceptionCallback`, `DoExceptParamsCallback`, `NoArgCallback`, `AsyncDoExceptParamsCallback`, `AsyncNoArgCallback`, `RetryCallback`)
+* Added `Buzz.retry()` and `Buzz.retry_async()` class methods
+* Added pre-commit hooks configured to run `make qa/full`
+* Added YAML linting with yamllint (inline config in Makefile)
+* Added mutation testing with mutmut via `make qa/mutate` (not part of regular QA)
+* Added `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`
+* Added `make qa/mutate` target for mutation testing
+* Added colored help output to Makefile with section headers
+* Added `publish` target to Makefile for tagging releases
+* Added import auto-sorting to `make qa/format`
+
+### Changed
+* Made `message` parameter required positional (first parameter) in `retry()` and `retry_async()`
+* Updated all function signatures in `tools.py` and `base.py` to use Protocol types for callbacks
+* Used position-only parameters for Protocol callbacks to allow flexible parameter naming
+* Reformatted Makefile to match consistent project pattern
+
+### Fixed
+* Fixed all basedpyright warnings in tests (added `override` decorators, type hints, renamed unused params)
+* Fixed YAML indentation issues in GitHub Actions workflows
+
+### Removed
+* Removed dead `_check_kwargs()` method and its test (was never called)
+
 ## v7.3.0 - 2025-04-21
 * Added the `ensure_type()` function
 * Some docs updates

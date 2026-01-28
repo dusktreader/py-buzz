@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 # When Python 3.9 is no longer supported, remove Optional
 from typing import Annotated, Optional
-from collections.abc import Callable
 
 import snick
 import typer
@@ -12,12 +13,13 @@ from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.prompt import Confirm
 
-from buzz_demo.helpers import run_demo, get_demo_functions
+from buzz_demo.helpers import get_demo_functions, run_demo
 
 
 class Feature(AutoNameEnum):
     check_expressions = auto()
     handle_errors = auto()
+    retry = auto()
     enforce_defined = auto()
     ensure_type = auto()
     require_condition = auto()
@@ -26,9 +28,12 @@ class Feature(AutoNameEnum):
 
 
 def start(
-    feature: Annotated[Optional[Feature], typer.Option(
-        help="The feature to demo. If not provided, demo ALL",
-    )] = None,
+    feature: Annotated[
+        Optional[Feature],
+        typer.Option(
+            help="The feature to demo. If not provided, demo ALL",
+        ),
+    ] = None,
 ):
     """
     This cli app will demo the features of `py-buzz`!

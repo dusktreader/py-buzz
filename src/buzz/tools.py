@@ -4,14 +4,17 @@ This module supplies the core functions of the py-buzz package.
 
 from __future__ import annotations
 
+import asyncio
 import contextlib
 import dataclasses
+import functools
+import random
 import sys
+import time
 import types
-from collections.abc import AsyncIterator, Coroutine, Iterable, Iterator, Mapping
 from asyncio import iscoroutinefunction
-from typing import Any, Callable, TypeVar
-
+from collections.abc import AsyncIterator, Coroutine, Iterable, Iterator, Mapping
+from typing import Any, Callable, Protocol, TypeVar
 
 TNonNull = TypeVar("TNonNull")
 
@@ -39,6 +42,68 @@ class ExcBuilderParams:
     base_message: str | None = None
 
 
+@dataclasses.dataclass
+class DoExceptParams:
+    """
+    Dataclass for the `do_except` user supplied handling method.
+
+    Attributes:
+
+        err:           The exception instance itself
+        base_message:  The base message parameter that was passed to the `handle_errors()` function
+        final_message: The final, combined message including the base message and string formatted exception
+        trace:         A traceback of the exception
+    """
+
+    err: Exception
+    base_message: str
+    final_message: str
+    trace: types.TracebackType | None
+
+
+# Callback Protocol types for better type hints and IDE support
+
+
+class ExceptionCallback(Protocol):
+    """Protocol for callbacks that receive a single exception."""
+
+    def __call__(self, __exc: Exception, /) -> None:
+        """Handle an exception."""
+        ...
+
+
+class DoExceptParamsCallback(Protocol):
+    """Protocol for callbacks that receive DoExceptParams."""
+
+    def __call__(self, __params: DoExceptParams, /) -> None:
+        """Handle exception with full context."""
+        ...
+
+
+class NoArgCallback(Protocol):
+    """Protocol for callbacks that take no arguments."""
+
+    def __call__(self) -> None:
+        """Execute callback with no arguments."""
+        ...
+
+
+class AsyncDoExceptParamsCallback(Protocol):
+    """Protocol for async callbacks that receive DoExceptParams."""
+
+    def __call__(self, __params: DoExceptParams, /) -> Coroutine[Any, Any, None]:
+        """Handle exception with full context asynchronously."""
+        ...
+
+
+class AsyncNoArgCallback(Protocol):
+    """Protocol for async callbacks that take no arguments."""
+
+    def __call__(self) -> Coroutine[Any, Any, None]:
+        """Execute callback with no arguments asynchronously."""
+        ...
+
+
 def default_exc_builder(params: ExcBuilderParams) -> Exception:
     """
     Build an exception instance using default behavior where message is passed as first positional argument.
@@ -60,8 +125,8 @@ def require_condition(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
-    do_except: Callable[[Exception], None] | None = None,
-    do_else: Callable[[], None] | None = None,
+    do_except: ExceptionCallback | None = None,
+    do_else: NoArgCallback | None = None,
 ):
     """
     Assert that an expression is truthy. If the assertion fails, raise an exception with the supplied message.
@@ -108,8 +173,8 @@ def enforce_defined(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
-    do_except: Callable[[Exception], None] | None = None,
-    do_else: Callable[[], None] | None = None,
+    do_except: ExceptionCallback | None = None,
+    do_else: NoArgCallback | None = None,
 ) -> TNonNull:
     """
     Assert that a value is not None. If the assertion fails, raise an exception with the supplied message.
@@ -154,6 +219,7 @@ def enforce_defined(
 
 EnsuredType = TypeVar("EnsuredType")
 
+
 def ensure_type(
     value: Any,
     type_: type[EnsuredType],
@@ -162,8 +228,8 @@ def ensure_type(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
-    do_except: Callable[[Exception], None] | None = None,
-    do_else: Callable[[], None] | None = None,
+    do_except: ExceptionCallback | None = None,
+    do_else: NoArgCallback | None = None,
 ) -> EnsuredType:
     """
     Assert that a value is of a specific type. If the assertion fails, raise an exception with the supplied message.
@@ -251,8 +317,8 @@ def check_expressions(
     raise_args: Iterable[Any] | None = None,
     raise_kwargs: Mapping[str, Any] | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
-    do_except: Callable[[Exception], None] | None = None,
-    do_else: Callable[[], None] | None = None,
+    do_except: ExceptionCallback | None = None,
+    do_else: NoArgCallback | None = None,
 ):
     """
     Check a series of expressions inside of a context manager. If any fail an exception is raised that contains a
@@ -334,25 +400,6 @@ def get_traceback() -> types.TracebackType | None:
     return sys.exc_info()[2]
 
 
-@dataclasses.dataclass
-class DoExceptParams:
-    """
-    Dataclass for the `do_except` user supplied handling method.
-
-    Attributes:
-
-        err:           The exception instance itself
-        base_message:  The base message parameter that was passed to the `jandle_errors()` function
-        final_message: The final, combined message including the base message and string formatted exception
-        trace:         A traceback of the exception
-    """
-
-    err: Exception
-    base_message: str
-    final_message: str
-    trace: types.TracebackType | None
-
-
 @contextlib.contextmanager
 def handle_errors(
     base_message: str,
@@ -361,9 +408,9 @@ def handle_errors(
     raise_kwargs: Mapping[str, Any] | None = None,
     handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
     ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
-    do_finally: Callable[[], None] | None = None,
-    do_except: Callable[[DoExceptParams], None] | None = None,
-    do_else: Callable[[], None] | None = None,
+    do_finally: NoArgCallback | None = None,
+    do_except: DoExceptParamsCallback | None = None,
+    do_else: NoArgCallback | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
 ) -> Iterator[None]:
     """
@@ -469,9 +516,9 @@ async def handle_errors_async(
     raise_kwargs: Mapping[str, Any] | None = None,
     handle_exc_class: type[Exception] | tuple[type[Exception], ...] = Exception,
     ignore_exc_class: type[Exception] | tuple[type[Exception], ...] | None = None,
-    do_finally: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] | None = None,
-    do_except: Callable[[DoExceptParams], None] | Callable[[DoExceptParams], Coroutine[Any, Any, None]] | None = None,
-    do_else: Callable[[], None] | Callable[[], Coroutine[Any, Any, None]] | None = None,
+    do_finally: NoArgCallback | AsyncNoArgCallback | None = None,
+    do_except: DoExceptParamsCallback | AsyncDoExceptParamsCallback | None = None,
+    do_else: NoArgCallback | AsyncNoArgCallback | None = None,
     exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
 ) -> AsyncIterator[None]:
     """
@@ -586,3 +633,202 @@ async def handle_errors_async(
                 await do_finally()
             else:
                 do_finally()
+
+
+class RetryCallback(Protocol):
+    """Protocol for retry callbacks."""
+
+    def __call__(self, __attempt: int, __exception: Exception, /) -> None:
+        """
+        Callback invoked on each retry attempt.
+
+        Args:
+            __attempt: The current attempt number (1-indexed)
+            __exception: The exception that triggered the retry
+        """
+        ...
+
+
+TReturnType = TypeVar("TReturnType")
+
+
+def _calculate_delay(attempt: int, backoff: float, max_delay: float, jitter: bool) -> float:
+    """
+    Calculate the delay before the next retry attempt.
+
+    Args:
+        attempt: The current attempt number (0-indexed for calculation)
+        backoff: Exponential backoff multiplier
+        max_delay: Maximum delay in seconds
+        jitter: Whether to add random jitter
+
+    Returns:
+        Delay in seconds
+    """
+    delay = backoff**attempt
+    delay = min(delay, max_delay)
+    if jitter:
+        delay = random.uniform(0, delay)
+    return delay
+
+
+def retry(
+    message: str,
+    max_attempts: int = 3,
+    backoff: float = 2.0,
+    max_delay: float = 60.0,
+    jitter: bool = True,
+    retry_on: type[Exception] | tuple[type[Exception], ...] = Exception,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
+    exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    on_retry: RetryCallback | None = None,
+) -> Callable[[Callable[..., TReturnType]], Callable[..., TReturnType]]:
+    """
+    Decorator that retries a function on failure with exponential backoff.
+
+    Args:
+        message:          Message for final exception. Supports {attempts} placeholder.
+        max_attempts:     Maximum number of attempts (including initial attempt). Must be >= 1.
+        backoff:          Exponential backoff multiplier. Delay = backoff^attempt.
+        max_delay:        Maximum delay between retries in seconds.
+        jitter:           Add random jitter to prevent thundering herd.
+        retry_on:         Exception type(s) to retry. Other exceptions will be raised immediately.
+        raise_exc_class:  Exception type to raise on final failure.
+        raise_args:       Additional positional args for the raised exception.
+        raise_kwargs:     Keyword args for the raised exception.
+        exc_builder:      Function to construct the exception.
+        on_retry:         Optional callback invoked on each retry with (attempt, exception).
+
+    Returns:
+        Decorated function that retries on failure.
+
+    Example:
+        @retry("Failed to fetch data after {attempts} attempts", max_attempts=3, backoff=2.0, retry_on=(ConnectionError, TimeoutError))
+        def fetch_data(url):
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.json()
+    """
+    if max_attempts < 1:
+        raise ValueError("max_attempts must be at least 1")
+
+    def decorator(func: Callable[..., TReturnType]) -> Callable[..., TReturnType]:
+        @functools.wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> TReturnType:
+            last_exception: Exception | None = None
+
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except retry_on as exc:
+                    last_exception = exc
+
+                    if attempt + 1 >= max_attempts:
+                        break
+
+                    if on_retry:
+                        on_retry(attempt + 1, exc)
+
+                    delay = _calculate_delay(attempt, backoff, max_delay, jitter)
+                    time.sleep(delay)
+
+            final_message = message.format(attempts=max_attempts)
+            if last_exception:
+                final_message = reformat_exception(final_message, last_exception)
+
+            raise exc_builder(
+                ExcBuilderParams(
+                    raise_exc_class=raise_exc_class,
+                    message=final_message,
+                    raise_args=raise_args or [],
+                    raise_kwargs=raise_kwargs or {},
+                )
+            ) from last_exception
+
+        return wrapper
+
+    return decorator
+
+
+def retry_async(
+    message: str,
+    max_attempts: int = 3,
+    backoff: float = 2.0,
+    max_delay: float = 60.0,
+    jitter: bool = True,
+    retry_on: type[Exception] | tuple[type[Exception], ...] = Exception,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
+    exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    on_retry: RetryCallback | None = None,
+) -> Callable[[Callable[..., Coroutine[Any, Any, TReturnType]]], Callable[..., Coroutine[Any, Any, TReturnType]]]:
+    """
+    Decorator that retries an async function on failure with exponential backoff.
+
+    Args:
+        message:          Message for final exception. Supports {attempts} placeholder.
+        max_attempts:     Maximum number of attempts (including initial attempt). Must be >= 1.
+        backoff:          Exponential backoff multiplier. Delay = backoff^attempt.
+        max_delay:        Maximum delay between retries in seconds.
+        jitter:           Add random jitter to prevent thundering herd.
+        retry_on:         Exception type(s) to retry. Other exceptions will be raised immediately.
+        raise_exc_class:  Exception type to raise on final failure.
+        raise_args:       Additional positional args for the raised exception.
+        raise_kwargs:     Keyword args for the raised exception.
+        exc_builder:      Function to construct the exception.
+        on_retry:         Optional callback invoked on each retry with (attempt, exception).
+
+    Returns:
+        Decorated async function that retries on failure.
+
+    Example:
+        @retry_async("Failed to fetch data after {attempts} attempts", max_attempts=3, backoff=2.0, retry_on=(ConnectionError, TimeoutError))
+        async def fetch_data(url):
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as response:
+                    return await response.json()
+    """
+    if max_attempts < 1:
+        raise ValueError("max_attempts must be at least 1")
+
+    def decorator(
+        func: Callable[..., Coroutine[Any, Any, TReturnType]],
+    ) -> Callable[..., Coroutine[Any, Any, TReturnType]]:
+        @functools.wraps(func)
+        async def wrapper(*args: Any, **kwargs: Any) -> TReturnType:
+            last_exception: Exception | None = None
+
+            for attempt in range(max_attempts):
+                try:
+                    return await func(*args, **kwargs)
+                except retry_on as exc:
+                    last_exception = exc
+
+                    if attempt + 1 >= max_attempts:
+                        break
+
+                    if on_retry:
+                        on_retry(attempt + 1, exc)
+
+                    delay = _calculate_delay(attempt, backoff, max_delay, jitter)
+                    await asyncio.sleep(delay)
+
+            final_message = message.format(attempts=max_attempts)
+            if last_exception:
+                final_message = reformat_exception(final_message, last_exception)
+
+            raise exc_builder(
+                ExcBuilderParams(
+                    raise_exc_class=raise_exc_class,
+                    message=final_message,
+                    raise_args=raise_args or [],
+                    raise_kwargs=raise_kwargs or {},
+                )
+            ) from last_exception
+
+        return wrapper
+
+    return decorator

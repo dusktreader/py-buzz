@@ -1,13 +1,16 @@
 [project]
 name = "py-buzz"
-version = "7.3.0"
+version = "7.4.0"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
 authors = [
-    {name = "Tucker Beck", email ="tucker.beck@gmail.com"},
+  {name = "Tucker Beck", email = "tucker.beck@gmail.com"}
 ]
 readme = "README.md"
 license-files = ["LICENSE.md"]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
+dependencies = [
+  "typing-extensions>=4.0.0"  # When support for Python 3.10 and 3.11 is drooped, this can be removed
+]
 
 [project.urls]
 homepage = "https://dusktreader.github.io/py-buzz/"
@@ -16,10 +19,10 @@ changelog = "https://github.com/dusktreader/py-buzz/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 demo = [
-    "auto-name-enum>=2.0.0",
-    "rich>=13.9.4",
-    "snick>=1.4.1",
-    "typer>=0.15.2",
+  "auto-name-enum>=3.0.0",
+  "rich>=14.3.1",
+  "snick>=3.0.0",
+  "typer>=0.21.1"
 ]
 
 [project.scripts]
@@ -28,32 +31,40 @@ py-buzz-demo = "buzz_demo.main:main[cli]"
 [tool.uv]
 package = true
 
+[tool.uv.build-backend]
+module-name = ["buzz", "buzz_demo"]
+module-root = "src"
+
 [dependency-groups]
 dev = [
-    "basedpyright>=1.28.4",
-    "ipython>=8.18.1",
-    "mkdocs-material>=9.6.9",
-    "mkdocstrings-python>=1.16.7",
-    "mypy~=1.15",
-    "pyclean>=3.1.0",
-    "pygments>=2.19.1",
-    "pytest>=8.3.5",
-    "pytest-asyncio>=0.25.3",
-    "pytest-cov>=6.0.0",
-    "pytest-random-order>=1.1.1",
-    "ruff>=0.11.2",
-    "typos>=1.31.1",
+  "basedpyright>=1.37.2",
+  "ipython>=8.38.0",
+  "mkdocs-material>=9.7.1",
+  "mkdocstrings-python>=2.0.1",
+  "mutmut>=3.4.0",
+  "mypy>=1.19.1",
+  "pre-commit>=4.5.1",
+  "pyclean>=3.5.0",
+  "pygments>=2.19.2",
+  "pytest>=9.0.2",
+  "pytest-asyncio>=1.3.0",
+  "pytest-cov>=7.0.0",
+  "pytest-random-order>=1.2.0",
+  "ruff>=0.14.14",
+  "typos>=1.42.2",
+  "yamllint>=1.38.0"
 ]
 
 [tool.pytest.ini_options]
 minversion = "7.4.0"
 addopts = [
-    "--cov=src/buzz",
-    "--cov-report=term-missing",
-    "--cov-fail-under=90",
-    "--cov-report=xml:.coverage.xml",
-    "--junitxml=.junit.xml",
-    "--override-ini=junit_family=legacy",
+  "--cov=src/buzz",
+  "--cov-report=term-missing",
+  "--cov-fail-under=90",
+  "--cov-report=xml:.coverage.xml",
+  "--junitxml=.junit.xml",
+  "--override-ini=junit_family=legacy",
+  "--random-order"
 ]
 
 [tool.ruff]
@@ -61,9 +72,10 @@ line-length = 120
 
 [tool.mypy]
 check_untyped_defs = true
+exclude = ["src/buzz_demo/"]
 
 [[tool.mypy.overrides]]
-module = []
+module = ["rich.*"]
 ignore_missing_imports = true
 
 [tool.basedpyright]
@@ -71,18 +83,18 @@ reportAny = false
 reportExplicitAny = false
 reportUnusedCallResult = false
 reportDeprecated = false
+exclude = ["**/buzz_demo/**"]
+
+[tool.mutmut]
+paths_to_mutate = ["src/buzz/"]
+pytest_add_cli_args = ["--no-cov"]
+pytest_add_cli_args_test_selection = ["tests/"]
 
 [tool.typos.default]
 extend-ignore-re = [
-    "\\}nd",
-]
-
-[tool.hatch.build.targets.wheel]
-packages = [
-    "src/buzz",
-    "src/buzz_demo",
+  "\\}nd"
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.9.27,<0.10.0"]
+build-backend = "uv_build"

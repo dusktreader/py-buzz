@@ -2,11 +2,15 @@
 This example set demonstrates the use of the `require_condition()` function.
 This function can be used to assert a boolean condition wherever needed.
 """
+
 from __future__ import annotations
 
 from typing import Any
+
 from typing_extensions import override
+
 from buzz import require_condition
+
 
 def demo_1__simple():
     """
@@ -15,10 +19,10 @@ def demo_1__simple():
     asserted. Unlike the built-in assert keyword, `require_condition()` will be
     in effect in both live and debug modes.
     """
-    require_condition(True, 'This condition should always pass')
+    require_condition(True, "This condition should always pass")
     print("I got past the first condition")
 
-    require_condition(False, 'This condition should always fail')
+    require_condition(False, "This condition should always fail")
     print("I won't get past the second condition")
 
 
@@ -33,6 +37,7 @@ def demo_2__complex():
     * Binding extra arguments to the raised exception
     * Calling a `do_except()` function
     """
+
     class DemoException(Exception):
         def __init__(self, message: str, demo_arg: Any, demo_kwarg: Any | None = None):
             super().__init__(message)
@@ -45,7 +50,7 @@ def demo_2__complex():
 
     require_condition(
         13 > 21,
-        'Thirteen was not greater than twenty-one!',
+        "Thirteen was not greater than twenty-one!",
         raise_exc_class=DemoException,
         raise_args=["jawa"],
         raise_kwargs=dict(demo_kwarg="ewok"),
