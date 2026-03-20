@@ -254,15 +254,15 @@ serves a dual purpose: it will raise an error if your value is the wrong type,
 and it will also narrow the type for you to make your type-check happy.
 
 ```python
-    # Vanilla python
-    def vanilla(val: str | int) -> str:
-        if not isinstance(val, str):
-            raise Exception("Received a non-string value!")
-        return val.upper()
+# Vanilla python
+def vanilla(val: str | int) -> str:
+    if not isinstance(val, str):
+        raise Exception("Received a non-string value!")
+    return val.upper()
 
-    # With py-buzz
-    def buzzy(val: str | int) -> str:
-        return ensure_type(val, str).upper()
+# With py-buzz
+def buzzy(val: str | int) -> str:
+    return ensure_type(val, str).upper()
 ```
 
 Though this could be called syntactic sugar as well, it saves some keystrokes
@@ -292,6 +292,83 @@ value was the wrong type. However, you may pass in a custom message with the `me
 keyword argument.
 
 The `ensure_type()` function also accepts some keyword arguments:
+
+
+#### `raise_exc_class`
+
+Functions the same as `require_condition()`.
+
+
+#### `raise_args`
+
+Functions the same as `require_condition()`.
+
+
+#### `raise_kwargs`
+
+Functions the same as `require_condition()`.
+
+
+#### `exc_builder`
+
+Functions the same as `require_condition()`.
+
+
+#### `do_except`
+
+Functions the same as `require_condition()`.
+
+
+#### `do_else`
+
+Functions the same as `require_condition()`.
+
+
+### Raise exception if value is not a member of a Literal type
+
+The `py-buzz` package provides the `verify_literal()` function that checks a
+value against a `typing.Literal` type and raises an exception if the value is
+not one of the allowed literal values. Like `ensure_type()`, it returns the
+value on success so it can be used inline.
+
+!!! note "Does not narrow type yet!"
+
+    The `literal_type` parameter is annotated as `TypeForm[LiteralElement]` from
+    `typing_extensions`, where `LiteralElement` is a `TypeVar` constrained to the
+    valid `Literal` member types (`int`, `bool`, `str`, `bytes`, `None`).
+
+    The intent is that when a type checker implements
+    [PEP 747](https://peps.python.org/pep-0747/), passing `Literal["foo", "bar"]`
+    will bind `LiteralElement` to `Literal["foo", "bar"]`, and the return type will
+    narrow to `Literal["foo", "bar"]` accordingly. Until then, the return type
+    resolves to the broader constraint type (e.g. `str`), and no narrowing occurs.
+
+```python
+from typing import Literal
+
+# Vanilla python
+def vanilla(val: str) -> str:
+    if val not in ("jawa", "ewok", "pyke"):
+        raise Exception("Received an unexpected value!")
+    return val
+
+# With py-buzz
+def buzzy(val: str) -> str:
+    return verify_literal(val, Literal["jawa", "ewok", "pyke"])
+```
+
+The allowed types for `Literal` members in Python are `int`, `bool`, `str`,
+`bytes`, `None`, and enum members:
+
+```python
+verify_literal(val, Literal["active", "inactive", None], "must be a known status")
+verify_literal(code, Literal[1, 2, 3], "must be a known code")
+```
+
+Passing a non-`Literal` type to `verify_literal()` will raise a `TypeError`
+immediately, since the function has no meaningful way to validate against it.
+
+The `verify_literal()` function accepts the same keyword arguments as `ensure_type()`:
 
 
 #### `raise_exc_class`
@@ -708,6 +785,7 @@ The `Buzz` base class provides the same sort of access for:
 - `require_condition()`
 - `enforce_defined()`
 - `ensure_type()`
+- `verify_literal()`
 - `handle_errors()`
 - `check_expressions()`
 - `retry()` and `retry_async()`

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from traceback import format_tb
 from types import TracebackType
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 from typing_extensions import override
 
@@ -21,6 +21,7 @@ from buzz.tools import (
     require_condition,
     retry,
     retry_async,
+    verify_literal,
 )
 
 # ==== helpers =========================================================================================================
@@ -263,6 +264,33 @@ def test_ensure_type__uses_default_message():
         ensure_type(42, str)  # No message provided
 
 
+def test_verify_literal__passes():
+    """Value matching a Literal type should be returned without error."""
+    result = verify_literal("foo", Literal["foo", "bar"], "should not fail")
+    assert result == "foo"
+
+
+def test_verify_literal__fails():
+    """Value not in a Literal type's allowed values should raise."""
+    with pytest.raises(Exception, match="fail message"):
+        verify_literal("baz", Literal["foo", "bar"], "fail message")
+
+
+def test_verify_literal__integers():
+    """Literal types with integer values should also work."""
+    result = verify_literal(1, Literal[1, 2, 3], "should not fail")
+    assert result == 1
+
+    with pytest.raises(Exception, match="fail message"):
+        verify_literal(99, Literal[1, 2, 3], "fail message")
+
+
+def test_verify_literal__rejects_non_literal_type():
+    """Passing a non-Literal type should raise TypeError immediately."""
+    with pytest.raises(TypeError, match="Literal"):
+        verify_literal("foo", str, "should not reach here")
+
+
 # ==== handle_errors tests =============================================================================================
 
 
@@ -397,7 +425,7 @@ def test_handle_errors__does_not_raise_when_raise_exc_class_is_None():
     ):
         raise Exception("there was a problem")
 
-    (problem, *remains) = check_list  # pyright: ignore[reportUnreachable]
+    (problem, *remains) = check_list
     assert remains == []
     assert "there was a problem" in problem.final_message
     assert isinstance(problem.err, Exception)
@@ -567,7 +595,7 @@ async def test_handle_errors_async__with_do_except():
 @pytest.mark.asyncio
 async def test_handle_errors_async__with_async_do_except():
     """Test async exception handler with async do_except callback."""
-    calls: list[tuple[str, Exception]] = []
+    calls: list[tuple[str, BaseException]] = []
 
     async def async_do_except(params: DoExceptParams):
         calls.append(("except", params.err))
@@ -647,7 +675,7 @@ async def test_handle_errors_async__with_sync_callbacks():
     ):
         raise ValueError("test error")
 
-    assert "except" in calls  # pyright: ignore[reportUnreachable]
+    assert "except" in calls
     assert "finally" in calls
 
 
@@ -686,7 +714,7 @@ def test_check_expressions__basic():
         with check_expressions("there will be errors") as check:
             check(True)
             check(False)
-            check(1 == 2, "one is not two")  # pyright: ignore[reportUnnecessaryComparison]
+            check(1 == 2, "one is not two")
             check("cooooooool", "not a problem")
             check(0, "zero is still zero")
 
@@ -857,7 +885,7 @@ def test_retry__with_on_retry_callback():
     call_count = 0
     retry_attempts: list[tuple[int, str]] = []
 
-    def record_retry(attempt: int, exception: Exception):
+    def record_retry(attempt: int, exception: BaseException):
         retry_attempts.append((attempt, str(exception)))
 
     @retry(
@@ -1079,7 +1107,7 @@ async def test_retry_async__with_on_retry_callback():
     call_count = 0
     retry_attempts: list[tuple[int, str]] = []
 
-    def record_retry(attempt: int, exception: Exception):
+    def record_retry(attempt: int, exception: BaseException):
         retry_attempts.append((attempt, str(exception)))
 
     @retry_async(

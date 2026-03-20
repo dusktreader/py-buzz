@@ -11,8 +11,7 @@ qa/test:  ## Run the tests
 	@uv run pytest
 
 qa/types:  ## Run static type checks
-	@uv run mypy ${PACKAGE_TARGET} tests --pretty
-	@uv run basedpyright ${PACKAGE_TARGET} tests
+	@uv run ty check ${PACKAGE_TARGET} tests
 
 qa/lint:  ## Run linters
 	@uv run ruff check ${PACKAGE_TARGET} tests src/buzz_demo
@@ -46,10 +45,10 @@ docs/serve:  ## Build the docs and start a local dev server
 demo: demo/run  ## Shortcut for demo/run
 
 demo/run:  ## Run the demo application
-	@uv run py-buzz-demo
+	@uv run --extra=demo py-buzz-demo
 
 demo/debug:  ## Run the demo application in debug mode
-	@uv run debugpy --listen localhost:5678 --wait-for-client py-buzz-demo
+	@uv run --extra=demo debugpy --listen localhost:5678 --wait-for-client py-buzz-demo
 
 
 ## ==== Other Commands =================================================================================================

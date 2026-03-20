@@ -64,7 +64,7 @@ def test_derived_check_expressions():
         ) as check:
             check(True)
             check(False)
-            check(1 == 2, "one is not two")  # pyright: ignore[reportUnnecessaryComparison]
+            check(1 == 2, "one is not two")
             check("cooooooool", "not a problem")
             check(0, "zero is still zero")
     err_msg = err_info.value.message

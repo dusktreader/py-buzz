@@ -9,6 +9,7 @@ from buzz.tools import (
     handle_errors_async,
     reformat_exception,
     require_condition,
+    verify_literal,
 )
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "handle_errors_async",
     "reformat_exception",
     "require_condition",
+    "verify_literal",
 ]

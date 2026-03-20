@@ -8,7 +8,7 @@ import textwrap
 from collections.abc import Iterable, Mapping
 from typing import Any, TypeVar
 
-from typing_extensions import Self, override
+from typing_extensions import Self, TypeForm, override
 
 from buzz.tools import (
     DoExceptParamsCallback,
@@ -24,10 +24,12 @@ from buzz.tools import (
     require_condition,
     retry,
     retry_async,
+    verify_literal,
 )
 
 TNonNull = TypeVar("TNonNull")
 EnsuredType = TypeVar("EnsuredType")
+LiteralElement = TypeVar("LiteralElement", int, bool, str, bytes, None)
 
 
 class Buzz(Exception):
@@ -180,6 +182,47 @@ class Buzz(Exception):
         return ensure_type(
             value,
             type_,
+            message=message,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=cls.exc_builder,
+            do_except=do_except,
+            do_else=do_else,
+        )
+
+    @classmethod
+    def verify_literal(
+        cls,
+        value: object,
+        literal_type: TypeForm[LiteralElement],  # ty: ignore[invalid-type-form]
+        message: str | None = None,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        do_except: ExceptionCallback | None = None,
+        do_else: NoArgCallback | None = None,
+    ) -> LiteralElement:
+        """
+        Assert that a value is one of the allowed values of a `typing.Literal` type. If the assertion fails, raise an
+        exception (instance of this class) with the supplied message.
+
+        Args:
+
+            value:            The value that is to be checked
+            literal_type:     A `typing.Literal` type whose allowed values the value must be one of
+            message:          The failure message to attach to the raised Exception
+            raise_args:       Additional positional args (after the constructed message) that will passed when raising
+                              an instance of the `raise_exc_class`.
+            raise_kwargs:     Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+            do_except:        A function that should be called only if value is not one of the allowed values.
+                              Must accept one parameter that is the exception that will be raised.
+                              If not provided, nothing will be done.
+            do_else:          A function that should be called if the value is one of the allowed values.
+                              If not provided, nothing will be done.
+        """
+        return verify_literal(
+            value,
+            literal_type,
             message=message,
             raise_exc_class=cls,
             raise_args=raise_args,

@@ -56,7 +56,7 @@ def decompose(func: Callable[..., Any]) -> Decomposed:
     Maybe improve this sometime.
     """
     module = func.__module__.split(".")[-1]
-    name = func.__name__
+    name = func.__name__  # ty: ignore[unresolved-attribute]
 
     if func.__doc__ is None:
         raise RuntimeError("Can't demo a function with no docstring!")

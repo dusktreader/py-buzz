@@ -48,9 +48,9 @@ def demo_1__exc_builder():
     def weird_args_builder(params: ExcBuilderParams) -> Exception:
         return params.raise_exc_class(
             *params.raise_args,
-            detail=params.message,  # pyright: ignore[reportCallIssue]
+            detail=params.message,  # ty: ignore[unknown-argument]
             **params.raise_kwargs,
-        )  # type: ignore[call-arg]
+        )
 
     with handle_errors(
         "something went wrong (using exc_builder)",
@@ -61,10 +61,8 @@ def demo_1__exc_builder():
     ):
         print("we are fine")
         raise RuntimeError("here we die")
-        print("we should not get here")  # pyright: ignore[reportUnreachable]
+        print("we should not get here")
 
-
-def demo_2__buzz_class():
     """
     This function demonstrates how a customized `exc_builder` in a derived
     class of a `Buzz` exception might be used to rearrange the arguments
@@ -94,4 +92,4 @@ def demo_2__buzz_class():
     with WeirdBuzz.handle_errors("something went wrong (using Buzz exc_builder)"):
         print("we are fine")
         raise RuntimeError("here we die")
-        print("we should not get here")  # pyright: ignore[reportUnreachable]
+        print("we should not get here")
