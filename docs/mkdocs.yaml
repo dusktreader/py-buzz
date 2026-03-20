@@ -44,5 +44,6 @@ plugins:
           show_source: false
           docstring_style: google
 markdown_extensions:
+  - admonition
   - codehilite:
       use_pygments: true
