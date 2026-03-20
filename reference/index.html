@@ -721,6 +721,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#buzz.tools.verify_literal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify_literal
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -854,6 +865,17 @@
     <span class="md-ellipsis">
       
         retry_async
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz.base.Buzz.verify_literal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify_literal
       
     </span>
   </a>
@@ -1254,6 +1276,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#buzz.tools.verify_literal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify_literal
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1387,6 +1420,17 @@
     <span class="md-ellipsis">
       
         retry_async
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz.base.Buzz.verify_literal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify_literal
       
     </span>
   </a>
@@ -1964,7 +2008,9 @@
 
 
 </h5>
-<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">__call__</span><span class="p">(</span><span class="n">__attempt</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">__exception</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">__call__</span><span class="p">(</span>
+    <span class="n">__attempt</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">__exception</span><span class="p">:</span> <span class="ne">BaseException</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1984,7 +2030,7 @@
         </li>
         <li class="doc-section-item field-body">
             <b><code>__exception</code></b>
-              (<code><span title="Exception">Exception</span></code>)
+              (<code><span title="BaseException">BaseException</span></code>)
           –
           <div class="doc-md-description">
             <p>The exception that triggered the retry</p>
@@ -2255,7 +2301,7 @@ they will need a different exception builder.</p>
 <span class="n">do_except</span><span class="o">:</span><span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">wrong</span><span class="w"> </span><span class="k">type</span><span class="p">.</span>
 <span class="w">                  </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
 <span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
-<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">wrong</span><span class="w"> </span><span class="k">type</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">correct</span><span class="w"> </span><span class="k">type</span><span class="p">.</span>
 <span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
 </code></pre></div>
 
@@ -2644,7 +2690,7 @@ attached that combines the base message along with the message from the handled 
 
 
 </h4>
-<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">reformat_exception</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">Exception</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">reformat_exception</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">err</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -3052,6 +3098,59 @@ async def fetch_data(url):
         async with session.get(url) as response:
             return await response.json()</p>
 </details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="buzz.tools.verify_literal" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">verify_literal</span>
+
+
+</h4>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">verify_literal</span><span class="p">(</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+    <span class="n">literal_type</span><span class="p">:</span> <span class="n">TypeForm</span><span class="p">[</span><span class="n">LiteralElement</span><span class="p">],</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+        <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">ExceptionCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">NoArgCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LiteralElement</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Assert that a value is one of the allowed values of a <code>typing.Literal</code> type. If the assertion fails, raise an
+exception with the supplied message.</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">value</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">checked</span>
+<span class="n">literal_type</span><span class="o">:</span><span class="w">     </span><span class="n">A</span><span class="w"> </span><span class="n n-Quoted">`typing.Literal`</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="n">whose</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="k">of</span>
+<span class="n">message</span><span class="o">:</span><span class="w">          </span><span class="n">The</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">attach</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n">Exception</span>
+<span class="n">raise_exc_class</span><span class="o">:</span><span class="w">  </span><span class="n">The</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">does</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">match</span>
+
+<span class="w">                  </span><span class="n">Defaults</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">Exception</span>
+<span class="w">                  </span><span class="n">May</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">None</span>
+
+<span class="n">raise_args</span><span class="o">:</span><span class="w">       </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
+<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">exc_builder</span><span class="o">:</span><span class="w">      </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">construct</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span><span class="w"> </span><span class="n">Useful</span><span class="w"> </span><span class="k">for</span>
+<span class="w">                  </span><span class="n">exception</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">take</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">first</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">argument</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="k">values</span><span class="p">.</span>
+<span class="w">                  </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="k">values</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+</code></pre></div>
+
 
     </div>
 
@@ -3910,6 +4009,52 @@ async def fetch_data(url):
         async with session.get(url) as response:
             return await response.json()</p>
 </details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="buzz.base.Buzz.verify_literal" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">verify_literal</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h5>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">verify_literal</span><span class="p">(</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+    <span class="n">literal_type</span><span class="p">:</span> <span class="n">TypeForm</span><span class="p">[</span><span class="n">LiteralElement</span><span class="p">],</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_except</span><span class="p">:</span> <span class="n">ExceptionCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">do_else</span><span class="p">:</span> <span class="n">NoArgCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LiteralElement</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Assert that a value is one of the allowed values of a <code>typing.Literal</code> type. If the assertion fails, raise an
+exception (instance of this class) with the supplied message.</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">value</span><span class="o">:</span><span class="w">            </span><span class="n">The</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">checked</span>
+<span class="n">literal_type</span><span class="o">:</span><span class="w">     </span><span class="n">A</span><span class="w"> </span><span class="n n-Quoted">`typing.Literal`</span><span class="w"> </span><span class="k">type</span><span class="w"> </span><span class="n">whose</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="k">values</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="k">of</span>
+<span class="n">message</span><span class="o">:</span><span class="w">          </span><span class="n">The</span><span class="w"> </span><span class="n">failure</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">attach</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">raised</span><span class="w"> </span><span class="n">Exception</span>
+<span class="n">raise_args</span><span class="o">:</span><span class="w">       </span><span class="n">Additional</span><span class="w"> </span><span class="n">positional</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="p">(</span><span class="k">after</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">constructed</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span>
+<span class="w">                  </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">raise_kwargs</span><span class="o">:</span><span class="w">     </span><span class="n">Keyword</span><span class="w"> </span><span class="n">args</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">raising</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="k">instance</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n n-Quoted">`raise_exc_class`</span><span class="p">.</span>
+<span class="n">do_except</span><span class="o">:</span><span class="w">        </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="k">values</span><span class="p">.</span>
+<span class="w">                  </span><span class="n">Must</span><span class="w"> </span><span class="n">accept</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">exception</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">raised</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+<span class="n">do_else</span><span class="o">:</span><span class="w">          </span><span class="n">A</span><span class="w"> </span><span class="k">function</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">should</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">one</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="k">values</span><span class="p">.</span>
+<span class="w">                  </span><span class="k">If</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">provided</span><span class="p">,</span><span class="w"> </span><span class="n">nothing</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">done</span><span class="p">.</span>
+</code></pre></div>
+
 
     </div>
 
