@@ -22,6 +22,7 @@ class Feature(AutoNameEnum):
     retry = auto()
     enforce_defined = auto()
     ensure_type = auto()
+    verify_literal = auto()
     require_condition = auto()
     with_buzz_class = auto()
     using_exc_builder = auto()
@@ -66,7 +67,7 @@ def start(
         label = override_label_map.get(feature, f"{feature}()")
         greeting_lines.append(f"- `{label}`")
         for demo in feature_map[feature]:
-            greeting_lines.append(f"  - `{demo.__name__}()`")
+            greeting_lines.append(f"  - `{demo.__name__}()`")  # ty: ignore[unresolved-attribute]
 
     console = Console()
     console.clear()

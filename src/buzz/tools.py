@@ -14,7 +14,8 @@ import time
 import types
 from asyncio import iscoroutinefunction
 from collections.abc import AsyncIterator, Coroutine, Iterable, Iterator, Mapping
-from typing import Any, Callable, Protocol, TypeVar
+from typing import Any, Callable, Literal, Protocol, TypeVar, cast, get_args, get_origin
+from typing_extensions import TypeForm
 
 TNonNull = TypeVar("TNonNull")
 
@@ -55,7 +56,7 @@ class DoExceptParams:
         trace:         A traceback of the exception
     """
 
-    err: Exception
+    err: BaseException
     base_message: str
     final_message: str
     trace: types.TracebackType | None
@@ -252,16 +253,80 @@ def ensure_type(
         do_except:        A function that should be called only if value is of the wrong type.
                           Must accept one parameter that is the exception that will be raised.
                           If not provided, nothing will be done.
-        do_else:          A function that should be called if the value is of the wrong type.
+        do_else:          A function that should be called if the value is of the correct type.
                           If not provided, nothing will be done.
     """
     if not message:
         message = f"Value was not of type {type_}"
+    matches = isinstance(value, type_)
 
-    if isinstance(value, type_):
+    if matches:
         if do_else:
             do_else()
         return value
+    else:
+        exc: Exception = exc_builder(
+            ExcBuilderParams(
+                raise_exc_class=raise_exc_class,
+                message=message,
+                raise_args=raise_args or [],
+                raise_kwargs=raise_kwargs or {},
+            )
+        )
+        if do_except:
+            do_except(exc)
+        raise exc
+
+
+LiteralElement = TypeVar("LiteralElement", int, bool, str, bytes, None)
+
+
+def verify_literal(
+    value: object,
+    literal_type: TypeForm[LiteralElement],  # ty: ignore[invalid-type-form]  # Remove on support of TypeForm (PEP 747)
+    message: str | None = None,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
+    exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    do_except: ExceptionCallback | None = None,
+    do_else: NoArgCallback | None = None,
+) -> LiteralElement:
+    """
+    Assert that a value is one of the allowed values of a `typing.Literal` type. If the assertion fails, raise an
+    exception with the supplied message.
+
+    Args:
+
+        value:            The value that is to be checked
+        literal_type:     A `typing.Literal` type whose allowed values the value must be one of
+        message:          The failure message to attach to the raised Exception
+        raise_exc_class:  The exception type to raise with the constructed message if the value does not match
+
+                          Defaults to Exception
+                          May not be None
+
+        raise_args:       Additional positional args (after the constructed message) that will passed when raising
+                          an instance of the `raise_exc_class`.
+        raise_kwargs:     Keyword args that will be passed when raising an instance of the `raise_exc_class`.
+        exc_builder:      A function that should be called to construct the raised `raise_exc_class`. Useful for
+                          exception classes that do not take a message as the first positional argument.
+        do_except:        A function that should be called only if value is not one of the allowed values.
+                          Must accept one parameter that is the exception that will be raised.
+                          If not provided, nothing will be done.
+        do_else:          A function that should be called if the value is one of the allowed values.
+                          If not provided, nothing will be done.
+    """
+    if get_origin(literal_type) is not Literal:
+        raise TypeError(f"type_ must be a Literal type, got {literal_type!r}")
+    literal_values = get_args(literal_type)
+    if not message:
+        message = f"Value was not one of the allowed literal values: {literal_values}"
+
+    if value in literal_values:
+        if do_else:
+            do_else()
+        return cast(LiteralElement, value)
     else:
         exc: Exception = exc_builder(
             ExcBuilderParams(
@@ -386,7 +451,7 @@ def check_expressions(
         do_else()
 
 
-def reformat_exception(message: str, err: Exception) -> str:
+def reformat_exception(message: str, err: BaseException) -> str:
     """
     Reformat an exception by adding a message to it and reporting the original exception name and message.
     """
@@ -638,7 +703,7 @@ async def handle_errors_async(
 class RetryCallback(Protocol):
     """Protocol for retry callbacks."""
 
-    def __call__(self, __attempt: int, __exception: Exception, /) -> None:
+    def __call__(self, __attempt: int, __exception: BaseException, /) -> None:
         """
         Callback invoked on each retry attempt.
 
@@ -717,7 +782,7 @@ def retry(
     def decorator(func: Callable[..., TReturnType]) -> Callable[..., TReturnType]:
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> TReturnType:
-            last_exception: Exception | None = None
+            last_exception: BaseException | None = None
 
             for attempt in range(max_attempts):
                 try:
@@ -799,7 +864,7 @@ def retry_async(
     ) -> Callable[..., Coroutine[Any, Any, TReturnType]]:
         @functools.wraps(func)
         async def wrapper(*args: Any, **kwargs: Any) -> TReturnType:
-            last_exception: Exception | None = None
+            last_exception: BaseException | None = None
 
             for attempt in range(max_attempts):
                 try:

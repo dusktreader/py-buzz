@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## v8.1.0 - 2026-03-20
+
+* Added `verify_literal()` method to verify a value is a memger of a literal group (and narrow type)
+
+
 ## v8.0.0 - 2026-01-28
 
 ### BREAKING CHANGE
