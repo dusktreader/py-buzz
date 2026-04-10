@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## v8.1.2 - 2026-04-10
+
+* Added `BaseException` widenign from 8.1.1 to base Buzz class as well.
+
+
 ## v8.1.1 - 2026-04-10
 
 * Widened type hint for `ignore_exc_class` and `handle_exc_class` to `BaseException` to eliminate type errors for
