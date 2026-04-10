@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## v8.1.1 - 2026-04-10
+
+* Widened type hint for `ignore_exc_class` and `handle_exc_class` to `BaseException` to eliminate type errors for
+  handlers catching `KeyboardInterrupt` and such.
+
+
 ## v8.1.0 - 2026-03-20
 
 * Added `verify_literal()` method to verify a value is a memger of a literal group (and narrow type)
