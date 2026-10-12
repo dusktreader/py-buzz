@@ -678,6 +678,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#buzz.tools.raise_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        raise_from
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#buzz.tools.reformat_exception" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -832,6 +843,17 @@
     <span class="md-ellipsis">
       
         handle_errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz.base.Buzz.raise_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        raise_from
       
     </span>
   </a>
@@ -1233,6 +1255,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#buzz.tools.raise_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        raise_from
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#buzz.tools.reformat_exception" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1387,6 +1420,17 @@
     <span class="md-ellipsis">
       
         handle_errors
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buzz.base.Buzz.raise_from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        raise_from
       
     </span>
   </a>
@@ -2343,10 +2387,10 @@ they will need a different exception builder.</p>
     <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span>
+    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span>
+    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
     <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_finally</span><span class="p">:</span> <span class="n">NoArgCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_except</span><span class="p">:</span> <span class="n">DoExceptParamsCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2409,7 +2453,7 @@ attached that combines the base message along with the message from the handled 
         </li>
         <li class="doc-section-item field-body">
             <b><code>handle_exc_class</code></b>
-              (<code><span title="type">type</span>[<span title="Exception">Exception</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="Exception">Exception</span>], ...]</code>, default:
+              (<code><span title="type">type</span>[<span title="BaseException">BaseException</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="BaseException">BaseException</span>], ...]</code>, default:
                   <code><span title="Exception">Exception</span></code>
 )
           –
@@ -2422,7 +2466,7 @@ attached that combines the base message along with the message from the handled 
         </li>
         <li class="doc-section-item field-body">
             <b><code>ignore_exc_class</code></b>
-              (<code><span title="type">type</span>[<span title="Exception">Exception</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="Exception">Exception</span>], ...] | None</code>, default:
+              (<code><span title="type">type</span>[<span title="BaseException">BaseException</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="BaseException">BaseException</span>], ...] | None</code>, default:
                   <code>None</code>
 )
           –
@@ -2517,10 +2561,10 @@ attached that combines the base message along with the message from the handled 
     <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span>
+    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span>
+    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
     <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_finally</span><span class="p">:</span> <span class="n">NoArgCallback</span>
     <span class="o">|</span> <span class="n">AsyncNoArgCallback</span>
@@ -2588,7 +2632,7 @@ attached that combines the base message along with the message from the handled 
         </li>
         <li class="doc-section-item field-body">
             <b><code>handle_exc_class</code></b>
-              (<code><span title="type">type</span>[<span title="Exception">Exception</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="Exception">Exception</span>], ...]</code>, default:
+              (<code><span title="type">type</span>[<span title="BaseException">BaseException</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="BaseException">BaseException</span>], ...]</code>, default:
                   <code><span title="Exception">Exception</span></code>
 )
           –
@@ -2601,7 +2645,7 @@ attached that combines the base message along with the message from the handled 
         </li>
         <li class="doc-section-item field-body">
             <b><code>ignore_exc_class</code></b>
-              (<code><span title="type">type</span>[<span title="Exception">Exception</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="Exception">Exception</span>], ...] | None</code>, default:
+              (<code><span title="type">type</span>[<span title="BaseException">BaseException</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="BaseException">BaseException</span>], ...] | None</code>, default:
                   <code>None</code>
 )
           –
@@ -2676,6 +2720,127 @@ attached that combines the base message along with the message from the handled 
     async with handle_errors(&quot;It didn&#39;t work&quot;):
         await some_code_that_might_raise_an_exception()
 </code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="buzz.tools.raise_from" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">raise_from</span>
+
+
+</h4>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">raise_from</span><span class="p">(</span>
+    <span class="n">base_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">err</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
+    <span class="n">raise_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exc_builder</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span>
+        <span class="p">[</span><span class="n">ExcBuilderParams</span><span class="p">],</span> <span class="ne">Exception</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">default_exc_builder</span><span class="p">,</span>
+    <span class="n">final_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">trace</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Raise a new exception from an existing exception.</p>
+<p>Build the raised exception using <code>exc_builder</code>, preserving <code>err</code> as its <code>__cause__</code>. By default, format the
+message from <code>base_message</code> and <code>err</code>, and use the active exception's traceback.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>base_message</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The base message to include in <code>ExcBuilderParams</code> passed to <code>exc_builder</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>err</code></b>
+              (<code><span title="BaseException">BaseException</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The original exception to raise from.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>raise_exc_class</code></b>
+              (<code><span title="type">type</span>[<span title="Exception">Exception</span>]</code>, default:
+                  <code><span title="Exception">Exception</span></code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The type of exception to raise.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>raise_args</code></b>
+              (<code><span title="collections.abc.Iterable">Iterable</span>[<span title="typing.Any">Any</span>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Additional positional arguments to pass to the raised exception.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>raise_kwargs</code></b>
+              (<code><span title="collections.abc.Mapping">Mapping</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Keyword arguments to pass to the raised exception.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>exc_builder</code></b>
+              (<code><span title="typing.Callable">Callable</span>[[<a class="autorefs autorefs-internal" title="ExcBuilderParams
+
+
+  
+      dataclass
+   (buzz.tools.ExcBuilderParams)" href="#buzz.tools.ExcBuilderParams">ExcBuilderParams</a>], <span title="Exception">Exception</span>]</code>, default:
+                  <code><a class="autorefs autorefs-internal" title="default_exc_builder (buzz.tools.default_exc_builder)" href="#buzz.tools.default_exc_builder">default_exc_builder</a></code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A function that constructs the raised exception, useful for exception classes with
+               nonstandard constructors.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>final_message</code></b>
+              (<code><span title="str">str</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The message to use for the raised exception. If omitted, format it from <code>base_message</code>
+               and <code>err</code> with <code>reformat_exception()</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>trace</code></b>
+              (<code><span title="types.TracebackType">TracebackType</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The traceback to attach to the raised exception. If omitted, use <code>get_traceback()</code>.</p>
+          </div>
+        </li>
+    </ul>
 
 
     </div>
@@ -3525,10 +3690,10 @@ including the base_message.</p>
     <span class="n">re_raise</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
-    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span>
-    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">handle_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span>
+    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">,</span>
+    <span class="n">ignore_exc_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]</span>
+    <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span> <span class="o">...</span><span class="p">]</span>
     <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_finally</span><span class="p">:</span> <span class="n">NoArgCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">do_except</span><span class="p">:</span> <span class="n">DoExceptParamsCallback</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3598,7 +3763,7 @@ class) with a message attached that combines the base message along with the mes
         </li>
         <li class="doc-section-item field-body">
             <b><code>handle_exc_class</code></b>
-              (<code><span title="type">type</span>[<span title="Exception">Exception</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="Exception">Exception</span>], ...]</code>, default:
+              (<code><span title="type">type</span>[<span title="BaseException">BaseException</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="BaseException">BaseException</span>], ...]</code>, default:
                   <code><span title="Exception">Exception</span></code>
 )
           –
@@ -3611,7 +3776,7 @@ class) with a message attached that combines the base message along with the mes
         </li>
         <li class="doc-section-item field-body">
             <b><code>ignore_exc_class</code></b>
-              (<code><span title="type">type</span>[<span title="Exception">Exception</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="Exception">Exception</span>], ...] | None</code>, default:
+              (<code><span title="type">type</span>[<span title="BaseException">BaseException</span>] | <span title="tuple">tuple</span>[<span title="type">type</span>[<span title="BaseException">BaseException</span>], ...] | None</code>, default:
                   <code>None</code>
 )
           –
@@ -3668,6 +3833,100 @@ class) with a message attached that combines the base message along with the mes
     with Buzz.handle_errors(&quot;It didn&#39;t work&quot;):
         some_code_that_might_raise_an_exception()
 </code></pre></div>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h5 id="buzz.base.Buzz.raise_from" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">raise_from</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
+
+</h5>
+<div class="doc-signature codehilite"><pre><span></span><code><span class="nf">raise_from</span><span class="p">(</span>
+    <span class="n">base_message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">err</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
+    <span class="n">raise_args</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">raise_kwargs</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">final_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">trace</span><span class="p">:</span> <span class="n">TracebackType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Raise an instance of this Buzz exception from an existing exception.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>base_message</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The base message to include in the raised exception.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>err</code></b>
+              (<code><span title="BaseException">BaseException</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>The original exception to raise from.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>raise_args</code></b>
+              (<code><span title="collections.abc.Iterable">Iterable</span>[<span title="typing.Any">Any</span>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Additional positional arguments to pass to the raised exception.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>raise_kwargs</code></b>
+              (<code><span title="collections.abc.Mapping">Mapping</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>] | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Keyword arguments to pass to the raised exception.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>final_message</code></b>
+              (<code><span title="str">str</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The message to use for the raised exception. If omitted, format it from <code>base_message</code>
+           and <code>err</code>.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>trace</code></b>
+              (<code><span title="types.TracebackType">TracebackType</span> | None</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The traceback to attach to the raised exception. If omitted, use the active exception's
+           traceback.</p>
+          </div>
+        </li>
+    </ul>
 
 
     </div>
