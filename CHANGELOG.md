@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## v8.2.0 - 2026-10-12
+
+* Added `raise_from()` and `Buzz.raise_from()` for wrapping exceptions while preserving their causes
+* Added tests, documentation, examples, and demos for `raise_from()`
+
+
 ## v8.1.2 - 2026-04-10
 
 * Added `BaseException` widenign from 8.1.1 to base Buzz class as well.
@@ -174,6 +180,7 @@ reference the old callback signatures, you'll need to update them to use the new
 ## v3.2.1 - 2022-06-20
 
 * Added `enforce_defined()` to Buzz class.
+
 
 ## v3.2.0 - 2022-06-20
 

@@ -7,6 +7,7 @@ from buzz.tools import (
     get_traceback,
     handle_errors,
     handle_errors_async,
+    raise_from,
     reformat_exception,
     require_condition,
     verify_literal,
@@ -22,6 +23,7 @@ __all__ = [
     "handle_errors",
     "handle_errors_async",
     "reformat_exception",
+    "raise_from",
     "require_condition",
     "verify_literal",
 ]

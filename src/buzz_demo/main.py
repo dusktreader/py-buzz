@@ -24,6 +24,7 @@ class Feature(AutoNameEnum):
     ensure_type = auto()
     verify_literal = auto()
     require_condition = auto()
+    raise_from = auto()
     with_buzz_class = auto()
     using_exc_builder = auto()
 

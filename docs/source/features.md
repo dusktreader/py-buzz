@@ -541,6 +541,7 @@ with handle_errors("Something went wrong", do_finally=close_resource):
     some_dangerous_function_that_uses_resource(resource)
 ```
 
+
 #### `exc_builder`
 
 Functions the same as `require_condition()`.
@@ -582,7 +583,8 @@ The `retry()` decorator accepts a required message parameter followed by several
 
 #### `message`
 
-The message for the exception raised after all retries are exhausted. This is a **required positional parameter**. Supports the `{attempts}` placeholder which will be replaced with the actual number of attempts.
+The message for the exception raised after all retries are exhausted. This is a **required positional parameter**.
+Supports the `{attempts}` placeholder which will be replaced with the actual number of attempts.
 
 
 #### `max_attempts`
@@ -693,7 +695,7 @@ with check_expressions(main_message='there will be errors') as check:
 
 If the above code was executed, an exception would be raised that looks like this:
 
-```
+```text
 Exception: Checked expressions failed: there will be errors
    2: 2nd expression failed
    3: one is not two
@@ -735,6 +737,39 @@ Functions the same as `require_condition()`.
 
 ## Additional Features
 
+### `raise_from`
+
+Use `raise_from()` to wrap an exception when handling it yourself is more useful than using the `handle_errors()`
+context manager. The new exception keeps the original exception as its cause, so Python's traceback shows both errors:
+
+```python
+from buzz import raise_from
+
+try:
+    load_profile()
+except OSError as err:
+    raise_from("Could not load profile", err, raise_exc_class=RuntimeError)
+```
+
+By default, the raised exception message includes the base message, the original exception type, and its message. Pass
+`final_message` to supply a preformatted message, `trace` to attach a specific traceback, or `exc_builder` to construct
+an exception with a nonstandard constructor. `raise_args` and `raise_kwargs` provide additional constructor arguments.
+
+For exceptions derived from `Buzz`, use the class method to raise an instance of that exception class:
+
+```python
+from buzz import Buzz
+
+class ProfileError(Buzz):
+    pass
+
+try:
+    load_profile()
+except OSError as err:
+    ProfileError.raise_from("Could not load profile", err)
+```
+
+
 ### `reformat_exception`
 
 This method is used internally by the `handle_errors()` context manager.  However, it is
@@ -750,7 +785,7 @@ except Exception as err:
 
 The above block would result in output like:
 
-```
+```text
 > welp...that didn't work -- ValueError: I didn't like that
 ```
 
@@ -787,6 +822,7 @@ The `Buzz` base class provides the same sort of access for:
 - `ensure_type()`
 - `verify_literal()`
 - `handle_errors()`
+- `raise_from()`
 - `check_expressions()`
 - `retry()` and `retry_async()`
 
