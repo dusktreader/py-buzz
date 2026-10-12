@@ -79,6 +79,25 @@ def test_derived_check_expressions():
     assert err_info.value.extra_kwarg == "extra kwarg"
 
 
+def test_derived_raise_from():
+    original_error = ValueError("original problem")
+
+    with pytest.raises(MiraNova, match="request failed -- ValueError: original problem") as err_info:
+        try:
+            raise original_error
+        except ValueError as err:
+            MiraNova.raise_from(
+                "request failed",
+                err,
+                raise_args=["extra arg"],
+                raise_kwargs={"extra_kwarg": "extra kwarg"},
+            )
+
+    assert err_info.value.__cause__ is original_error
+    assert err_info.value.extra_arg == "extra arg"
+    assert err_info.value.extra_kwarg == "extra kwarg"
+
+
 def test_derived_handle_errors():
     with pytest.raises(MiraNova) as err_info:
         with MiraNova.handle_errors(

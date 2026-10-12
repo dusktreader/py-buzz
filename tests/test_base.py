@@ -93,6 +93,19 @@ def test_Buzz_exc_builder__raises_on_mismatched_class():
         Buzz.exc_builder(params)
 
 
+def test_Buzz_raise_from__basic():
+    original_error = ValueError("original problem")
+
+    with pytest.raises(Buzz, match="request failed -- ValueError: original problem") as err_info:
+        try:
+            raise original_error
+        except ValueError as err:
+            Buzz.raise_from("request failed", err)
+
+    assert err_info.value.__cause__ is original_error
+    assert err_info.value.base_message == "request failed"
+
+
 def test_Buzz_get_traceback():
     """Verify get_traceback can be called via Buzz class."""
     try:

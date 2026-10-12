@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import textwrap
 from collections.abc import Iterable, Mapping
+from types import TracebackType
 from typing import Any, TypeVar
 
 from typing_extensions import Self, TypeForm, override
@@ -21,6 +22,7 @@ from buzz.tools import (
     ensure_type,
     get_traceback,
     handle_errors,
+    raise_from,
     require_condition,
     retry,
     retry_async,
@@ -352,6 +354,40 @@ class Buzz(Exception):
             do_except=do_except,
             do_else=do_else,
             exc_builder=cls.exc_builder,
+        )
+
+    @classmethod
+    def raise_from(
+        cls,
+        base_message: str,
+        err: BaseException,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        final_message: str | None = None,
+        trace: TracebackType | None = None,
+    ) -> None:
+        """
+        Raise an instance of this Buzz exception from an existing exception.
+
+        Args:
+            base_message:  The base message to include in the raised exception.
+            err:           The original exception to raise from.
+            raise_args:    Additional positional arguments to pass to the raised exception.
+            raise_kwargs:  Keyword arguments to pass to the raised exception.
+            final_message: The message to use for the raised exception. If omitted, format it from `base_message`
+                           and `err`.
+            trace:         The traceback to attach to the raised exception. If omitted, use the active exception's
+                           traceback.
+        """
+        raise_from(
+            base_message,
+            err,
+            raise_exc_class=cls,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            exc_builder=cls.exc_builder,
+            final_message=final_message,
+            trace=trace,
         )
 
     @classmethod

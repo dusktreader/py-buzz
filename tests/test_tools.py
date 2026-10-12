@@ -4,9 +4,8 @@ from traceback import format_tb
 from types import TracebackType
 from typing import Any, Literal, cast
 
-from typing_extensions import override
-
 import pytest
+from typing_extensions import override
 
 from buzz.tools import (
     DoExceptParams,
@@ -17,6 +16,7 @@ from buzz.tools import (
     get_traceback,
     handle_errors,
     handle_errors_async,
+    raise_from,
     reformat_exception,
     require_condition,
     retry,
@@ -1178,3 +1178,64 @@ def test_get_traceback():
     assert "test_tools.py" in last_frame
     assert "test_get_traceback" in last_frame
     assert 'DummyException("Original Error")' in last_frame
+
+
+def test_raise_from__formats_message_and_chains_original_error():
+    original_error = ValueError("original problem")
+
+    with pytest.raises(Exception, match="request failed -- ValueError: original problem") as err_info:
+        try:
+            raise original_error
+        except ValueError as err:
+            raise_from("request failed", err)
+
+    assert err_info.value.__cause__ is original_error
+
+
+def test_raise_from__uses_custom_exception_message_args_kwargs_and_trace():
+    def raise_original():
+        try:
+            raise ValueError("original problem")
+        except ValueError as err:
+            return err, get_traceback()
+
+    original_error, trace = raise_original()
+
+    with pytest.raises(DummyArgsException, match="custom message") as err_info:
+        raise_from(
+            "request failed",
+            original_error,
+            raise_exc_class=DummyArgsException,
+            raise_args=["extra positional argument"],
+            raise_kwargs={"dummy_kwarg": "extra keyword argument"},
+            final_message="custom message",
+            trace=trace,
+        )
+
+    assert err_info.value.__cause__ is original_error
+    assert err_info.value.dummy_arg == "extra positional argument"
+    assert err_info.value.dummy_kwarg == "extra keyword argument"
+    assert "raise_original" in "".join(format_tb(err_info.value.__traceback__))
+
+
+def test_raise_from__uses_custom_exception_builder():
+    original_error = ValueError("original problem")
+
+    with pytest.raises(DummyWeirdArgsException) as err_info:
+        try:
+            raise original_error
+        except ValueError as err:
+            raise_from(
+                "request failed",
+                err,
+                raise_exc_class=DummyWeirdArgsException,
+                raise_args=["extra positional argument"],
+                raise_kwargs={"dummy_kwarg": "extra keyword argument"},
+                exc_builder=alt_builder,
+            )
+
+    assert err_info.value.__cause__ is original_error
+    assert err_info.value.dummy_arg == "extra positional argument"
+    assert err_info.value.dummy_kwarg == "extra keyword argument"
+    assert err_info.value.detail == "request failed -- ValueError: original problem"
+    assert err_info.value.base_message == "request failed"

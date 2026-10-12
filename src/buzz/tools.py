@@ -15,6 +15,7 @@ import types
 from asyncio import iscoroutinefunction
 from collections.abc import AsyncIterator, Coroutine, Iterable, Iterator, Mapping
 from typing import Any, Callable, Literal, Protocol, TypeVar, cast, get_args, get_origin
+
 from typing_extensions import TypeForm
 
 TNonNull = TypeVar("TNonNull")
@@ -465,6 +466,47 @@ def get_traceback() -> types.TracebackType | None:
     return sys.exc_info()[2]
 
 
+def raise_from(
+    base_message: str,
+    err: BaseException,
+    raise_exc_class: type[Exception] = Exception,
+    raise_args: Iterable[Any] | None = None,
+    raise_kwargs: Mapping[str, Any] | None = None,
+    exc_builder: Callable[[ExcBuilderParams], Exception] = default_exc_builder,
+    final_message: str | None = None,
+    trace: types.TracebackType | None = None,
+) -> None:
+    """
+    Raise a new exception from an existing exception.
+
+    Build the raised exception using `exc_builder`, preserving `err` as its `__cause__`. By default, format the
+    message from `base_message` and `err`, and use the active exception's traceback.
+
+    Args:
+        base_message:      The base message to include in `ExcBuilderParams` passed to `exc_builder`.
+        err:               The original exception to raise from.
+        raise_exc_class:   The type of exception to raise.
+        raise_args:        Additional positional arguments to pass to the raised exception.
+        raise_kwargs:      Keyword arguments to pass to the raised exception.
+        exc_builder:       A function that constructs the raised exception, useful for exception classes with
+                           nonstandard constructors.
+        final_message:     The message to use for the raised exception. If omitted, format it from `base_message`
+                           and `err` with `reformat_exception()`.
+        trace:             The traceback to attach to the raised exception. If omitted, use `get_traceback()`.
+    """
+    final_message = final_message or reformat_exception(base_message, err)
+    trace = trace or get_traceback()
+    raise exc_builder(
+        ExcBuilderParams(
+            raise_exc_class=raise_exc_class,
+            message=final_message,
+            raise_args=raise_args or [],
+            raise_kwargs=raise_kwargs or {},
+            base_message=base_message,
+        )
+    ).with_traceback(trace) from err
+
+
 @contextlib.contextmanager
 def handle_errors(
     base_message: str,
@@ -556,15 +598,16 @@ def handle_errors(
                 )
             )
         if raise_exc_class is not None:
-            raise exc_builder(
-                ExcBuilderParams(
-                    raise_exc_class=raise_exc_class,
-                    message=final_message,
-                    raise_args=raise_args or [],
-                    raise_kwargs=raise_kwargs or {},
-                    base_message=base_message,
-                )
-            ).with_traceback(trace) from err
+            raise_from(
+                base_message,
+                err,
+                raise_exc_class=raise_exc_class,
+                raise_args=raise_args,
+                raise_kwargs=raise_kwargs,
+                exc_builder=exc_builder,
+                final_message=final_message,
+                trace=trace,
+            )
     else:
         if do_else:
             do_else()
