@@ -12,6 +12,8 @@ from typing import Any, TypeVar
 from typing_extensions import Self, TypeForm, override
 
 from buzz.tools import (
+    AsyncDoExceptParamsCallback,
+    AsyncNoArgCallback,
     DoExceptParamsCallback,
     ExcBuilderParams,
     ExceptionCallback,
@@ -22,6 +24,7 @@ from buzz.tools import (
     ensure_type,
     get_traceback,
     handle_errors,
+    handle_errors_async,
     raise_from,
     require_condition,
     retry,
@@ -344,6 +347,37 @@ class Buzz(Exception):
                     some_code_that_might_raise_an_exception()
         """
         return handle_errors(
+            base_message,
+            raise_exc_class=cls if re_raise else None,
+            raise_args=raise_args,
+            raise_kwargs=raise_kwargs,
+            handle_exc_class=handle_exc_class,
+            ignore_exc_class=ignore_exc_class,
+            do_finally=do_finally,
+            do_except=do_except,
+            do_else=do_else,
+            exc_builder=cls.exc_builder,
+        )
+
+    @classmethod
+    def handle_errors_async(
+        cls,
+        base_message: str,
+        re_raise: bool = True,
+        raise_args: Iterable[Any] | None = None,
+        raise_kwargs: Mapping[str, Any] | None = None,
+        handle_exc_class: type[BaseException] | tuple[type[BaseException], ...] = Exception,
+        ignore_exc_class: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+        do_finally: NoArgCallback | AsyncNoArgCallback | None = None,
+        do_except: DoExceptParamsCallback | AsyncDoExceptParamsCallback | None = None,
+        do_else: NoArgCallback | AsyncNoArgCallback | None = None,
+    ):
+        """
+        Provide an async context manager that intercepts and repackages exceptions as this class.
+
+        Async callbacks are supported for `do_finally`, `do_except`, and `do_else`.
+        """
+        return handle_errors_async(
             base_message,
             raise_exc_class=cls if re_raise else None,
             raise_args=raise_args,
