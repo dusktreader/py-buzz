@@ -45,6 +45,30 @@ def test_Buzz_handle_errors__false_re_raise_absorbs_errors():
         pass
 
 
+@pytest.mark.asyncio
+async def test_Buzz_handle_errors_async__basic():
+    handled_errors = []
+
+    async def record_error(params):
+        handled_errors.append(params.err)
+
+    with pytest.raises(Buzz) as err_info:
+        async with Buzz.handle_errors_async("intercepted exception", do_except=record_error):
+            raise ValueError("there was a problem")
+
+    assert "there was a problem" in str(err_info.value)
+    assert "intercepted exception" in str(err_info.value)
+    assert err_info.value.base_message == "intercepted exception"
+    assert len(handled_errors) == 1
+    assert isinstance(handled_errors[0], ValueError)
+
+
+@pytest.mark.asyncio
+async def test_Buzz_handle_errors_async__false_re_raise_absorbs_errors():
+    async with Buzz.handle_errors_async("intercepted exception", re_raise=False):
+        raise ValueError("there was a problem")
+
+
 def test_Buzz_check_expressions__basic():
     with pytest.raises(Buzz) as err_info:
         with Buzz.check_expressions("there will be errors") as check:

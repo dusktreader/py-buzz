@@ -431,6 +431,18 @@ very complicated things while handling an exception, you should use a standard t
 catch block. However, there are some extra bells and whistles on `handle_errors()` that
 can be used by passing additional keyword arguments to the function.
 
+For async code, use `Buzz.handle_errors_async()` as an async context manager. It wraps
+handled exceptions as `Buzz` by default and supports async callbacks for `do_except`,
+`do_else`, and `do_finally`:
+
+```python
+from buzz import Buzz
+
+async def fetch_data():
+    async with Buzz.handle_errors_async("Could not fetch data"):
+        return await fetch_from_service()
+```
+
 
 #### `raise_exc_class`
 
@@ -821,7 +833,7 @@ The `Buzz` base class provides the same sort of access for:
 - `enforce_defined()`
 - `ensure_type()`
 - `verify_literal()`
-- `handle_errors()`
+- `handle_errors()` and `handle_errors_async()`
 - `raise_from()`
 - `check_expressions()`
 - `retry()` and `retry_async()`

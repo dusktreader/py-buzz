@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## v8.2.1 - 2026-10-12
+
+* Added `handle_errors_async()` to Buzz
+
+
 ## v8.2.0 - 2026-10-12
 
 * Added `raise_from()` and `Buzz.raise_from()` for wrapping exceptions while preserving their causes
