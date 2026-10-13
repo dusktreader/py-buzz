@@ -1,7 +1,11 @@
-[![Latest Version](https://img.shields.io/pypi/v/py-buzz?label=pypi-version&logo=python&style=plastic)](https://pypi.org/project/py-buzz/)
-[![Python Versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fdusktreader%2Fpy-buzz%2Fmain%2Fpyproject.toml&style=plastic&logo=python&label=python-versions)](https://www.python.org/)
-[![Build Status](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml/badge.svg)](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml)
-[![Documentation Status](https://github.com/dusktreader/py-buzz/actions/workflows/docs.yml/badge.svg)](https://dusktreader.github.io/py-buzz/)
+[![Latest
+Version](https://img.shields.io/pypi/v/py-buzz?label=pypi-version&logo=python&style=plastic)](https://pypi.org/project/py-buzz/)
+[![Python
+Versions](https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fdusktreader%2Fpy-buzz%2Fmain%2Fpyproject.toml&style=plastic&logo=python&label=python-versions)](https://www.python.org/)
+[![Build
+Status](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml/badge.svg)](https://github.com/dusktreader/py-buzz/actions/workflows/main.yml)
+[![Documentation
+Status](https://github.com/dusktreader/py-buzz/actions/workflows/docs.yml/badge.svg)](https://dusktreader.github.io/py-buzz/)
 
 ![py-buzz-logo](https://github.com/dusktreader/py-buzz/blob/main/docs/source/images/buzz-logo-text.png)
 
@@ -23,11 +27,13 @@ include:
 py-buzz also provides an exception class, Buzz, that can be used  as a base class
 for custom exceptions within a project.
 
+
 ## Super-quick Start
 
-* Only requires Python 3.10 or later
+* Requires Python 3.11 or later
 * Installed with pip (`$ pip install py-buzz`)
 * Each feature demonstrated in an executable demo "extra"
+
 
 ## Documentation
 

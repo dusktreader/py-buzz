@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## v9.0.0 - 2026-10-12
+
+* Drop support for Python 3.9 and 3.10 and add support for 3.14 and 3.15
+
+
 ## v8.2.1 - 2026-10-12
 
 * Added `handle_errors_async()` to Buzz
