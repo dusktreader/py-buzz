@@ -2321,6 +2321,16 @@ implements pattern that tends to get repeated over and over again. If you need t
 very complicated things while handling an exception, you should use a standard try-
 catch block. However, there are some extra bells and whistles on <code>handle_errors()</code> that
 can be used by passing additional keyword arguments to the function.</p>
+<p>For async code, use <code>Buzz.handle_errors_async()</code> as an async context manager. It wraps
+handled exceptions as <code>Buzz</code> by default and supports async callbacks for <code>do_except</code>,
+<code>do_else</code>, and <code>do_finally</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">buzz</span><span class="w"> </span><span class="kn">import</span> <span class="n">Buzz</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_data</span><span class="p">():</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">Buzz</span><span class="o">.</span><span class="n">handle_errors_async</span><span class="p">(</span><span class="s2">&quot;Could not fetch data&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">fetch_from_service</span><span class="p">()</span>
+</code></pre></div>
+
 <h4 id="raise_exc_class_4"><code>raise_exc_class</code></h4>
 <p>This parameter is the same as for <code>require_condition()</code>. However, if you pass <code>None</code> it
 <em>will not raise a new exception</em>. Instead, <code>handle_errors</code> will process the <code>do_except</code>,
@@ -2585,7 +2595,7 @@ expression was falsey.</p>
 <li><code>enforce_defined()</code></li>
 <li><code>ensure_type()</code></li>
 <li><code>verify_literal()</code></li>
-<li><code>handle_errors()</code></li>
+<li><code>handle_errors()</code> and <code>handle_errors_async()</code></li>
 <li><code>raise_from()</code></li>
 <li><code>check_expressions()</code></li>
 <li><code>retry()</code> and <code>retry_async()</code></li>
