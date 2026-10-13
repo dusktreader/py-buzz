@@ -53,14 +53,14 @@ exception type.
 
 ### Requirements
 
-* Python 3.9 or greater
+* Requires Python 3.11 or later
 
 
 ### Installation
 
 This will install the latest release of py-buzz from pypi via pip:
 
-```bash
+```shell
 pip install py-buzz
 ```
 
@@ -82,13 +82,13 @@ For more examples of usage, see the [Features](features.md) page.
 
 `py-buzz` comes with an optional demo extra that can show you how to use the features. To install and run, try:
 
-```bash
+```shell
 pip install py-buzz[demo]
 py-buzz-demo
 ```
 
 Alternatively, you can run them in one command using `uv`:
 
-```bash
+```shell
 uvx --from=py-buzz[demo] py-buzz-demo
 ```

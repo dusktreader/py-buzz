@@ -26,7 +26,7 @@ qa/format:  ## Run code formatter
 	@uv run ruff format ${PACKAGE_TARGET} tests src/buzz_demo
 
 qa/mutate:  ## Run mutation testing (slow, not part of qa/full)
-	@uv run mutmut run
+	@uv run --group mutation mutmut run
 
 
 ## ==== Documentation ==================================================================================================
