@@ -41,7 +41,6 @@ dev = [
   "ipython>=8.38.0",
   "mkdocs-material>=9.7.1",
   "mkdocstrings-python>=2.0.1",
-  "mutmut>=3.4.0",
   "pre-commit>=4.5.1",
   "pyclean>=3.5.0",
   "pygments>=2.19.2",
@@ -52,6 +51,9 @@ dev = [
   "ruff>=0.14.14",
   "typos>=1.42.2",
   "yamllint>=1.38.0"
+]
+mutation = [
+  "mutmut>=3.4.0"
 ]
 
 [tool.pytest.ini_options]

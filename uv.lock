@@ -820,7 +820,7 @@ wheels = [
 
 [[package]]
 name = "py-buzz"
-version = "8.2.1"
+version = "9.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "typing-extensions" },
@@ -839,7 +839,6 @@ dev = [
     { name = "ipython" },
     { name = "mkdocs-material" },
     { name = "mkdocstrings-python" },
-    { name = "mutmut" },
     { name = "pre-commit" },
     { name = "pyclean" },
     { name = "pygments" },
@@ -851,6 +850,9 @@ dev = [
     { name = "ty" },
     { name = "typos" },
     { name = "yamllint" },
+]
+mutation = [
+    { name = "mutmut" },
 ]
 
 [package.metadata]
@@ -868,7 +870,6 @@ dev = [
     { name = "ipython", specifier = ">=8.38.0" },
     { name = "mkdocs-material", specifier = ">=9.7.1" },
     { name = "mkdocstrings-python", specifier = ">=2.0.1" },
-    { name = "mutmut", specifier = ">=3.4.0" },
     { name = "pre-commit", specifier = ">=4.5.1" },
     { name = "pyclean", specifier = ">=3.5.0" },
     { name = "pygments", specifier = ">=2.19.2" },
@@ -881,6 +882,7 @@ dev = [
     { name = "typos", specifier = ">=1.42.2" },
     { name = "yamllint", specifier = ">=1.38.0" },
 ]
+mutation = [{ name = "mutmut", specifier = ">=3.4.0" }]
 
 [[package]]
 name = "pyclean"
