@@ -12,25 +12,31 @@
       
       
       
-        <link rel="next" href="features/">
+      
+        <link rel="next" href="./features/">
       
       
         
       
       
-      <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+      <link rel="icon" href="./assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.71">
     
     
       
-        <title>py-buzz documentation</title>
+        <title>Home - py-buzz documentation</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      <link rel="stylesheet" href="./assets/stylesheets/classic/main.68ef4dbf.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="./assets/stylesheets/classic/palette.813d4b3f.min.css">
       
       
 
@@ -44,14 +50,12 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
-    
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL(".",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -72,14 +76,11 @@
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
     <div data-md-component="skip">
-      
-        
-        <a href="#overview" class="md-skip">
-          Skip to content
-        </a>
-      
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
     </div>
     <div data-md-component="announce">
       
@@ -92,12 +93,12 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="py-buzz documentation" class="md-header__button md-logo" aria-label="py-buzz documentation" data-md-component="logo">
+    <a href="" title="py-buzz documentation" class="md-header__button md-logo" aria-label="py-buzz documentation" data-md-component="logo">
       
-  <img src="images/buzz-logo-light.png" alt="logo">
+  <img src="./images/buzz-logo-light.png" alt="py-buzz documentation">
 
     </a>
-    <label class="md-header__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
@@ -124,7 +125,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
@@ -134,7 +135,7 @@
     
     
     
-    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
@@ -151,57 +152,30 @@
     
       
       
-        <label class="md-header__button md-icon" for="__search">
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         </label>
-        <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </nav>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
 </div>
       
     
-    
-      <div class="md-header__source">
+    <div class="md-header__source">
+      
         <a href="https://github.com/dusktreader/py-buzz" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
   </div>
 </a>
-      </div>
-    
+      
+    </div>
   </nav>
   
 </header>
@@ -227,9 +201,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="py-buzz documentation" class="md-nav__button md-logo" aria-label="py-buzz documentation" data-md-component="logo">
+    <a href="" title="py-buzz documentation" class="md-nav__button md-logo" aria-label="py-buzz documentation" data-md-component="logo">
       
-  <img src="images/buzz-logo-light.png" alt="logo">
+  <img src="./images/buzz-logo-light.png" alt="py-buzz documentation">
 
     </a>
     py-buzz documentation
@@ -239,7 +213,7 @@
       <a href="https://github.com/dusktreader/py-buzz" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -259,8 +233,12 @@
   
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
@@ -270,8 +248,7 @@
   <span class="md-ellipsis">
     
   
-    Home
-  
+  Home
 
     
   </span>
@@ -281,15 +258,14 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="." class="md-nav__link md-nav__link--active">
+      <a href="" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
     
   
-    Home
-  
+  Home
 
     
   </span>
@@ -300,114 +276,50 @@
       
         
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Overview
-      
+      <span class="md-typeset">
+        Getting started
+      </span>
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#py-buzz-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        py-buzz tools
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#buzz-base-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Buzz base class
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quickstart" class="md-nav__link">
+  <a href="#whats-in-the-box" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Quickstart
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Quickstart">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Requirements
-      
+      <span class="md-typeset">
+        What's in the box
+      </span>
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#the-demos" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Installation
-      
+      <span class="md-typeset">
+        The demos
+      </span>
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#demos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Demos
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -425,16 +337,314 @@
   
   
   
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Features
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+            <label class="md-nav__title" for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Features
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+                  
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="features/" class="md-nav__link">
+      <a href="./features/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Features
+  Overview
+
+    
+  </span>
   
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/require_condition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Require a condition
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/enforce_defined/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Enforce a defined value
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/ensure_type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Ensure a value has the right type
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/verify_literal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Verify a literal value
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/handle_errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Handle errors
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/check_expressions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Check multiple expressions
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/raise_from/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Raise from another exception
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./features/other_functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Other functions
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="./demo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Demo
 
     
   </span>
@@ -453,15 +663,14 @@
   
   
     <li class="md-nav__item">
-      <a href="demo/" class="md-nav__link">
+      <a href="./reference/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Demo
-  
+  Reference
 
     
   </span>
@@ -480,42 +689,14 @@
   
   
     <li class="md-nav__item">
-      <a href="reference/" class="md-nav__link">
+      <a href="./changelog/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Reference
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="changelog/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Changelog
-  
+  Changelog
 
     
   </span>
@@ -537,117 +718,54 @@
               
               <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
                 <div class="md-sidebar__scrollwrap">
+                  
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
+  <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Overview
-      
+      <span class="md-typeset">
+        Getting started
+      </span>
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Overview">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#py-buzz-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        py-buzz tools
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#buzz-base-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Buzz base class
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quickstart" class="md-nav__link">
+  <a href="#whats-in-the-box" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Quickstart
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Quickstart">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Requirements
-      
+      <span class="md-typeset">
+        What's in the box
+      </span>
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#the-demos" class="md-nav__link">
     <span class="md-ellipsis">
-      
-        Installation
-      
+      <span class="md-typeset">
+        The demos
+      </span>
     </span>
   </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#demos" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Demos
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -663,79 +781,92 @@
             <div class="md-content" data-md-component="content">
               
               <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
                 
                   
 
-
   
   
 
 
-  <h1>Home</h1>
-
+<h1 id="py-buzz">py-buzz</h1>
 <p><img alt="py-buzz-logo" src="images/buzz-logo-text.png" /></p>
-<p><em>That's not flying, it's falling with style</em></p>
-<p>Take Exceptions to infinity...and beyond with <code>py-buzz</code>!</p>
+<p><strong>That's not flying, <em>it's falling with style</em>: Exceptions with extras</strong></p>
 <p><img alt="py-buzz-demo" src="images/py-buzz.gif" /></p>
-<h2 id="overview">Overview</h2>
-<p>Have you ever found yourself writing the same code over and over to provide error handling in your python projects? I
-certainly did. In fact, I found that I often needed to re-implement the same patterns in almost every project. These
-patterns included:</p>
+<p>Long ago, I found myself writing the same boilerplate for condition checks and exception wrappers over and over. So I
+gathered some helpers together to cut down on repetitive error-handling code. When I switched
+projects later, I wanted those helpers there, too! That's how <code>py-buzz</code> came to be.</p>
+<p>Now, I have a collection of really useful exception helpers that
+I can use in all my projects, and I'm sharing them with you!</p>
+<h2 id="getting-started">Getting started</h2>
+<p>Python 3.11 or newer is required, and installation takes one line:</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>py-buzz
+</code></pre></div>
+<p>Here's a small example with a project-specific exception:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">buzz</span><span class="w"> </span><span class="kn">import</span> <span class="n">Buzz</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigError</span><span class="p">(</span><span class="n">Buzz</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">read_port</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">ConfigError</span><span class="o">.</span><span class="n">ensure_type</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="s2">"Port must be an integer"</span><span class="p">)</span>
+    <span class="n">ConfigError</span><span class="o">.</span><span class="n">require_condition</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">port</span> <span class="o">&lt;=</span> <span class="mi">65535</span><span class="p">,</span> <span class="s2">"Port must be between 1 and 65535"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">port</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_port</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">ConfigError</span><span class="o">.</span><span class="n">handle_errors</span><span class="p">(</span><span class="s2">"Couldn't parse the configured port"</span><span class="p">):</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">read_port</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+<p>Here, <code>ensure_type()</code> checks the value at runtime and returns it with a narrowed type, while <code>require_condition()</code>
+raises <code>ConfigError</code> if the port is out of range. <code>handle_errors()</code> gives parsing failures
+a bit more context by wrapping the original <code>ValueError</code> in a <code>ConfigError</code>.</p>
+<h2 id="whats-in-the-box">What's in the box</h2>
+<p>Most helpers come in two flavors: standalone functions that work with regular exception types and methods on a <code>Buzz</code>
+subclass that raise that class. <code>reformat_exception()</code> is a standalone helper for formatting exception messages.</p>
 <ul>
-<li>checking many conditions and reporting which ones failed</li>
-<li>catching exceptions and wrapping them in clearer exception types with better error messages</li>
-<li>checking conditions and raising errors on failure</li>
-<li>checking that values are defined and raising errors if they are not</li>
-<li>checking that values are of a specific type and raising errors if they are not</li>
+<li><a href="features/require_condition/"><code>require_condition()</code></a> checks a condition.</li>
+<li><a href="features/enforce_defined/"><code>enforce_defined()</code></a> rejects <code>None</code> and narrows the value's type.</li>
+<li><a href="features/ensure_type/"><code>ensure_type()</code></a> checks a runtime type and narrows the result.</li>
+<li><a href="features/verify_literal/"><code>verify_literal()</code></a> checks a <code>Literal</code> value.</li>
+<li><a href="features/handle_errors/"><code>handle_errors()</code> and <code>handle_errors_async()</code></a> add context to exceptions from a block.</li>
+<li><a href="features/other_functions/#retry-decorators"><code>Buzz.retry()</code> and <code>Buzz.retry_async()</code></a>
+  retry synchronous and asynchronous operations.</li>
+<li><a href="features/check_expressions/"><code>check_expressions()</code></a> reports multiple failed checks together.</li>
+<li><a href="features/raise_from/"><code>raise_from()</code></a> adds context while preserving the original exception as the cause.</li>
+<li><a href="features/other_functions/#reformat-an-exception"><code>reformat_exception()</code></a>
+  formats an exception message with more context.</li>
+<li><a href="features/other_functions/#get-a-traceback"><code>get_traceback()</code></a> fetches the current traceback.</li>
 </ul>
-<p>This led me to create an exception toolkit called <code>py-buzz</code> that provides powerful helper tools for each of the cases
-listed above. The <code>py-buzz</code> package intends to make your error handling easy, expressive, and robust.</p>
-<p>Because <code>py-buzz</code> requires only Python itself, it's a very light-weight package that you can use in any project with
-very little overhead.</p>
-<p><code>py-buzz</code> provides functionality or two different main use-cases. Either use-case allows you to focus on clear and
-concise error handling in your project without a lot of repetitive code:</p>
-<h3 id="py-buzz-tools"><code>py-buzz</code> tools</h3>
-<p>This set of functions can be used with any exception type. So, if you already have a set of custom exceptions or simply
-wish to use existing exceptions, you can import the py-buzz functions and use them in your code immediately. The helper
-functions include:</p>
-<ul>
-<li><a href="features#raise-exception-on-condition-failure"><code>require_condition()</code></a></li>
-<li><a href="features#raise-exception-if-value-is-not-defined"><code>enforce_defined()</code></a></li>
-<li><a href="features#raise-exception-if-value-is-wrong-type"><code>ensure_type()</code></a></li>
-<li><a href="features#exception-handling-context-manager"><code>handle_errors()</code></a></li>
-<li><a href="features#expression-checking-context-manager"><code>check_expressions()</code></a></li>
-</ul>
-<h3 id="buzz-base-class"><code>Buzz</code> base class</h3>
-<p>This class is meant to be used as a base class for custom exceptions that you can use in your project.
-<a href="features#the-buzz-base-class"><code>Buzz</code></a> includes all of the helper functions as class methods that will use your custom
-exception type.</p>
-<h2 id="quickstart">Quickstart</h2>
-<h3 id="requirements">Requirements</h3>
-<ul>
-<li>Requires Python 3.11 or later</li>
-</ul>
-<h3 id="installation">Installation</h3>
-<p>This will install the latest release of py-buzz from pypi via pip:</p>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>py-buzz
+<p>The standalone <code>retry()</code> and <code>retry_async()</code> decorators live in <code>buzz.tools</code>; the
+<a href="features/other_functions/#retry-decorators">retry guide</a> shows both styles.</p>
+<h2 id="the-demos">The demos</h2>
+<p>The optional demo extra bundles executable examples of the features.
+With <code>uv</code>, the demos can run in an isolated environment:</p>
+<div class="highlight"><pre><span></span><code>uvx<span class="w"> </span>--from<span class="o">=</span><span class="s1">'py-buzz[demo]'</span><span class="w"> </span>py-buzz-demo
 </code></pre></div>
+<p>The <a href="demo/">demo guide</a> has a few more ways to run individual examples.</p>
 
-<h3 id="usage">Usage</h3>
-<p>Just import!</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">buzz</span><span class="w"> </span><span class="kn">import</span> <span class="n">require_condition</span>
 
-<span class="n">require_condition</span><span class="p">(</span><span class="n">check_something</span><span class="p">(),</span> <span class="s2">&quot;The check failed!&quot;</span><span class="p">)</span>
-</code></pre></div>
-
-<p>For more examples of usage, see the <a href="features/">Features</a> page.</p>
-<h3 id="demos">Demos</h3>
-<p><code>py-buzz</code> comes with an optional demo extra that can show you how to use the features. To install and run, try:</p>
-<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>py-buzz<span class="o">[</span>demo<span class="o">]</span>
-py-buzz-demo
-</code></pre></div>
-
-<p>Alternatively, you can run them in one command using <code>uv</code>:</p>
-<div class="codehilite"><pre><span></span><code>uvx<span class="w"> </span>--from<span class="o">=</span>py-buzz<span class="o">[</span>demo<span class="o">]</span><span class="w"> </span>py-buzz-demo
-</code></pre></div>
 
 
 
@@ -766,8 +897,8 @@ py-buzz-demo
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
     </a>
   
 </div>
@@ -777,7 +908,7 @@ py-buzz-demo
 </footer>
       
     </div>
-    <div class="md-dialog" data-md-component="dialog">
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
@@ -785,10 +916,14 @@ py-buzz-demo
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.expand", "content.code.copy"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":".","features":["navigation.expand","content.code.copy"],"redirect":null,"search":"./assets/javascripts/workers/search.c47bb847.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="./assets/javascripts/bundle.a2388154.min.js"></script>
       
     
   </body>
