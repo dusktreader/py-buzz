@@ -1,0 +1,60 @@
+[project]
+site_name = "py-buzz documentation"
+site_url = "https://dusktreader.github.io/py-buzz"
+docs_dir = "source"
+site_dir = "site"
+repo_url = "https://github.com/dusktreader/py-buzz"
+watch = ["source", "../src/buzz"]
+nav = [
+  { Home = "index.md" },
+  { Features = [
+    { Overview = "features/index.md" },
+    { "Require a condition" = "features/require_condition.md" },
+    { "Enforce a defined value" = "features/enforce_defined.md" },
+    { "Ensure a value has the right type" = "features/ensure_type.md" },
+    { "Verify a literal value" = "features/verify_literal.md" },
+    { "Handle errors" = "features/handle_errors.md" },
+    { "Check multiple expressions" = "features/check_expressions.md" },
+    { "Raise from another exception" = "features/raise_from.md" },
+    { "Other functions" = "features/other_functions.md" },
+  ] },
+  { Demo = "demo.md" },
+  { Reference = "reference.md" },
+  { Changelog = "changelog.md" },
+]
+
+[project.theme]
+variant = "classic"
+logo = "images/buzz-logo-light.png"
+features = ["navigation.expand", "content.code.copy"]
+
+[[project.theme.palette]]
+scheme = "default"
+toggle = { icon = "material/weather-night", name = "Switch to dark mode" }
+
+[[project.theme.palette]]
+scheme = "slate"
+toggle = { icon = "material/weather-sunny", name = "Switch to light mode" }
+
+[project.plugins.mkdocstrings]
+default_handler = "python"
+
+[project.plugins.mkdocstrings.handlers.python]
+paths = [".."]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+heading_level = 3
+show_root_heading = true
+docstring_section_style = "list"
+separate_signature = true
+show_signature_annotations = true
+show_source = false
+docstring_style = "google"
+
+[project.markdown_extensions]
+admonition = {}
+
+[project.markdown_extensions.pymdownx.superfences]
+
+[project.markdown_extensions.codehilite]
+use_pygments = true

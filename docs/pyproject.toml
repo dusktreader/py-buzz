@@ -1,0 +1,17 @@
+[project]
+name = "py-buzz-docs"
+version = "0.1.0"
+description = "Documentation site for py-buzz"
+requires-python = ">=3.11"
+dependencies = [
+  "mkdocstrings-python>=2.0.1",
+  "py-buzz",
+  "pygments>=2.19.2",
+  "zensical~=0.0.33",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+py-buzz = { path = "..", editable = true }

@@ -1,94 +1,83 @@
+# py-buzz
+
 ![py-buzz-logo](images/buzz-logo-text.png)
 
-_That's not flying, it's falling with style_
-
-Take Exceptions to infinity...and beyond with `py-buzz`!
+**That's not flying, _it's falling with style_: Exceptions with extras**
 
 ![py-buzz-demo](images/py-buzz.gif)
 
+Long ago, I found myself writing the same boilerplate for condition checks and exception wrappers over and over. So I
+gathered some helpers together to cut down on repetitive error-handling code. When I switched
+projects later, I wanted those helpers there, too! That's how `py-buzz` came to be.
 
-## Overview
-
-Have you ever found yourself writing the same code over and over to provide error handling in your python projects? I
-certainly did. In fact, I found that I often needed to re-implement the same patterns in almost every project. These
-patterns included:
-
-* checking many conditions and reporting which ones failed
-* catching exceptions and wrapping them in clearer exception types with better error messages
-* checking conditions and raising errors on failure
-* checking that values are defined and raising errors if they are not
-* checking that values are of a specific type and raising errors if they are not
-
-This led me to create an exception toolkit called `py-buzz` that provides powerful helper tools for each of the cases
-listed above. The `py-buzz` package intends to make your error handling easy, expressive, and robust.
-
-Because `py-buzz` requires only Python itself, it's a very light-weight package that you can use in any project with
-very little overhead.
-
-`py-buzz` provides functionality or two different main use-cases. Either use-case allows you to focus on clear and
-concise error handling in your project without a lot of repetitive code:
+Now, I have a collection of really useful exception helpers that
+I can use in all my projects, and I'm sharing them with you!
 
 
-### `py-buzz` tools
+## Getting started
 
-This set of functions can be used with any exception type. So, if you already have a set of custom exceptions or simply
-wish to use existing exceptions, you can import the py-buzz functions and use them in your code immediately. The helper
-functions include:
-
-- [`require_condition()`](features#raise-exception-on-condition-failure)
-- [`enforce_defined()`](features#raise-exception-if-value-is-not-defined)
-- [`ensure_type()`](features#raise-exception-if-value-is-wrong-type)
-- [`handle_errors()`](features#exception-handling-context-manager)
-- [`check_expressions()`](features#expression-checking-context-manager)
-
-
-### `Buzz` base class
-
-This class is meant to be used as a base class for custom exceptions that you can use in your project.
-[`Buzz`](features#the-buzz-base-class) includes all of the helper functions as class methods that will use your custom
-exception type.
-
-
-## Quickstart
-
-### Requirements
-
-* Requires Python 3.11 or later
-
-
-### Installation
-
-This will install the latest release of py-buzz from pypi via pip:
+Python 3.11 or newer is required, and installation takes one line:
 
 ```shell
-pip install py-buzz
+uv add py-buzz
 ```
 
+Here's a small example with a project-specific exception:
 
-### Usage
+```python {linenums="1"}
+from buzz import Buzz
 
-Just import!
 
-```python
-from buzz import require_condition
+class ConfigError(Buzz):
+    pass
 
-require_condition(check_something(), "The check failed!")
+
+def read_port(value: object) -> int:
+    port = ConfigError.ensure_type(value, int, "Port must be an integer")
+    ConfigError.require_condition(1 <= port <= 65535, "Port must be between 1 and 65535")
+    return port
+
+
+def parse_port(value: str) -> int:
+    with ConfigError.handle_errors("Couldn't parse the configured port"):
+        port = int(value)
+    return read_port(port)
 ```
 
-For more examples of usage, see the [Features](features.md) page.
+Here, `ensure_type()` checks the value at runtime and returns it with a narrowed type, while `require_condition()`
+raises `ConfigError` if the port is out of range. `handle_errors()` gives parsing failures
+a bit more context by wrapping the original `ValueError` in a `ConfigError`.
 
 
-### Demos
+## What's in the box
 
-`py-buzz` comes with an optional demo extra that can show you how to use the features. To install and run, try:
+Most helpers come in two flavors: standalone functions that work with regular exception types and methods on a `Buzz`
+subclass that raise that class. `reformat_exception()` is a standalone helper for formatting exception messages.
+
+- [`require_condition()`](features/require_condition.md) checks a condition.
+- [`enforce_defined()`](features/enforce_defined.md) rejects `None` and narrows the value's type.
+- [`ensure_type()`](features/ensure_type.md) checks a runtime type and narrows the result.
+- [`verify_literal()`](features/verify_literal.md) checks a `Literal` value.
+- [`handle_errors()` and `handle_errors_async()`](features/handle_errors.md) add context to exceptions from a block.
+- [`Buzz.retry()` and `Buzz.retry_async()`](features/other_functions.md#retry-decorators)
+  retry synchronous and asynchronous operations.
+- [`check_expressions()`](features/check_expressions.md) reports multiple failed checks together.
+- [`raise_from()`](features/raise_from.md) adds context while preserving the original exception as the cause.
+- [`reformat_exception()`](features/other_functions.md#reformat-an-exception)
+  formats an exception message with more context.
+- [`get_traceback()`](features/other_functions.md#get-a-traceback) fetches the current traceback.
+
+The standalone `retry()` and `retry_async()` decorators live in `buzz.tools`; the
+[retry guide](features/other_functions.md#retry-decorators) shows both styles.
+
+
+## The demos
+
+The optional demo extra bundles executable examples of the features.
+With `uv`, the demos can run in an isolated environment:
 
 ```shell
-pip install py-buzz[demo]
-py-buzz-demo
+uvx --from='py-buzz[demo]' py-buzz-demo
 ```
 
-Alternatively, you can run them in one command using `uv`:
-
-```shell
-uvx --from=py-buzz[demo] py-buzz-demo
-```
+The [demo guide](demo.md) has a few more ways to run individual examples.

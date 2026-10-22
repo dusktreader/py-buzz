@@ -4,12 +4,18 @@ This module defines the Buzz base class.
 
 from __future__ import annotations
 
+import sys
 import textwrap
-from collections.abc import Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping
 from types import TracebackType
-from typing import Any, TypeVar
+from typing import Any, AsyncContextManager, ContextManager, Coroutine, TypeVar
 
-from typing_extensions import Self, TypeForm, override
+from typing_extensions import Self, override
+
+if sys.version_info >= (3, 15):
+    from typing import TypeForm
+else:
+    from typing_extensions import TypeForm
 
 from buzz.tools import (
     AsyncDoExceptParamsCallback,
@@ -300,44 +306,27 @@ class Buzz(Exception):
         do_finally: NoArgCallback | None = None,
         do_except: DoExceptParamsCallback | None = None,
         do_else: NoArgCallback | None = None,
-    ):
+    ) -> ContextManager[None]:
         """
         Provide a context manager that will intercept exceptions and repackage them in a new exception (instance of this
         class) with a message attached that combines the base message along with the message from the handled exception:
 
         Args:
-            base_message:      The base message to attach to the raised exception. Will be included in `ExcBuilderParams`
-                               passed to `exc_builder`.
-            re_raise:          If True (the default), then a exception (instance of this class) will be raised after
-                               handling any caught exceptions. If False, no exception will be raised after handling any
-                               exceptions. This will effectively swallow the expression. Note that the `do_` methods
-                               will still be executed.
-            raise_exc_class:   The exception type to raise with the constructed message if an exception is caught in the
-                               managed context. If `None` is passed, no new exception will be raised and only the
-                               `do_except`, `do_else`, and `do_finally` functions will be called.
-            raise_args:        Additional positional args (after the constructed message) that will passed when raising
-                               an instance of the `raise_exc_class`.
-            raise_kwargs:      Keyword args that will be passed when raising an instance of the `raise_exc_class`.
-            handle_exc_class:  Limits the class of exceptions that will be intercepted
-                               Any other exception types will not be caught and re-packaged.
-                               Defaults to Exception (will handle all exceptions). May also be provided as a tuple
-                               of multiple exception types to handle.
-            ignore_exc_class:  Defines an exception or set of exception types that should not be handled at all.
-                               Any matching exception types will be immediately re-raised. They will not be handled by
-                               the `handle_errors` context manager at all. This is useful if you want a specific variant
-                               of your `handle_exc_class` to not be handled by `handle_errors`. For example, if you want
-                               to use `handle_exc_class=Exception` but you do not want `handle_errors` to handle
-                               `RuntimeError`.
-                               Then, you would set `ignore_exc_class=RuntimeError`.
-            do_finally:        A function that should always be called at the end of the block.
-                               Should take no parameters.
-                               If not provided, nothing will be done.
-            do_except:         A function that should be called only if there was an exception. Must accept one
-                               parameter that is an instance of the `DoExceptParams` dataclass.
-                               Note that the `do_except` method is passed the *original exception*.
-                               If not provided, nothing will be done.
-            do_else:           A function that should be called only if there were no exceptions encountered.
-                               If not provided, nothing will be done.
+            base_message:      The base message included in the raised exception.
+            re_raise:          If True (the default), raise an instance of this class after handling an exception. If
+                               False, absorb handled exceptions. The `do_` callbacks still run.
+            raise_args:        Additional positional arguments passed to the raised exception after the message.
+            raise_kwargs:      Keyword arguments passed to the raised exception.
+            handle_exc_class:  The exception type or types to catch and repackage. Defaults to `Exception` and its
+                               subclasses. Other exceptions pass through unchanged.
+            ignore_exc_class:  The exception type or types to immediately reraise without handling. This is useful when
+                               `handle_exc_class=Exception` but a specific subclass, such as `RuntimeError`, must pass
+                               through unchanged.
+            do_finally:        A zero-argument callback that runs when the context exits, whether or not an exception
+                               occurred.
+            do_except:         A callback that receives a `DoExceptParams` instance when a handled exception occurs.
+                               Its `err` attribute contains the original exception.
+            do_else:           A zero-argument callback that runs only when the block exits without an exception.
 
         Example:
 
@@ -371,7 +360,7 @@ class Buzz(Exception):
         do_finally: NoArgCallback | AsyncNoArgCallback | None = None,
         do_except: DoExceptParamsCallback | AsyncDoExceptParamsCallback | None = None,
         do_else: NoArgCallback | AsyncNoArgCallback | None = None,
-    ):
+    ) -> AsyncContextManager[None]:
         """
         Provide an async context manager that intercepts and repackages exceptions as this class.
 
@@ -443,7 +432,7 @@ class Buzz(Exception):
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
         on_retry: RetryCallback | None = None,
-    ):
+    ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
         """
         Decorator that retries a function on failure with exponential backoff.
 
@@ -494,7 +483,7 @@ class Buzz(Exception):
         raise_args: Iterable[Any] | None = None,
         raise_kwargs: Mapping[str, Any] | None = None,
         on_retry: RetryCallback | None = None,
-    ):
+    ) -> Callable[[Callable[..., Coroutine[Any, Any, Any]]], Callable[..., Coroutine[Any, Any, Any]]]:
         """
         Decorator that retries an async function on failure with exponential backoff.
 

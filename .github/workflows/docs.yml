@@ -6,7 +6,9 @@ on:
       - main
     paths:
       - 'docs/**'
-      - 'buzz/**'
+      - 'src/buzz/**'
+      - 'pyproject.toml'
+      - 'Makefile'
 
 jobs:
   build:

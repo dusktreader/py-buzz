@@ -1,7 +1,21 @@
 [project]
 name = "py-buzz"
-version = "9.0.0"
+version = "9.0.1"
 description = "\"That's not flying, it's falling with style\": Exceptions with extras"
+license = "MIT"
+keywords = ["exceptions", "error-handling", "validation", "type-checking", "retry"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Typing :: Typed",
+]
 authors = [
   {name = "Tucker Beck", email = "tucker.beck@gmail.com"}
 ]
@@ -9,7 +23,7 @@ readme = "README.md"
 license-files = ["LICENSE.md"]
 requires-python = ">=3.11"
 dependencies = [
-  "typing-extensions>=4.0.0"  # Provides TypeForm for Python 3.11–3.14
+  "typing-extensions>=4.13.0"
 ]
 
 [project.urls]
@@ -39,8 +53,6 @@ module-root = "src"
 dev = [
   "ty>=0.0.24",
   "ipython>=8.38.0",
-  "mkdocs-material>=9.7.1",
-  "mkdocstrings-python>=2.0.1",
   "pre-commit>=4.5.1",
   "pyclean>=3.5.0",
   "pygments>=2.19.2",
