@@ -34,10 +34,10 @@ qa/mutate:  ## Run mutation testing (slow, not part of qa/full)
 docs: docs/serve  ## Shortcut for docs/serve
 
 docs/build:  ## Build the documentation
-	@uv run mkdocs build --config-file=docs/mkdocs.yaml
+	@uv run --project docs zensical build --config-file=docs/zensical.toml
 
 docs/serve:  ## Build the docs and start a local dev server
-	@uv run mkdocs serve --config-file=docs/mkdocs.yaml --dev-addr=localhost:10000
+	@uv run --project docs zensical serve --config-file=docs/zensical.toml --dev-addr=localhost:10000
 
 
 ## ==== Demo ===========================================================================================================

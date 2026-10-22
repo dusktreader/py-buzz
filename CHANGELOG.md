@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## v9.0.1 - 2026-10-21
+
+* Added PyPI keywords and classifiers to improve package discovery
+
+
 ## v9.0.0 - 2026-10-12
 
 * Drop support for Python 3.9 and 3.10 and add support for 3.14 and 3.15

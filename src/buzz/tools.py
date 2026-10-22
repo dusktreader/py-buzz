@@ -13,10 +13,13 @@ import sys
 import time
 import types
 from asyncio import iscoroutinefunction
-from collections.abc import AsyncIterator, Coroutine, Iterable, Iterator, Mapping
-from typing import Any, Callable, Literal, Protocol, TypeVar, cast, get_args, get_origin
+from collections.abc import AsyncIterator, Callable, Coroutine, Iterable, Iterator, Mapping
+from typing import Any, Literal, Protocol, TypeVar, cast, get_args, get_origin
 
-from typing_extensions import TypeForm
+if sys.version_info >= (3, 15):
+    from typing import TypeForm
+else:
+    from typing_extensions import TypeForm
 
 TNonNull = TypeVar("TNonNull")
 
